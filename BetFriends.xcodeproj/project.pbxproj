@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B52B8A5D1D9400F70015CDA7 /* PendingBetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */; };
 		B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57331D90A84100BF8193 /* AppDelegate.swift */; };
 		B59B57361D90A84100BF8193 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57351D90A84100BF8193 /* ViewController.swift */; };
 		B59B57391D90A84100BF8193 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59B57371D90A84100BF8193 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingBetsTableViewCell.swift; sourceTree = "<group>"; };
 		B59B57301D90A84100BF8193 /* BetFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59B57331D90A84100BF8193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B59B57351D90A84100BF8193 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		B59B57271D90A84100BF8193 = {
 			isa = PBXGroup;
 			children = (
+				B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */,
 				B59B57321D90A84100BF8193 /* BetFriends */,
 				B59B57471D90A84100BF8193 /* BetFriendsTests */,
 				B59B57521D90A84100BF8193 /* BetFriendsUITests */,
@@ -265,6 +268,7 @@
 				B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */,
 				B59B57361D90A84100BF8193 /* ViewController.swift in Sources */,
 				B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */,
+				B52B8A5D1D9400F70015CDA7 /* PendingBetsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +493,7 @@
 				B59B575A1D90A84200BF8193 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B59B575B1D90A84200BF8193 /* Build configuration list for PBXNativeTarget "BetFriendsTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +502,7 @@
 				B59B575D1D90A84200BF8193 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B59B575E1D90A84200BF8193 /* Build configuration list for PBXNativeTarget "BetFriendsUITests" */ = {
 			isa = XCConfigurationList;
@@ -505,6 +511,7 @@
 				B59B57601D90A84200BF8193 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

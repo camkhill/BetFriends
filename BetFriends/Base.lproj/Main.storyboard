@@ -119,11 +119,11 @@
             </objects>
             <point key="canvasLocation" x="1300" y="-500"/>
         </scene>
-        <!--Item-->
+        <!--My Bets-->
         <scene sceneID="JPL-3q-Fh1">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="U9t-Yr-LVk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="XMI-aU-mq4"/>
+                    <tabBarItem key="tabBarItem" title="My Bets" id="XMI-aU-mq4"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wdr-mT-8Or">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -172,11 +172,11 @@
             </objects>
             <point key="canvasLocation" x="335.46666666666664" y="487.5333333333333"/>
         </scene>
-        <!--Item-->
+        <!--Profile-->
         <scene sceneID="T28-Rn-qdU">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OUY-Ci-yEI" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="JFl-Np-g67"/>
+                    <tabBarItem key="tabBarItem" title="Profile" id="JFl-Np-g67"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ink-rE-ijN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -191,11 +191,11 @@
             </objects>
             <point key="canvasLocation" x="768" y="1373"/>
         </scene>
-        <!--Item-->
+        <!--Activity-->
         <scene sceneID="XPm-rP-cG6">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vlp-Zl-lbW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="xHk-xM-hBo"/>
+                    <tabBarItem key="tabBarItem" title="Activity" id="xHk-xM-hBo"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nbc-Nq-Xz7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

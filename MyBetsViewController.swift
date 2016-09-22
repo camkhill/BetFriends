@@ -31,13 +31,18 @@ class MyBetsViewController: UIViewController {
         let screenHeight = CGFloat(UIScreen.mainScreen().bounds.size.height)
         
         //Set My Bets label position
-        
-        //Set Up New Bet button
-        newBetButton.frame.origin = CGPoint(x: screenWidth-60, y: screenHeight-110)
-        newBetButton.frame.size = CGSize(width: 50, height: 50)
+        myBetsLabel.center.x = view.center.x
+        myBetsLabel.center.y = CGFloat(40)
         
         //Set segmentedControl state, location
         segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.center = CGPoint(x: view.center.x, y: 75)
+        
+        //Set Up New Bet button
+        newBetButton.frame.origin = CGPoint(x: screenWidth-75, y: screenHeight-110)
+        newBetButton.frame.size = CGSize(width: 50, height: 50)
+        
+        
         
         //Set Margins
         let screenTopMargin = CGFloat(100)
