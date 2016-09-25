@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		B52B8A5D1D9400F70015CDA7 /* PendingBetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */; };
+		B52B8A5F1D94906D0015CDA7 /* ActiveBetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A5E1D94906D0015CDA7 /* ActiveBetTableViewCell.swift */; };
+		B52B8A631D9490DB0015CDA7 /* CompletedBetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A621D9490DB0015CDA7 /* CompletedBetTableViewCell.swift */; };
+		B52B8A651D95B1400015CDA7 /* NewBetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A641D95B1400015CDA7 /* NewBetViewController.swift */; };
+		B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */; };
+		B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */; };
 		B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57331D90A84100BF8193 /* AppDelegate.swift */; };
 		B59B57361D90A84100BF8193 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57351D90A84100BF8193 /* ViewController.swift */; };
 		B59B57391D90A84100BF8193 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59B57371D90A84100BF8193 /* Main.storyboard */; };
@@ -36,7 +41,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingBetsTableViewCell.swift; sourceTree = "<group>"; };
+		B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PendingBetsTableViewCell.swift; path = ../PendingBetsTableViewCell.swift; sourceTree = "<group>"; };
+		B52B8A5E1D94906D0015CDA7 /* ActiveBetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveBetTableViewCell.swift; sourceTree = "<group>"; };
+		B52B8A621D9490DB0015CDA7 /* CompletedBetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedBetTableViewCell.swift; sourceTree = "<group>"; };
+		B52B8A641D95B1400015CDA7 /* NewBetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewBetViewController.swift; sourceTree = "<group>"; };
+		B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetDetailsViewController.swift; sourceTree = "<group>"; };
+		B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B59B57301D90A84100BF8193 /* BetFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59B57331D90A84100BF8193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B59B57351D90A84100BF8193 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -78,10 +88,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B59B57271D90A84100BF8193 = {
+		B52B8A661D95B35E0015CDA7 /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
 				B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */,
+				B52B8A5E1D94906D0015CDA7 /* ActiveBetTableViewCell.swift */,
+				B52B8A621D9490DB0015CDA7 /* CompletedBetTableViewCell.swift */,
+			);
+			name = "Table View Cells";
+			sourceTree = "<group>";
+		};
+		B59B57271D90A84100BF8193 = {
+			isa = PBXGroup;
+			children = (
 				B59B57321D90A84100BF8193 /* BetFriends */,
 				B59B57471D90A84100BF8193 /* BetFriendsTests */,
 				B59B57521D90A84100BF8193 /* BetFriendsUITests */,
@@ -102,10 +121,14 @@
 		B59B57321D90A84100BF8193 /* BetFriends */ = {
 			isa = PBXGroup;
 			children = (
+				B52B8A661D95B35E0015CDA7 /* Table View Cells */,
 				B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */,
 				B59B57331D90A84100BF8193 /* AppDelegate.swift */,
 				B59B57351D90A84100BF8193 /* ViewController.swift */,
 				B59B57371D90A84100BF8193 /* Main.storyboard */,
+				B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */,
+				B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */,
+				B52B8A641D95B1400015CDA7 /* NewBetViewController.swift */,
 				B59B573A1D90A84100BF8193 /* Assets.xcassets */,
 				B59B573C1D90A84100BF8193 /* LaunchScreen.storyboard */,
 				B59B573F1D90A84100BF8193 /* Info.plist */,
@@ -265,9 +288,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */,
 				B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */,
+				B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */,
+				B52B8A651D95B1400015CDA7 /* NewBetViewController.swift in Sources */,
+				B52B8A631D9490DB0015CDA7 /* CompletedBetTableViewCell.swift in Sources */,
 				B59B57361D90A84100BF8193 /* ViewController.swift in Sources */,
 				B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */,
+				B52B8A5F1D94906D0015CDA7 /* ActiveBetTableViewCell.swift in Sources */,
 				B52B8A5D1D9400F70015CDA7 /* PendingBetsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
