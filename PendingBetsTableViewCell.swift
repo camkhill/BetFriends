@@ -26,7 +26,9 @@ class PendingBetsTableViewCell: UITableViewCell {
         //Set the positions of all the text and images
         cellView.frame.size.width = self.frame.size.width
         
-        print(self.frame.size.width)
+        //print(self.frame.size.width)
+        
+        print(self.cellView.superview?.superview?.frame.size)
         
         stakesLabel.center.x = cellView.center.x
         actionButton.center.x = cellView.center.x

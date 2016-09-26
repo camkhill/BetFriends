@@ -13,6 +13,7 @@
 		B52B8A651D95B1400015CDA7 /* NewBetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A641D95B1400015CDA7 /* NewBetViewController.swift */; };
 		B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */; };
 		B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */; };
+		B54557CB1D98CC16007D8809 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */; };
 		B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57331D90A84100BF8193 /* AppDelegate.swift */; };
 		B59B57361D90A84100BF8193 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57351D90A84100BF8193 /* ViewController.swift */; };
 		B59B57391D90A84100BF8193 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B59B57371D90A84100BF8193 /* Main.storyboard */; };
@@ -47,6 +48,7 @@
 		B52B8A641D95B1400015CDA7 /* NewBetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewBetViewController.swift; sourceTree = "<group>"; };
 		B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetDetailsViewController.swift; sourceTree = "<group>"; };
 		B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		B59B57301D90A84100BF8193 /* BetFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59B57331D90A84100BF8193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B59B57351D90A84100BF8193 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +100,14 @@
 			name = "Table View Cells";
 			sourceTree = "<group>";
 		};
+		B54557C91D98926F007D8809 /* External Code */ = {
+			isa = PBXGroup;
+			children = (
+				B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */,
+			);
+			name = "External Code";
+			sourceTree = "<group>";
+		};
 		B59B57271D90A84100BF8193 = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +131,7 @@
 		B59B57321D90A84100BF8193 /* BetFriends */ = {
 			isa = PBXGroup;
 			children = (
+				B54557C91D98926F007D8809 /* External Code */,
 				B52B8A661D95B35E0015CDA7 /* Table View Cells */,
 				B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */,
 				B59B57331D90A84100BF8193 /* AppDelegate.swift */,
@@ -289,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */,
+				B54557CB1D98CC16007D8809 /* AutoCompleteTextField.swift in Sources */,
 				B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */,
 				B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */,
 				B52B8A651D95B1400015CDA7 /* NewBetViewController.swift in Sources */,

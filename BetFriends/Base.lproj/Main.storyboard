@@ -169,7 +169,6 @@ Stakes:</string>
                         <outlet property="completedTableView" destination="PWf-YA-WaS" id="UC5-2k-QHk"/>
                         <outlet property="horizontalScrollView" destination="Zmz-ma-cPp" id="9rh-X6-4z9"/>
                         <outlet property="newBetButton" destination="vwq-fz-VFQ" id="CAv-MA-HSX"/>
-                        <outlet property="pendingCell" destination="hbI-IX-m9D" id="XVm-sN-jkE"/>
                         <outlet property="pendingTableView" destination="Pte-Jv-9Uk" id="J4f-id-RqF"/>
                         <outlet property="segmentedControl" destination="wwM-Wm-srS" id="mZC-Wk-fso"/>
                         <segue destination="JvD-7G-b6a" kind="modal" identifier="toDetails" id="vzh-DY-Y3i"/>
@@ -226,39 +225,19 @@ Stakes:</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Opponent:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pv6-CL-Dx5">
-                                <rect key="frame" x="20" y="75" width="94" height="21"/>
+                                <rect key="frame" x="20" y="80" width="94" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's the bet?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pfg-Tg-vZ0">
-                                <rect key="frame" x="20" y="138" width="146" height="21"/>
+                                <rect key="frame" x="20" y="143" width="146" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter friend's username" textAlignment="natural" minimumFontSize="17" id="yFY-19-PDC">
-                                <rect key="frame" x="20" y="100" width="280" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I bet that..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="e1d-CR-oKq">
-                                <rect key="frame" x="20" y="167" width="83" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="enter bet here" textAlignment="natural" id="ba8-0R-3CI">
-                                <rect key="frame" x="20" y="185" width="280" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What are the stakes?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uq3-NZ-HtC">
                                 <rect key="frame" x="20" y="273" width="171" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -266,39 +245,25 @@ Stakes:</string>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="enter stakes here" textAlignment="natural" id="Mt7-Kt-gLZ">
-                                <rect key="frame" x="20" y="331" width="280" height="65"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" id="Mt7-Kt-gLZ">
+                                <rect key="frame" x="20" y="338" width="280" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="wn9-ab-1eY">
-                                <rect key="frame" x="16" y="302" width="284" height="29"/>
+                                <rect key="frame" x="20" y="302" width="284" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Loser has to..."/>
                                     <segment title="Winner gets to..."/>
                                 </segments>
                             </segmentedControl>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" id="231-wF-d6l">
-                                <rect key="frame" x="16" y="436" width="284" height="50"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <date key="date" timeIntervalSinceReferenceDate="496347513.98850399">
-                                    <!--2016-09-23 18:18:33 +0000-->
-                                </date>
-                            </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When will it end?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UqT-BG-OYO">
                                 <rect key="frame" x="20" y="412" width="150" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Other options...?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WnQ-6q-pQA">
-                                <rect key="frame" x="20" y="498" width="128" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -324,10 +289,49 @@ Stakes:</string>
                                     <action selector="onTapCancel:" destination="rQG-Dp-jRS" eventType="touchUpInside" id="4NB-O7-RgD"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter friend's username" textAlignment="natural" minimumFontSize="17" id="yFY-19-PDC">
+                                <rect key="frame" x="20" y="105" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I bet that..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="e1d-CR-oKq">
+                                <rect key="frame" x="25" y="166" width="83" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ba8-0R-3CI">
+                                <rect key="frame" x="20" y="188" width="280" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" id="j9R-Vh-4Rb">
+                                <rect key="frame" x="22" y="441" width="276" height="78"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <date key="date" timeIntervalSinceReferenceDate="496556654.34955299">
+                                    <!--2016-09-26 04:24:14 +0000-->
+                                </date>
+                            </datePicker>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.9606354832649231" green="0.96079975366592407" blue="0.96062511205673218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="New Bet" id="fQp-uu-yuT"/>
+                    <connections>
+                        <outlet property="betTextView" destination="ba8-0R-3CI" id="cAN-wG-d22"/>
+                        <outlet property="endDateLabel" destination="UqT-BG-OYO" id="afc-wn-3TV"/>
+                        <outlet property="friendTextView" destination="yFY-19-PDC" id="PfF-Ot-adP"/>
+                        <outlet property="ibetthatLabel" destination="e1d-CR-oKq" id="UVM-i2-8FK"/>
+                        <outlet property="loserwinnerControl" destination="wn9-ab-1eY" id="1hQ-K3-ISc"/>
+                        <outlet property="opponentLabel" destination="Pv6-CL-Dx5" id="kUG-Q9-zpN"/>
+                        <outlet property="stakesTextView" destination="Mt7-Kt-gLZ" id="Xap-5Y-rzj"/>
+                        <outlet property="submitButton" destination="k0m-jI-Oc5" id="hN4-y5-0qw"/>
+                        <outlet property="whatStakesLabel" destination="uq3-NZ-HtC" id="cQi-gG-wiX"/>
+                        <outlet property="whatsTheBetLabel" destination="pfg-Tg-vZ0" id="Xpv-dk-zaC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zh2-t6-Axg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

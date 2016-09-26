@@ -15,7 +15,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var pendingTableView: UITableView!
     @IBOutlet weak var activeTableView: UITableView!
     @IBOutlet weak var completedTableView: UITableView!
-    @IBOutlet weak var pendingCell: PendingBetsTableViewCell!
     
     @IBOutlet weak var horizontalScrollView: UIScrollView!
     @IBOutlet weak var newBetButton: UIButton!
@@ -86,6 +85,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.activeTableView.reloadData()
         self.completedTableView.reloadData()
         
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -115,7 +116,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //for each of the 3 table views, define the cells
         if tableView == self.pendingTableView {
             let cell = pendingTableView.dequeueReusableCellWithIdentifier("pendingCell") as! PendingBetsTableViewCell
-            cell.pendingLabel.text = "updated"
+            cell.pendingLabel.text = "Display bet text here"
             return cell
         } else if tableView == self.activeTableView {
             let cell = activeTableView.dequeueReusableCellWithIdentifier("activeCell") as! ActiveBetTableViewCell
