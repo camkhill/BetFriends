@@ -35,7 +35,10 @@ class LoginViewController: UIViewController {
         newUserLabel.center = CGPoint(x: screenCenterX, y: screenSize.height-70)
         signUpButton.center = CGPoint(x: screenCenterX, y: screenSize.height-40)
         
+        usernameTextField.autocorrectionType = UITextAutocorrectionType(rawValue: 1)!
         
+        
+        loginButton.enabled = false
         
         
         
@@ -61,10 +64,10 @@ class LoginViewController: UIViewController {
         //check if username is a valid username in DB
         
         //if username is valid, check password
-        if username == "" {
+        if username == "a" {
             
             //check password - if correct, login
-            if password == "" {
+            if password == "a" {
                 performSegueWithIdentifier("LoginSegue", sender: self)
                 
             } else {
@@ -112,7 +115,30 @@ class LoginViewController: UIViewController {
         })
     }
     
+    ////// Only enable login button if something is entered in UN and PW fields
     
+    //While user edits username, if it is not empty, and pw not empty, enable the button
+    @IBAction func onEditingUsername(sender: AnyObject) {
+        let enteredUN = usernameTextField.text
+        let enteredPW = passwordTextField.text
+        if enteredUN != "" && enteredPW != "" {
+            loginButton.enabled = true
+        } else {
+            loginButton.enabled = false
+        }
+    }
     
+    //Same for password field
+    @IBAction func onEditingPassword(sender: AnyObject) {
+        let enteredUN = usernameTextField.text
+        let enteredPW = passwordTextField.text
+        if enteredUN != "" && enteredPW != "" {
+            loginButton.enabled = true
+        } else {
+            loginButton.enabled = false
+        }
+    }
+    
+    /////////////////
 
 }

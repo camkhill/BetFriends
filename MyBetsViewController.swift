@@ -21,7 +21,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //temp cell
     let cell: UITableViewCell! = nil
-    
+    var segueIndicator: String!
+    var profPicSize: CGFloat!
+    var tableViewSize: CGSize!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,8 +71,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //Set size/positions of 3 table views
         let sideMargins = CGFloat(10)
-        let tableViewSize = CGSize(width: horizontalScrollViewWidth-(2*sideMargins), height: horizontalScrollViewHeight)
-        print(tableViewSize)
+        tableViewSize = CGSize(width: horizontalScrollViewWidth-(2*sideMargins), height: horizontalScrollViewHeight)
+        profPicSize = CGFloat(tableViewSize.width/5)
+        //print(tableViewSize)
         
         pendingTableView.frame.size = tableViewSize
         activeTableView.frame.size = tableViewSize
@@ -116,16 +119,33 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //for each of the 3 table views, define the cells
         if tableView == self.pendingTableView {
             let cell = pendingTableView.dequeueReusableCellWithIdentifier("pendingCell") as! PendingBetsTableViewCell
-            cell.pendingLabel.text = "Display bet text here"
+            let margin = CGFloat(10)
+            cell.pendingLabel.text = "Display bet text here Display bet text here Display bet text here Display bet text here Display bet text here Display bet text herea"
+            cell.layer.cornerRadius = 10
+            
+            //// Position elements within pending cell
+            cell.profPicImageView.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
+            cell.profPicImageView.layer.cornerRadius = profPicSize/2
+            cell.profPicImageView.layer.masksToBounds = true
+            cell.pendingLabel.frame = CGRect(x: profPicSize+2*margin, y: margin, width: tableViewSize.width-profPicSize-3*margin, height: profPicSize)
+            cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
+            cell.stakesLabel.frame.origin.y = profPicSize+margin
+            cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+margin+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: 15)
+            
+            let cellHeight = CGFloat(margin+profPicSize+cell.stakesLabel.frame.height+cell.stakesInputLabel.frame.height+margin)
+            cell.frame.size = CGSize(width: tableViewSize.width, height: cellHeight)
+            
+            
             return cell
         } else if tableView == self.activeTableView {
             let cell = activeTableView.dequeueReusableCellWithIdentifier("activeCell") as! ActiveBetTableViewCell
+            cell.layer.cornerRadius = 10
             return cell
         } else if tableView == self.completedTableView {
             let cell = completedTableView.dequeueReusableCellWithIdentifier("completedCell", forIndexPath: indexPath) as! CompletedBetTableViewCell
+            cell.layer.cornerRadius = 10
             return cell
         } else {
-            print("hit the else")
             var cell:UITableViewCell?
             return cell!
         }
@@ -171,19 +191,54 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //on tapping a bet, send to bet details
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        segueIndicator = "cell"
         performSegueWithIdentifier("toDetails", sender: self)
         
     }
     
+    // On tapping the new bet button, set the segue indicator
+    @IBAction func onTapNewBetButton(sender: AnyObject) {
+        
+        segueIndicator = "newbet"
+    }
     
-    /*
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        
+        if segueIndicator == "cell" {
+            let betDetailsViewController = segue.destinationViewController as! BetDetailsViewController
+            betDetailsViewController.view.layoutIfNeeded()
+            
+            // Set status, prof pics, bet text, stakes, etc. in destination
+            if segmentedControl.selectedSegmentIndex == 1 {
+                betDetailsViewController.statusLabel.text = "Active"
+                betDetailsViewController.closeBetButton.hidden = false
+                
+            } else if segmentedControl.selectedSegmentIndex == 0 {
+                betDetailsViewController.statusLabel.text = "Pending"
+                betDetailsViewController.acceptButton.hidden = false
+                betDetailsViewController.rejectButton.hidden = false
+            } else if segmentedControl.selectedSegmentIndex == 2 {
+                betDetailsViewController.statusLabel.text = "Completed"
+            }
+            
+            betDetailsViewController.myProfPic.image = UIImage(named: "headshot")
+            betDetailsViewController.friendProfPic.image = UIImage(named: "profpic")
+        } else if segueIndicator == "newbet" {
+            let newBetViewController = segue.destinationViewController as! NewBetViewController
+            
+        }
+        
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+ 
 
 }

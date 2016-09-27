@@ -62,13 +62,15 @@ class NewBetViewController: UIViewController {
         loserwinnerControl.center.x = screenCenterX
         
         //Define the stakes view
-        stakesTextView.center.x = screenCenterX
         stakesTextView.frame = CGRect(origin: stakesTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: stakesTextView.frame.height))
+        stakesTextView.center.x = screenCenterX
         stakesTextView.layer.cornerRadius = 10
         stakesTextView.layer.borderColor = UIColor.grayColor().CGColor
         stakesTextView.layer.borderWidth = 0.5
         stakesTextView.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!
         
+        submitButton.center = CGPoint(x: screenCenterX,y: screenSize.height-50)
+    
         
       /////////////////////////////////////////////
 
@@ -113,14 +115,11 @@ class NewBetViewController: UIViewController {
         //print(betDictionary["Friend"])
         
         
-        dismissViewControllerAnimated(true) {
-        }
+        self.navigationController?.popViewControllerAnimated(true)
+        
     }
 
-    @IBAction func onTapCancel(sender: AnyObject) {
-        dismissViewControllerAnimated(true) {
-        }
-    }
+
     
     //On editing the friend field, display autofill options
     
