@@ -41,14 +41,17 @@ class BetDetailsViewController: UIViewController {
         let screenSize = UIScreen.mainScreen().bounds.size
         let screenCenterX = CGFloat(screenSize.width/2)
         
-        let profPicSize = CGFloat(80)
-        let profPicOffset = CGFloat(35)
-        myProfPic.frame = CGRect(x: profPicOffset, y: 85, width: profPicSize, height: profPicSize)
-        myProfPic.layer.cornerRadius = 40
+        let profPicSize = CGFloat(screenSize.width/4)
+        let profPicOffset = CGFloat(25)
+        let topMargin = CGFloat(85)
+        
+        
+        myProfPic.frame = CGRect(x: profPicOffset, y: topMargin, width: profPicSize, height: profPicSize)
+        myProfPic.layer.cornerRadius = profPicSize/2
         myProfPic.layer.masksToBounds = true
         
-        friendProfPic.frame = CGRect(x: screenSize.width-profPicOffset-profPicSize, y: 85, width: profPicSize, height: profPicSize)
-        friendProfPic.layer.cornerRadius = 40
+        friendProfPic.frame = CGRect(x: screenSize.width-profPicOffset-profPicSize, y: topMargin, width: profPicSize, height: profPicSize)
+        friendProfPic.layer.cornerRadius = profPicSize/2
         friendProfPic.layer.masksToBounds = true
         
         staticStatusLabel.center.x = screenCenterX

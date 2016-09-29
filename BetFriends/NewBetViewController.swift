@@ -26,13 +26,13 @@ class NewBetViewController: UIViewController {
     
     
     let autofillArray = ["sara","vic","zach","mike","cristy","susan","sue"]
-    
+    let screenSize = UIScreen.mainScreen().bounds.size
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
       ////set position of everything in view//////
-        let screenSize = UIScreen.mainScreen().bounds.size
+
         let screenCenterX = screenSize.width/2
         
         //Define friend text entry
@@ -84,15 +84,7 @@ class NewBetViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func onTapSubmit(sender: AnyObject) {
         
         //Send the bet to Firebase
@@ -116,10 +108,24 @@ class NewBetViewController: UIViewController {
         
         
         self.navigationController?.popViewControllerAnimated(true)
+        //performSegueWithIdentifier("ConfirmationSegue", sender: nil)
         
     }
 
-
+    
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        /*let confirmationViewController = segue.destinationViewController as! NewBetConfirmationViewController
+        let margin = CGFloat(20)
+        let confirmationScreenSize = CGSize(width: screenSize.width-2*margin, height: screenSize.height-2*margin)
+        confirmationViewController.view.frame = CGRect(origin: CGPoint(x: margin,y: margin), size: confirmationScreenSize)*/
+        
+        
+     // Pass the selected object to the new view controller.
+     }
+    
     
     //On editing the friend field, display autofill options
     

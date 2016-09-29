@@ -10,6 +10,17 @@ import UIKit
 
 class CompletedBetTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var myProfPic: UIImageView!
+    @IBOutlet weak var friendProfPic: UIImageView!
+    @IBOutlet weak var winLossLabel: UILabel!
+    @IBOutlet weak var betTextLabel: UILabel!
+    @IBOutlet weak var stakesLabel: UILabel!
+    @IBOutlet weak var stakesTextLabel: UILabel!
+    @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var photoImage: UIImageView!
+    @IBOutlet weak var addPhotoButton: UIButton!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -10,6 +10,15 @@ import UIKit
 
 class ActiveBetTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var friendProfPic: UIImageView!
+    @IBOutlet weak var betTextLabel: UILabel!
+    @IBOutlet weak var myProfPic: UIImageView!
+    
+    @IBOutlet weak var timeRemainingLabel: UILabel!
+    @IBOutlet weak var stakesLabel: UILabel!
+    @IBOutlet weak var stakesTextLabel: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

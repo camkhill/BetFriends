@@ -24,6 +24,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var segueIndicator: String!
     var profPicSize: CGFloat!
     var tableViewSize: CGSize!
+    var thisRowHeight: CGFloat!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +51,10 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         segmentedControl.center = CGPoint(x: view.center.x, y: 90)
         
         //Set Up New Bet button
-        newBetButton.frame.origin = CGPoint(x: screenWidth-75, y: screenHeight-70)
-        newBetButton.frame.size = CGSize(width: 50, height: 50)
+        newBetButton.frame.origin = CGPoint(x: screenWidth-(screenWidth/4), y: screenHeight-(screenWidth/4))
+        let newBetButtonSize = CGFloat(screenWidth/6)
+        
+        newBetButton.frame.size = CGSize(width: newBetButtonSize, height: newBetButtonSize)
         
         
         
@@ -101,7 +105,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return 5
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -111,48 +114,163 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //var activeCell:ActiveBetTableViewCell?
         //var completedCell:CompletedBetTableViewCell?
         //var cell:UITableViewCell?
-
+        
+        //temp crash fix
+        let blankcell:UITableViewCell! = nil
         //let cell = pendingTableView.dequeueReusableCellWithIdentifier("pendingCell") as! PendingBetsTableViewCell
         
         //cell.pendingLabel.text = "pending..."
         
         //for each of the 3 table views, define the cells
+        
+        // Set up cells for Pending table
         if tableView == self.pendingTableView {
             let cell = pendingTableView.dequeueReusableCellWithIdentifier("pendingCell") as! PendingBetsTableViewCell
             let margin = CGFloat(10)
-            cell.pendingLabel.text = "Display bet text here Display bet text here Display bet text here Display bet text here Display bet text here Display bet text herea"
+            cell.pendingLabel.text = "(You/Your Friend) bets that Display bet text here Display bet text here Display bet text here Display bet text here Display bet text here Display bet text herea"
             cell.layer.cornerRadius = 10
             
             //// Position elements within pending cell
+            profPicSize = CGFloat(tableViewSize.width/5)
             cell.profPicImageView.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
             cell.profPicImageView.layer.cornerRadius = profPicSize/2
             cell.profPicImageView.layer.masksToBounds = true
             cell.pendingLabel.frame = CGRect(x: profPicSize+2*margin, y: margin, width: tableViewSize.width-profPicSize-3*margin, height: profPicSize)
             cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.stakesLabel.frame.origin.y = profPicSize+margin
-            cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+margin+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: 15)
+            cell.stakesLabel.frame.origin.y = profPicSize
+            //cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+margin+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: 15)
+            cell.stakesInputLabel.text = "Loser has to blah"
+            cell.stakesInputLabel.numberOfLines = 0
+            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.max)
+            let fitSize = cell.stakesInputLabel.sizeThatFits(fixWidthSize)
+            cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: fitSize.height)
             
-            let cellHeight = CGFloat(margin+profPicSize+cell.stakesLabel.frame.height+cell.stakesInputLabel.frame.height+margin)
-            cell.frame.size = CGSize(width: tableViewSize.width, height: cellHeight)
-            
+            thisRowHeight = cell.stakesInputLabel.frame.origin.y+cell.stakesInputLabel.frame.height+margin
+            self.pendingTableView.rowHeight = thisRowHeight
             
             return cell
         } else if tableView == self.activeTableView {
             let cell = activeTableView.dequeueReusableCellWithIdentifier("activeCell") as! ActiveBetTableViewCell
             cell.layer.cornerRadius = 10
+            let margin = CGFloat(10)
+            profPicSize = CGFloat(tableViewSize.width/4)
+            
+            // TODO Update the time remaining based on the endDate field, or if this is nil say "Open Bet"
+            cell.timeRemainingLabel.text = "1 Day Left"
+            cell.timeRemainingLabel.frame.size = CGSize(width: tableViewSize.width-2*profPicSize-3*margin, height: 25)
+            cell.timeRemainingLabel.center.x = CGFloat(tableViewSize.width/2)
+            cell.timeRemainingLabel.center.y = CGFloat(margin+profPicSize/2)
+            
+            
+            // TODO update my profile pic to have the correct image
+            cell.myProfPic.image = UIImage(named: "headshot")
+            cell.myProfPic.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
+            cell.myProfPic.layer.cornerRadius = profPicSize/2
+            cell.myProfPic.layer.masksToBounds = true
+            
+            // TODO update friend prof pic with image
+            cell.friendProfPic.image = UIImage(named: "profpic")
+            cell.friendProfPic.frame = CGRect(x: tableViewSize.width-margin-profPicSize, y: margin, width: profPicSize, height: profPicSize)
+            cell.friendProfPic.layer.cornerRadius = profPicSize/2
+            cell.friendProfPic.layer.masksToBounds = true
+            
+            // TODO populate bet with correct text
+            cell.betTextLabel.text = "You bet that here is the bet text, what a crazy bet this is. No one would have ever guessed what this bet would be!"
+            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.max)
+            let fitSizeBet = cell.betTextLabel.sizeThatFits(fixWidthSize)
+            cell.betTextLabel.frame = CGRect(x: margin, y: profPicSize+2*margin, width: fitSizeBet.width, height: fitSizeBet.height)
+            
+            cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
+            cell.stakesLabel.frame.origin.y = cell.betTextLabel.frame.origin.y+cell.betTextLabel.frame.height-5
+            
+            // TODO populate text with "Loser has to..." or "Winner has to..."
+            cell.stakesTextLabel.text = "Loser has to do this thing which is truly outrageous, you do not want to lose this bet because the stakes are so incredibly high. Your friend will enjoy taking a photo of this and posting it on BetFriends."
+            let fitSizeStakes = cell.stakesTextLabel.sizeThatFits(fixWidthSize)
+            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.origin.y+cell.stakesLabel.frame.height+margin, width: fitSizeStakes.width, height: fitSizeStakes.height)
+            
+            thisRowHeight = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
+            self.activeTableView.rowHeight = thisRowHeight
+            
             return cell
         } else if tableView == self.completedTableView {
             let cell = completedTableView.dequeueReusableCellWithIdentifier("completedCell", forIndexPath: indexPath) as! CompletedBetTableViewCell
             cell.layer.cornerRadius = 10
+            
+            profPicSize = CGFloat(tableViewSize.width/4)
+            let margin = CGFloat(10)
+            
+            //TODO Update win/loss field based on who won the bet
+            cell.winLossLabel.text = "You Won!"
+            cell.winLossLabel.frame.size = CGSize(width: tableViewSize.width-2*profPicSize-3*margin, height: 25)
+            cell.winLossLabel.center.x = CGFloat(tableViewSize.width/2)
+            cell.winLossLabel.center.y = CGFloat(margin+profPicSize/2)
+            
+            // TODO update my profilepic to have correct image
+            cell.myProfPic.image = UIImage(named: "headshot")
+            cell.myProfPic.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
+            cell.myProfPic.layer.cornerRadius = profPicSize/2
+            cell.myProfPic.layer.masksToBounds = true
+            
+            // TODO update friend prof pic with image
+            cell.friendProfPic.image = UIImage(named: "profpic")
+            cell.friendProfPic.frame = CGRect(x: tableViewSize.width-margin-profPicSize, y: margin, width: profPicSize, height: profPicSize)
+            cell.friendProfPic.layer.cornerRadius = profPicSize/2
+            cell.friendProfPic.layer.masksToBounds = true
+            
+            // TODO populate bet with correct text
+            cell.betTextLabel.text = "You bet that here is the bet text, what a crazy bet this is. No one would have ever guessed what this bet would be!"
+            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.max)
+            let fitSizeBet = cell.betTextLabel.sizeThatFits(fixWidthSize)
+            cell.betTextLabel.frame = CGRect(x: margin, y: profPicSize+2*margin, width: fitSizeBet.width, height: fitSizeBet.height)
+            
+            cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
+            cell.stakesLabel.frame.origin.y = cell.betTextLabel.frame.origin.y+cell.betTextLabel.frame.height-5
+            
+            // TODO populate text with "Loser has to..." or "Winner has to..."
+            cell.stakesTextLabel.text = "Loser has to do this thing which is truly outrageous, you do not want to lose this bet because the stakes are so incredibly high. Your friend will enjoy taking a photo of this and posting it on BetFriends."
+            let fitSizeStakes = cell.stakesTextLabel.sizeThatFits(fixWidthSize)
+            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.origin.y+cell.stakesLabel.frame.height+margin, width: fitSizeStakes.width, height: fitSizeStakes.height)
+            
+            cell.resultLabel.center.x = CGFloat(tableViewSize.width/2)
+            cell.resultLabel.frame.origin.y = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
+            
+            // TODO if image exists, display the image. If not, display "Add a pic!" button
+            if indexPath.row == 0 {
+                print("Adding the image")
+                cell.addPhotoButton.hidden = true
+                let photoSize = CGFloat(tableViewSize.width-2*margin)
+                let photoPosition = CGPoint(x: margin, y: cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin)
+                cell.photoImage.frame = CGRect(x: photoPosition.x, y: photoPosition.y, width: photoSize, height: photoSize)
+                cell.photoImage.layer.cornerRadius = 10
+                cell.photoImage.layer.masksToBounds = true
+                cell.photoImage.image = UIImage(named: "waterslide")
+                
+                //Set size of cell
+                thisRowHeight = cell.photoImage.frame.origin.y+cell.photoImage.frame.height+margin
+                self.completedTableView.rowHeight = thisRowHeight
+                
+                
+            } else {
+                print("No Image")
+                cell.photoImage.hidden = true
+                cell.addPhotoButton.center.x = CGFloat(tableViewSize.width/2)
+                cell.addPhotoButton.frame.origin.y = cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin
+                
+                thisRowHeight = cell.addPhotoButton.frame.origin.y+cell.addPhotoButton.frame.height+margin
+                self.completedTableView.rowHeight = thisRowHeight
+            }
+            
+            
             return cell
         } else {
-            var cell:UITableViewCell?
-            return cell!
+            
+            print("hit the else")
+            return blankcell
         }
         
         
         
-        
+        //return cell
         
     }
     
@@ -193,6 +311,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         segueIndicator = "cell"
+        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
         performSegueWithIdentifier("toDetails", sender: self)
         
     }
@@ -214,7 +333,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if segueIndicator == "cell" {
             let betDetailsViewController = segue.destinationViewController as! BetDetailsViewController
             betDetailsViewController.view.layoutIfNeeded()
-            
+            print(sender)
             // Set status, prof pics, bet text, stakes, etc. in destination
             if segmentedControl.selectedSegmentIndex == 1 {
                 betDetailsViewController.statusLabel.text = "Active"
@@ -232,6 +351,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             betDetailsViewController.friendProfPic.image = UIImage(named: "profpic")
         } else if segueIndicator == "newbet" {
             let newBetViewController = segue.destinationViewController as! NewBetViewController
+            //just need to pass user info?
             
         }
         
