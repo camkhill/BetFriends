@@ -24,6 +24,17 @@ class BetDetailsViewController: UIViewController {
     @IBOutlet weak var addPhotoButton: UIButton!
     @IBOutlet weak var closeBetButton: UIButton!
     @IBOutlet weak var staticStatusLabel: UILabel!
+    @IBOutlet weak var betDetailsView: UIView!
+    
+    @IBOutlet weak var detailsScrollView: UIScrollView!
+    @IBOutlet weak var createdLabel: UILabel!
+    
+    @IBOutlet weak var createdDateLabel: UILabel!
+    
+    @IBOutlet weak var endDateLabel: UILabel!
+    @IBOutlet weak var endLabel: UILabel!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +46,7 @@ class BetDetailsViewController: UIViewController {
         addPhotoButton.hidden = true
         cancelBetButton.hidden = true
         closeBetButton.hidden = true
-        
+        resultImage.hidden = true
         
         ///Position elements
         let screenSize = UIScreen.mainScreen().bounds.size
@@ -44,7 +55,7 @@ class BetDetailsViewController: UIViewController {
         let profPicSize = CGFloat(screenSize.width/4)
         let profPicOffset = CGFloat(25)
         let topMargin = CGFloat(85)
-        
+        let viewPadding = 10
         
         myProfPic.frame = CGRect(x: profPicOffset, y: topMargin, width: profPicSize, height: profPicSize)
         myProfPic.layer.cornerRadius = profPicSize/2
@@ -55,18 +66,63 @@ class BetDetailsViewController: UIViewController {
         friendProfPic.layer.masksToBounds = true
         
         staticStatusLabel.center.x = screenCenterX
-        
         statusLabel.center.x = screenCenterX
         
-        stakesLabel.center.x = screenCenterX
+        
+        ////// Details view //////
+        let detailsSideMargin = CGFloat(15)
+        let detailsBottomMargin = CGFloat(100)
+        let scrollViewWidth = CGFloat(screenSize.width-2*detailsSideMargin)
+        detailsScrollView.frame.size = CGSize(width: scrollViewWidth, height: screenSize.height-topMargin-profPicSize-detailsBottomMargin)
+        detailsScrollView.layer.cornerRadius = 10
+        detailsScrollView.frame.origin = CGPoint(x: detailsSideMargin, y: topMargin+profPicSize+detailsSideMargin)
+        detailsScrollView.contentSize = CGSize(width: scrollViewWidth, height: 1000)
+        betDetailsView.layer.cornerRadius = 10
+        let detailsViewWidth = scrollViewWidth
+        betDetailsView.frame.size.width = detailsViewWidth
+        
+        // TODO change this height dynamically
+        betDetailsView.frame.size.height = 750
+        betDetailsView.frame.origin = CGPoint(x: 0, y: 0)
+        
+        
+        betTextLabel.frame.origin = CGPoint(x: viewPadding, y: viewPadding)
+    
+        stakesLabel.center.x = detailsViewWidth/2
+        
+        stakesTextLabel.frame.origin.x = CGFloat(viewPadding)
+        
+        createdLabel.center.x = scrollViewWidth/4
+        
+        endLabel.center.x = scrollViewWidth*3/4
+        
+        createdDateLabel.center.x = scrollViewWidth/4
+        
+        endDateLabel.center.x = scrollViewWidth*3/4
+        
+        //////////////////////////
+        
         
         cancelBetButton.center.x = screenCenterX
         
-        addPhotoButton.center.x = screenCenterX
+        rejectButton.frame.size = CGSize(width: screenSize.width/3, height: screenSize.width/10)
+        rejectButton.center.y = screenSize.height-detailsBottomMargin/2
+        rejectButton.center.x = screenSize.width*(1/3)-1
+        rejectButton.layer.cornerRadius = 10
         
-        closeBetButton.center.x = screenCenterX
+        acceptButton.frame.size = CGSize(width: screenSize.width/3, height: screenSize.width/10)
+        acceptButton.center.y = screenSize.height-detailsBottomMargin/2
+        acceptButton.center.x = screenSize.width*(2/3)+1
+        acceptButton.layer.cornerRadius = 10
+        
+        let bottomButtonsCenter = CGPoint(x: screenCenterX, y: screenSize.height-detailsBottomMargin/3)
+        addPhotoButton.center = bottomButtonsCenter
+        closeBetButton.center = bottomButtonsCenter
+        
         
         resultImage.center.x = screenCenterX
+        
+        
         
         
     }

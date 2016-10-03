@@ -25,7 +25,12 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var profPicSize: CGFloat!
     var tableViewSize: CGSize!
     var thisRowHeight: CGFloat!
+    var selectedCell: Int!
     
+    let testBetText: [String] = ["Short bet","Medium sized bet Medium sized bet Medium sized bet Medium sized bet","Here is a very long bet with lots of text Here is a very long bet with lots of text Here is a very long bet with lots of text Here is a very long bet with lots of text","short bet","short bet"]
+    let testStakesText: [String] = ["Short Stakes","Medium sized Stakes Medium sized bet Medium sized bet Medium sized bet","Here is a very long stakes with lots of text Here is a very long bet with lots of text Here is a very long bet with lots of text Here is a very long bet with lots of text Here is a very long bet with lots of text Here is a very long bet with lots of text","short bet","The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time The biggest stakse of all time"]
+    
+    //let betArray = [BetStruct]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +132,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if tableView == self.pendingTableView {
             let cell = pendingTableView.dequeueReusableCellWithIdentifier("pendingCell") as! PendingBetsTableViewCell
             let margin = CGFloat(10)
-            cell.pendingLabel.text = "(You/Your Friend) bets that Display bet text here Display bet text here Display bet text here Display bet text here Display bet text here Display bet text herea"
+            cell.pendingLabel.text = testBetText[indexPath.row]
             cell.layer.cornerRadius = 10
             
             //// Position elements within pending cell
@@ -138,9 +143,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.pendingLabel.frame = CGRect(x: profPicSize+2*margin, y: margin, width: tableViewSize.width-profPicSize-3*margin, height: profPicSize)
             cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
             cell.stakesLabel.frame.origin.y = profPicSize
-            //cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+margin+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: 15)
-            cell.stakesInputLabel.text = "Loser has to blah"
-            cell.stakesInputLabel.numberOfLines = 0
+
+            cell.stakesInputLabel.text = testStakesText[indexPath.row]
             let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.max)
             let fitSize = cell.stakesInputLabel.sizeThatFits(fixWidthSize)
             cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: fitSize.height)
@@ -236,8 +240,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             // TODO if image exists, display the image. If not, display "Add a pic!" button
             if indexPath.row == 0 {
-                print("Adding the image")
                 cell.addPhotoButton.hidden = true
+                cell.photoImage.hidden = false
                 let photoSize = CGFloat(tableViewSize.width-2*margin)
                 let photoPosition = CGPoint(x: margin, y: cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin)
                 cell.photoImage.frame = CGRect(x: photoPosition.x, y: photoPosition.y, width: photoSize, height: photoSize)
@@ -251,8 +255,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 
             } else {
-                print("No Image")
                 cell.photoImage.hidden = true
+                cell.addPhotoButton.hidden = false
                 cell.addPhotoButton.center.x = CGFloat(tableViewSize.width/2)
                 cell.addPhotoButton.frame.origin.y = cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin
                 
@@ -310,6 +314,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //on tapping a bet, send to bet details
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
+        selectedCell = indexPath.row
         segueIndicator = "cell"
         tableView.cellForRowAtIndexPath(indexPath)?.selected = false
         performSegueWithIdentifier("toDetails", sender: self)
@@ -333,22 +338,70 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if segueIndicator == "cell" {
             let betDetailsViewController = segue.destinationViewController as! BetDetailsViewController
             betDetailsViewController.view.layoutIfNeeded()
-            print(sender)
             // Set status, prof pics, bet text, stakes, etc. in destination
             if segmentedControl.selectedSegmentIndex == 1 {
                 betDetailsViewController.statusLabel.text = "Active"
                 betDetailsViewController.closeBetButton.hidden = false
+                betDetailsViewController.statusLabel.textColor = UIColor.blueColor()
+                //set bet text, size it, and set/size stakes text
+                betDetailsViewController.betTextLabel.text = testBetText[selectedCell]
+                let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.max)
+                let fitSizeBet = betDetailsViewController.betTextLabel.sizeThatFits(fixWidthSize)
+                betDetailsViewController.betTextLabel.frame.size = fitSizeBet
+                
+                betDetailsViewController.stakesLabel.frame.origin.y = betDetailsViewController.betTextLabel.frame.height+10
+                
+                betDetailsViewController.stakesTextLabel.frame.origin.y = betDetailsViewController.stakesLabel.frame.origin.y + betDetailsViewController.stakesLabel.frame.height + 10
+                betDetailsViewController.stakesTextLabel.text = testStakesText[selectedCell]
+                let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
+                betDetailsViewController.stakesTextLabel.frame.size = fitSizeStakes
+                
+                let stakesBottom = CGFloat(betDetailsViewController.stakesTextLabel.frame.maxY)
+                betDetailsViewController.createdLabel.frame.origin.y = stakesBottom + 20
+                betDetailsViewController.endLabel.frame.origin.y = stakesBottom + 20
+                
+                let createdLabelBottom = CGFloat(betDetailsViewController.createdLabel.frame.maxY)
+                betDetailsViewController.createdDateLabel.frame.origin.y = createdLabelBottom
+                betDetailsViewController.endDateLabel.frame.origin.y = createdLabelBottom
+                
+                let betViewHeight = betDetailsViewController.endDateLabel.frame.maxY+20
+                betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
+                
+                
+                
+                if betViewHeight < betDetailsViewController.detailsScrollView.frame.size.height {
+                    betDetailsViewController.detailsScrollView.frame.size.height = betViewHeight
+                    //shrink the content, or also disable scrolling?
+                    betDetailsViewController.detailsScrollView.contentSize.height = betViewHeight
+                }
+                
+                
+                
                 
             } else if segmentedControl.selectedSegmentIndex == 0 {
                 betDetailsViewController.statusLabel.text = "Pending"
+                betDetailsViewController.statusLabel.textColor = UIColor.orangeColor()
                 betDetailsViewController.acceptButton.hidden = false
                 betDetailsViewController.rejectButton.hidden = false
+                
+                layoutBetDetailsView(betDetailsViewController)
+                
             } else if segmentedControl.selectedSegmentIndex == 2 {
                 betDetailsViewController.statusLabel.text = "Completed"
+                betDetailsViewController.statusLabel.textColor = UIColor.greenColor()
+                
+                // TODO if there is an image, display it, otherwise display "add Photo" (or just always display add/change photo?)
+                betDetailsViewController.addPhotoButton.hidden = false
+                
+                layoutBetDetailsView(betDetailsViewController)
+                
             }
             
             betDetailsViewController.myProfPic.image = UIImage(named: "headshot")
             betDetailsViewController.friendProfPic.image = UIImage(named: "profpic")
+            
+            
+            
         } else if segueIndicator == "newbet" {
             let newBetViewController = segue.destinationViewController as! NewBetViewController
             //just need to pass user info?
@@ -361,4 +414,37 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
  
 
+    func layoutBetDetailsView(betDetailsViewController: BetDetailsViewController) -> Void {
+        
+        betDetailsViewController.betTextLabel.text = testBetText[selectedCell]
+        let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.max)
+        let fitSizeBet = betDetailsViewController.betTextLabel.sizeThatFits(fixWidthSize)
+        betDetailsViewController.betTextLabel.frame.size = fitSizeBet
+        
+        betDetailsViewController.stakesLabel.frame.origin.y = betDetailsViewController.betTextLabel.frame.height+10
+        
+        betDetailsViewController.stakesTextLabel.frame.origin.y = betDetailsViewController.stakesLabel.frame.origin.y + betDetailsViewController.stakesLabel.frame.height + 10
+        betDetailsViewController.stakesTextLabel.text = testStakesText[selectedCell]
+        let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
+        betDetailsViewController.stakesTextLabel.frame.size = fitSizeStakes
+        
+        let stakesBottom = CGFloat(betDetailsViewController.stakesTextLabel.frame.maxY)
+        betDetailsViewController.createdLabel.frame.origin.y = stakesBottom + 20
+        betDetailsViewController.endLabel.frame.origin.y = stakesBottom + 20
+        
+        let createdLabelBottom = CGFloat(betDetailsViewController.createdLabel.frame.maxY)
+        betDetailsViewController.createdDateLabel.frame.origin.y = createdLabelBottom
+        betDetailsViewController.endDateLabel.frame.origin.y = createdLabelBottom
+        
+        let betViewHeight = betDetailsViewController.endDateLabel.frame.maxY+20
+        betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
+        
+        // IF the full bet details view is smaller than the initial scrollview, shrink it
+        if betViewHeight < betDetailsViewController.detailsScrollView.frame.size.height {
+            betDetailsViewController.detailsScrollView.frame.size.height = betViewHeight
+        }
+        betDetailsViewController.detailsScrollView.contentSize.height = betViewHeight
+        
+    }
+    
 }

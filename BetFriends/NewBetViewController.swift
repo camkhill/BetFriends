@@ -71,6 +71,7 @@ class NewBetViewController: UIViewController {
         
         submitButton.center = CGPoint(x: screenCenterX,y: screenSize.height-50)
     
+        endDateLabel.hidden = true
         
       /////////////////////////////////////////////
 

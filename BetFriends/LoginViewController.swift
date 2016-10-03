@@ -21,6 +21,9 @@ class LoginViewController: UIViewController {
     
     var screenCenterX: CGFloat!
     
+    var betArray = [BetStruct]()
+    let emptyImage: UIImage! = nil
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +48,9 @@ class LoginViewController: UIViewController {
         
         /////
         
+        // Build some bets for testing purposes
+        buildMockBetArray()
+
         
         
         
@@ -72,16 +78,7 @@ class LoginViewController: UIViewController {
                 performSegueWithIdentifier("LoginSegue", sender: self)
                 
             } else {
-                
-                //present alert saying UN/PW incorrect
-                /*let badLoginAlert = UIAlertController(title: "Invalid Login", message: "Username/password not recognized", preferredStyle: .Alert)
-                let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (UIAlertAction) in
-                    
-                })
-                
-                badLoginAlert.addAction(okAction)
-                self.presentViewController(badLoginAlert, animated: true, completion: {
-                })*/
+
                 displayBadLoginAlert()
                 
             }
@@ -141,5 +138,21 @@ class LoginViewController: UIViewController {
     }
     
     /////////////////
+    
+    func buildMockBetArray() -> Void {
+        let bet0 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet1 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet2 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet3 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet4 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet5 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet6 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet7 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet8 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet9 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        let bet10 = BetStruct(betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: NSDate(timeIntervalSinceReferenceDate: 10000), creationDate: NSDate(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: NSDate(timeIntervalSinceReferenceDate: 0))
+        
+        betArray = [bet0,bet1,bet2,bet3,bet4,bet5,bet6,bet7,bet8,bet9]
+    }
 
 }
