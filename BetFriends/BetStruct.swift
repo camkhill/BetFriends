@@ -10,20 +10,22 @@ import UIKit
 
 struct BetStruct {
     
-    let betText: String!
-    let betSender: String!
-    let betReceiver: String!
-    let winnerLoserToggle: Bool!
+    var betID: Int!
+    var betText: String!
+    var betSender: String!
+    var betReceiver: String!
+    var winnerLoserToggle: Bool!
     
     
-    let stakesText: String!
-    let endDate: NSDate!
-    let creationDate: NSDate!
+    var stakesText: String!
+    let endDate: Date!
+    let creationDate: Date!
     
-    let betState: Int!
+    // 0 = pending, 1 = active, 2 = sender won, 3 = receiver won
+    var betState: Int!
     let image: UIImage!
     
-    let lastModified: NSDate!
+    let lastModified: Date!
     
     
 }

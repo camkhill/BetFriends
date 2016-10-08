@@ -26,7 +26,7 @@ class NewBetViewController: UIViewController {
     
     
     let autofillArray = ["sara","vic","zach","mike","cristy","susan","sue"]
-    let screenSize = UIScreen.mainScreen().bounds.size
+    let screenSize = UIScreen.main.bounds.size
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,7 @@ class NewBetViewController: UIViewController {
         
         //Define friend text entry
         friendTextView.layer.cornerRadius = 10
-        friendTextView.layer.borderColor = UIColor.grayColor().CGColor
+        friendTextView.layer.borderColor = UIColor.gray.cgColor
         friendTextView.layer.borderWidth = 0.5
         friendTextView.frame = CGRect(origin: friendTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: friendTextView.frame.height))
         friendTextView.autocorrectionType = UITextAutocorrectionType(rawValue: 1)!
@@ -53,7 +53,7 @@ class NewBetViewController: UIViewController {
         betTextView.frame = CGRect(origin: betTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: betTextView.frame.height))
         betTextView.center.x = screenCenterX
         betTextView.layer.cornerRadius = 10
-        betTextView.layer.borderColor = UIColor.grayColor().CGColor
+        betTextView.layer.borderColor = UIColor.gray.cgColor
         betTextView.layer.borderWidth = 0.5
         betTextView.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!
         
@@ -65,13 +65,13 @@ class NewBetViewController: UIViewController {
         stakesTextView.frame = CGRect(origin: stakesTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: stakesTextView.frame.height))
         stakesTextView.center.x = screenCenterX
         stakesTextView.layer.cornerRadius = 10
-        stakesTextView.layer.borderColor = UIColor.grayColor().CGColor
+        stakesTextView.layer.borderColor = UIColor.gray.cgColor
         stakesTextView.layer.borderWidth = 0.5
         stakesTextView.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!
         
         submitButton.center = CGPoint(x: screenCenterX,y: screenSize.height-50)
     
-        endDateLabel.hidden = true
+        endDateLabel.isHidden = true
         
       /////////////////////////////////////////////
 
@@ -86,7 +86,7 @@ class NewBetViewController: UIViewController {
     
 
 
-    @IBAction func onTapSubmit(sender: AnyObject) {
+    @IBAction func onTapSubmit(_ sender: AnyObject) {
         
         //Send the bet to Firebase
         var betDictionary = [String:AnyObject]()
@@ -103,12 +103,12 @@ class NewBetViewController: UIViewController {
         let stakesText = stakesTextView.text
         let endDate = "Today"
         
-        betDictionary = ["Friend":friendText!, "Bet":betText, "LoserWinner":loserwinnerString, "Stakes":stakesText, "EndDate":endDate]
+        betDictionary = ["Friend":friendText! as AnyObject, "Bet":betText as AnyObject, "LoserWinner":loserwinnerString as AnyObject, "Stakes":stakesText as AnyObject, "EndDate":endDate as AnyObject]
         print(betDictionary)
         //print(betDictionary["Friend"])
         
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
         //performSegueWithIdentifier("ConfirmationSegue", sender: nil)
         
     }
@@ -117,7 +117,7 @@ class NewBetViewController: UIViewController {
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         /*let confirmationViewController = segue.destinationViewController as! NewBetConfirmationViewController
         let margin = CGFloat(20)
         let confirmationScreenSize = CGSize(width: screenSize.width-2*margin, height: screenSize.height-2*margin)

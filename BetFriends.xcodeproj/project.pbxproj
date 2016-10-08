@@ -14,6 +14,7 @@
 		B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */; };
 		B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */; };
 		B54557CB1D98CC16007D8809 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */; };
+		B5470DD71DA448EA007BC723 /* UserStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5470DD61DA448EA007BC723 /* UserStruct.swift */; };
 		B55190051D9AA24500760EAC /* NewBetConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55190041D9AA24500760EAC /* NewBetConfirmationViewController.swift */; };
 		B557E62E1D9DB7A3003354F3 /* BetStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557E62D1D9DB7A3003354F3 /* BetStruct.swift */; };
 		B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57331D90A84100BF8193 /* AppDelegate.swift */; };
@@ -51,6 +52,7 @@
 		B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetDetailsViewController.swift; sourceTree = "<group>"; };
 		B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
+		B5470DD61DA448EA007BC723 /* UserStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStruct.swift; sourceTree = "<group>"; };
 		B55190041D9AA24500760EAC /* NewBetConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewBetConfirmationViewController.swift; sourceTree = "<group>"; };
 		B557E62D1D9DB7A3003354F3 /* BetStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetStruct.swift; sourceTree = "<group>"; };
 		B59B57301D90A84100BF8193 /* BetFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +141,7 @@
 				B52B8A661D95B35E0015CDA7 /* Table View Cells */,
 				B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */,
 				B557E62D1D9DB7A3003354F3 /* BetStruct.swift */,
+				B5470DD61DA448EA007BC723 /* UserStruct.swift */,
 				B59B57331D90A84100BF8193 /* AppDelegate.swift */,
 				B59B57351D90A84100BF8193 /* ViewController.swift */,
 				B59B57371D90A84100BF8193 /* Main.storyboard */,
@@ -240,15 +243,18 @@
 					B59B572F1D90A84100BF8193 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = D7Q7SPS6QM;
+						LastSwiftMigration = 0800;
 					};
 					B59B57431D90A84100BF8193 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = D7Q7SPS6QM;
+						LastSwiftMigration = 0800;
 						TestTargetID = B59B572F1D90A84100BF8193;
 					};
 					B59B574E1D90A84100BF8193 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = D7Q7SPS6QM;
+						LastSwiftMigration = 0800;
 						TestTargetID = B59B572F1D90A84100BF8193;
 					};
 				};
@@ -306,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */,
+				B5470DD71DA448EA007BC723 /* UserStruct.swift in Sources */,
 				B54557CB1D98CC16007D8809 /* AutoCompleteTextField.swift in Sources */,
 				B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */,
 				B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */,
@@ -462,6 +469,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriends;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -473,6 +481,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriends;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -484,6 +493,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriendsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BetFriends.app/BetFriends";
 			};
 			name = Debug;
@@ -496,6 +506,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriendsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BetFriends.app/BetFriends";
 			};
 			name = Release;
@@ -507,6 +518,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriendsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = BetFriends;
 			};
 			name = Debug;
@@ -518,6 +530,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriendsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = BetFriends;
 			};
 			name = Release;

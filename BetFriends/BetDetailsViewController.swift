@@ -34,6 +34,15 @@ class BetDetailsViewController: UIViewController {
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var endLabel: UILabel!
     
+    var pendingArray = [BetStruct]()
+    var activeArray = [BetStruct]()
+    var completedArray = [BetStruct]()
+    var thisBetIndex: Int!
+    
+    var thisUsername: String!
+    var userArray = [UserStruct]()
+    var currentUser: UserStruct!
+    
     
     
     override func viewDidLoad() {
@@ -41,15 +50,15 @@ class BetDetailsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         // Initially hide all the buttons
-        acceptButton.hidden = true
-        rejectButton.hidden = true
-        addPhotoButton.hidden = true
-        cancelBetButton.hidden = true
-        closeBetButton.hidden = true
-        resultImage.hidden = true
+        acceptButton.isHidden = true
+        rejectButton.isHidden = true
+        addPhotoButton.isHidden = true
+        cancelBetButton.isHidden = true
+        closeBetButton.isHidden = true
+        resultImage.isHidden = true
         
         ///Position elements
-        let screenSize = UIScreen.mainScreen().bounds.size
+        let screenSize = UIScreen.main.bounds.size
         let screenCenterX = CGFloat(screenSize.width/2)
         
         let profPicSize = CGFloat(screenSize.width/4)
@@ -132,16 +141,40 @@ class BetDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func onTapAccept(_ sender: AnyObject) {
+        
+        //pendingArray[thisBetIndex].betState = 1
+        //pendingArray[thisBetIndex].betText = "BET CHANGED"
+        
+        //change the state of one bet based on index, change that bet in bet array
+        
+        performSegue(withIdentifier: "backToMyBets", sender: self)
+        
+        
     }
-    */
+    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let navigationController = segue.destination as! UINavigationController
+        let myBetsViewController = navigationController.topViewController as! MyBetsViewController
+        
+        //myBetsViewController?.betArray = betArray
+        myBetsViewController.pendingArray = pendingArray
+        myBetsViewController.activeArray = activeArray
+        myBetsViewController.completedArray = completedArray
+        
+        myBetsViewController.thisUsername = thisUsername
+        myBetsViewController.userArray = userArray
+        myBetsViewController.currentUser = currentUser
+        
+        /*
+        myBetsViewController.activeTableView.reloadData()
+        myBetsViewController.pendingTableView.reloadData()
+        myBetsViewController.completedTableView.reloadData()
+        */
+    }
+    
 
 }
