@@ -57,9 +57,10 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Get all bets for the particular user
         
         
-        betArray = getUsersBets(username: currentUser.username)
+        //betArray = getUsersBets(username: currentUser.username)
         //Separate them into pending, active, completed bets
-        buildBetArrays(betArray: betArray)
+        //buildBetArrays(betArray: betArray)
+        getFirebaseBets()
         // Get all users so their info can be used
         userArray = getAllUserData()
         
@@ -122,9 +123,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         completedTableView.frame.origin = CGPoint(x: sideMargins+(2*screenWidth), y: 0)
         
         
-        self.pendingTableView.reloadData()
-        self.activeTableView.reloadData()
-        self.completedTableView.reloadData()
+        //self.pendingTableView.reloadData()
+        //self.activeTableView.reloadData()
+        //self.completedTableView.reloadData()
         
         print("My bets view reloaded")
         
@@ -600,7 +601,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     //TODO delete this eventually
-    func getUsersBets(username : String) -> [BetStruct] {
+    func getUsersBets(username : String, firebaseBets: [BetStruct]) -> [BetStruct] {
         
         
         //Get all bets
@@ -627,70 +628,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         //Get all the bets from firebase
         let allBets : [BetStruct] = [bet0,bet1,bet2,bet3,bet4,bet5,bet6,bet7,bet8,bet9,bet10,bet11,bet12,bet13]
         
-        /*let newBetsRef = self.betsRef.child("1")
-        
-        //newBetsRef.setValue(betDictionary)
-        //let allFIRBets = item as! FIRDataSnapshot
-        var tempIDsList = [String]()
-        
-        // For each bet in the database, look at the name of the bet (a number). For each of these, if it exists set all values to values in a BetStruct and append this BetStruct to a [BetStruct] IF sender or receiver match username
-        var newBetStruct = [BetStruct]()
-        var betsExist: Bool = true
-        var testBetDictionary = [String:String]()
-        var totalBets = Int()
-        
-        // Get total number of bets
-        betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            totalBets = Int(snapshot.childrenCount)
-            print("total bets: \(totalBets)")
-            
-            print(snapshot)
-            let betSnapshot = snapshot.value as? NSDictionary
-            var betSnapshotArray = NSArray()
-            var isDictionary = true
-            
-            if betSnapshot == nil {
-                betSnapshotArray = (snapshot.value as? NSArray)!
-                isDictionary = false
-            }
-                
-            print("bet snapshot: \(betSnapshot)")
-            print("bet array: \(betSnapshotArray)")
-            
-            print("Is it a dictionary? \(isDictionary)")
-            
-            for betCount in 1...2 {
-                let countString = String(betCount)
-                
-                if isDictionary == true {
-                    let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
-                    print(thisBet)
-                    
-                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
-                    
-                    newBetStruct.append(thisBetStruct)
-                } else {
-                    
-                    let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
-                    print(thisBet["betReceiver"])
-                    
-                    let betReceiver = thisBet["betReceiver"] as? String
-                    let betSender = thisBet["betSender"] as? String
-                    let betText = thisBet["betText"] as? String
-                    let stakesText = thisBet["stakesText"] as? String
-                    
-                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
-                    
-                    
-                    newBetStruct.append(thisBetStruct)
-                    
-                }
-                
-                print("bet count: \(betCount)")
-            }
-            print("bet struct: \(newBetStruct)")
-            
-        })*/
         
         
         
@@ -704,8 +641,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-        //return newBetStruct
-        return usersBets
+        return firebaseBets
+        //return usersBets
         
     }
     
@@ -766,8 +703,12 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             print("bet struct: \(newBetStruct)")
             
             //Use this newBetStruct to get users bets
-            let userBets = self.getUsersBets(username: self.currentUser.username)
+            let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
             self.buildBetArrays(betArray: userBets)
+            
+            self.pendingTableView.reloadData()
+            self.completedTableView.reloadData()
+            self.activeTableView.reloadData()
             
         })
         
