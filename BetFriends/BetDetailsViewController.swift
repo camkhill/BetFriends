@@ -34,16 +34,16 @@ class BetDetailsViewController: UIViewController {
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var endLabel: UILabel!
     
-    var pendingArray = [BetStruct]()
-    var activeArray = [BetStruct]()
-    var completedArray = [BetStruct]()
+    //var pendingArray = [BetStruct]()
+    //var activeArray = [BetStruct]()
+    //var completedArray = [BetStruct]()
     var thisBetIndex: Int!
     
     var thisUsername: String!
     var userArray = [UserStruct]()
     var currentUser: UserStruct!
-    
-    
+    var currentBet: BetStruct!
+    var segueType: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,7 +141,7 @@ class BetDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+    // For pendings, do the Accept/Reject buttons
     @IBAction func onTapAccept(_ sender: AnyObject) {
         
         //pendingArray[thisBetIndex].betState = 1
@@ -149,7 +149,24 @@ class BetDetailsViewController: UIViewController {
         
         //change the state of one bet based on index, change that bet in bet array
         
+        segueType = "MyBets"
         performSegue(withIdentifier: "backToMyBets", sender: self)
+        
+        
+    }
+    
+    @IBAction func onTapReject(_ sender: AnyObject) {
+        
+        // Change the state of bet to "Rejected"
+        
+        performSegue(withIdentifier: "backToMyBets", sender: self)
+        
+    }
+    
+    @IBAction func onTapCloseBet(_ sender: AnyObject) {
+        
+        segueType = "CloseBet"
+        performSegue(withIdentifier: "toCloseBet", sender: self)
         
         
     }
@@ -157,23 +174,21 @@ class BetDetailsViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        let navigationController = segue.destination as! UINavigationController
-        let myBetsViewController = navigationController.topViewController as! MyBetsViewController
+        if segueType == "MyBets" {
+            let navigationController = segue.destination as! UINavigationController
+            let myBetsViewController = navigationController.topViewController as! MyBetsViewController
+            // Just continue to pass username
+            myBetsViewController.thisUsername = thisUsername
+            //myBetsViewController.userArray = userArray
+            myBetsViewController.currentUser = currentUser
+        } else if segueType == "CloseBet" {
+            
+            
+            
+        }
+
         
-        //myBetsViewController?.betArray = betArray
-        myBetsViewController.pendingArray = pendingArray
-        myBetsViewController.activeArray = activeArray
-        myBetsViewController.completedArray = completedArray
-        
-        myBetsViewController.thisUsername = thisUsername
-        myBetsViewController.userArray = userArray
-        myBetsViewController.currentUser = currentUser
-        
-        /*
-        myBetsViewController.activeTableView.reloadData()
-        myBetsViewController.pendingTableView.reloadData()
-        myBetsViewController.completedTableView.reloadData()
-        */
+
     }
     
 

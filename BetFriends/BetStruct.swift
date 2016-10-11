@@ -21,7 +21,8 @@ struct BetStruct {
     let endDate: Date!
     let creationDate: Date!
     
-    // 0 = pending, 1 = active, 2 = sender won, 3 = receiver won
+    // 0 = pending, 1 = active, 2 = sender won, 3 = receiver won, 4 = rejected? use enum?
+    
     var betState: Int!
     let image: UIImage!
     

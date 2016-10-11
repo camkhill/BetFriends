@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -38,16 +40,28 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var userArray = [UserStruct]()
     var currentUser: UserStruct!
     
+    var usersRef: FIRDatabaseReference!
+    var betsRef: FIRDatabaseReference!
+
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Get Firebase reference for users and bets
+        usersRef = FIRDatabase.database().reference().child("Users")
+        betsRef = FIRDatabase.database().reference().child("Bets")
+        
         /////////// prepare the bets ////////////
-        buildBetArrays()
+        // Get all bets for the particular user
         
         
+        betArray = getUsersBets(username: currentUser.username)
+        //Separate them into pending, active, completed bets
+        buildBetArrays(betArray: betArray)
+        // Get all users so their info can be used
+        userArray = getAllUserData()
         
         
         
@@ -417,8 +431,12 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         
         if segueIndicator == "cell" {
+            
+            
             let betDetailsViewController = segue.destination as! BetDetailsViewController
             betDetailsViewController.view.layoutIfNeeded()
+            
+            
             // Set status, prof pics, bet text, stakes, etc. in destination
             if segmentedControl.selectedSegmentIndex == 1 {
                 
@@ -426,47 +444,16 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 betDetailsViewController.statusLabel.text = "Active"
                 betDetailsViewController.closeBetButton.isHidden = false
                 betDetailsViewController.statusLabel.textColor = UIColor.blue
+  
                 //set bet text, size it, and set/size stakes text
-                betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
-                let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.greatestFiniteMagnitude)
-                let fitSizeBet = betDetailsViewController.betTextLabel.sizeThatFits(fixWidthSize)
-                betDetailsViewController.betTextLabel.frame.size = fitSizeBet
                 
-                betDetailsViewController.stakesLabel.frame.origin.y = betDetailsViewController.betTextLabel.frame.height+10
+                populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
+                layoutBetDetailsView(betDetailsViewController)
                 
-                betDetailsViewController.stakesTextLabel.frame.origin.y = betDetailsViewController.stakesLabel.frame.origin.y + betDetailsViewController.stakesLabel.frame.height + 10
-                
-                let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)//winnerLoser!)
-                betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
-                
-                let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
-                betDetailsViewController.stakesTextLabel.frame.size = fitSizeStakes
-                
-                let stakesBottom = CGFloat(betDetailsViewController.stakesTextLabel.frame.maxY)
-                betDetailsViewController.createdLabel.frame.origin.y = stakesBottom + 20
-                betDetailsViewController.endLabel.frame.origin.y = stakesBottom + 20
-                
-                let createdLabelBottom = CGFloat(betDetailsViewController.createdLabel.frame.maxY)
-                betDetailsViewController.createdDateLabel.frame.origin.y = createdLabelBottom
-                betDetailsViewController.endDateLabel.frame.origin.y = createdLabelBottom
-                
-                let betViewHeight = betDetailsViewController.endDateLabel.frame.maxY+20
-                betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
-                
-                betDetailsViewController.myProfPic.image = currentUser.profilePicture
-                betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
-                
-                if betViewHeight < betDetailsViewController.detailsScrollView.frame.size.height {
-                    betDetailsViewController.detailsScrollView.frame.size.height = betViewHeight
-                    //shrink the content, or also disable scrolling?
-                    betDetailsViewController.detailsScrollView.contentSize.height = betViewHeight
-                }
                 
                 betDetailsViewController.thisBetIndex = selectedCell
-                betDetailsViewController.activeArray = activeArray
-                betDetailsViewController.pendingArray = pendingArray
-                betDetailsViewController.completedArray = completedArray
-                
+                betDetailsViewController.currentBet = tappedBet
+
                 
             } else if segmentedControl.selectedSegmentIndex == 0 {
                 betDetailsViewController.statusLabel.text = "Pending"
@@ -475,29 +462,20 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 betDetailsViewController.rejectButton.isHidden = false
                 
                 let tappedBet = pendingArray[selectedCell]
-                betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
-                let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
-                betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
-                betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
-                betDetailsViewController.myProfPic.image = currentUser.profilePicture
-                
+                populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 layoutBetDetailsView(betDetailsViewController)
                 
+                betDetailsViewController.currentBet = tappedBet
                 betDetailsViewController.thisBetIndex = selectedCell
-                betDetailsViewController.activeArray = activeArray
-                betDetailsViewController.pendingArray = pendingArray
-                betDetailsViewController.completedArray = completedArray
+
                 
             } else if segmentedControl.selectedSegmentIndex == 2 {
                 betDetailsViewController.statusLabel.text = "Completed"
                 betDetailsViewController.statusLabel.textColor = UIColor.green
                 
+                
                 let tappedBet = completedArray[selectedCell]
-                betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that" + tappedBet.betText
-                let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
-                betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
-                betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
-                betDetailsViewController.myProfPic.image = currentUser.profilePicture
+                populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 
                 // TODO if there is an image, display it, otherwise display "add Photo" (or just always display add/change photo?)
                 betDetailsViewController.addPhotoButton.isHidden = false
@@ -505,14 +483,14 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 layoutBetDetailsView(betDetailsViewController)
                 
                 betDetailsViewController.thisBetIndex = selectedCell
-                betDetailsViewController.activeArray = activeArray
-                betDetailsViewController.pendingArray = pendingArray
-                betDetailsViewController.completedArray = completedArray
+                betDetailsViewController.currentBet = tappedBet
+
                 
             }
             
+            
             betDetailsViewController.thisUsername = thisUsername
-            betDetailsViewController.userArray = userArray
+            //betDetailsViewController.userArray = userArray
             betDetailsViewController.currentUser = currentUser
             
             
@@ -527,7 +505,17 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Pass the selected object to the new view controller.
     }
  
-
+    // Set the prof pics, bet text, winner/loser, stakes text
+    // TODO set the created date, ending date
+    func populateBetDetailsView(tappedBet : BetStruct, betDetailsViewController : BetDetailsViewController) -> Void {
+        
+        betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
+        let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
+        betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
+        betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
+        betDetailsViewController.myProfPic.image = currentUser.profilePicture
+    }
+    
     func layoutBetDetailsView(_ betDetailsViewController: BetDetailsViewController) -> Void {
         
         let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.greatestFiniteMagnitude)
@@ -556,7 +544,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func buildBetArrays() -> Void {
+    
+    
+    func buildBetArrays(betArray : [BetStruct]) -> Void {
         
         for bet in betArray {
             
@@ -595,5 +585,192 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return friendProfPic
     }
     
+    //TODO get users from firebase. Eventually this would only get friends
+    func getAllUserData() -> [UserStruct] {
+        let user0 = UserStruct(username: "Cam", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "headshot"))
+        let user1 = UserStruct(username: "Adey", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "adey-headshot"))
+        let user2 = UserStruct(username: "Ravi", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "nopic-headshot"))
+        let user3 = UserStruct(username: "Dani", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "dani-headshot"))
+        let user4 = UserStruct(username: "Bex", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "bex-headshot"))
+        let user5 = UserStruct(username: "Zach", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "zach-headshot"))
+        
+        let usersArray = [user0,user1,user2,user3,user4,user5]
+        return usersArray
+        
+    }
+    
+    //TODO delete this eventually
+    func getUsersBets(username : String) -> [BetStruct] {
+        
+        
+        //Get all bets
+        
+        
+        let emptyImage: UIImage! = nil
+        let waterslideImage = #imageLiteral(resourceName: "waterslide")
+        
+        let bet0 = BetStruct(betID: 0, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet1 = BetStruct(betID: 1, betText: "it will rain today", betSender: "Cam", betReceiver: "Adey", winnerLoserToggle: false, stakesText: "do 1000 pushups this week", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet2 = BetStruct(betID: 2, betText: "EASE iOS version 5.14 will be released by Thanksgiving", betSender: "Dani", betReceiver: "Cam", winnerLoserToggle: false, stakesText: "bake a cake for the office", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet3 = BetStruct(betID: 3, betText: "Hurricane Matthew will cause some flights to be delayed", betSender: "Ravi", betReceiver: "Cam", winnerLoserToggle: true, stakesText: "to ride shotgun on the really long car ride across the country through the states of virginia maryland iowa ohio kentucky nebraska new mexico etc.", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet4 = BetStruct(betID: 4, betText: "Hillary wins the presidency", betSender: "Bex", betReceiver: "Cam", winnerLoserToggle: false, stakesText: "cut off 7 inches of hair (or shave it off if you have less than that much hair", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet5 = BetStruct(betID: 5, betText: "it will snow in DC before December 15th", betSender: "Cam", betReceiver: "Bex", winnerLoserToggle: false, stakesText: "go in the snow bearfoot for 1 FULL Minute whenever the first snow does actually end up coming - ouch!!", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet6 = BetStruct(betID: 6, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Zach", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet7 = BetStruct(betID: 7, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Zach", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet8 = BetStruct(betID: 8, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Zach", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 1, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet9 = BetStruct(betID: 9, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Adey", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 1, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet10 = BetStruct(betID: 10, betText: "this bet will not show when cam logs in", betSender: "Adey", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 2, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet11 = BetStruct(betID: 11, betText: "this bet will not show when cam logs in", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 2, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet12 = BetStruct(betID: 12, betText: "this bet will not show when cam logs in", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 3, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+        let bet13 = BetStruct(betID: 13, betText: "this bet will not show when cam logs in", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 2, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
+ 
+        //Get all the bets from firebase
+        let allBets : [BetStruct] = [bet0,bet1,bet2,bet3,bet4,bet5,bet6,bet7,bet8,bet9,bet10,bet11,bet12,bet13]
+        
+        /*let newBetsRef = self.betsRef.child("1")
+        
+        //newBetsRef.setValue(betDictionary)
+        //let allFIRBets = item as! FIRDataSnapshot
+        var tempIDsList = [String]()
+        
+        // For each bet in the database, look at the name of the bet (a number). For each of these, if it exists set all values to values in a BetStruct and append this BetStruct to a [BetStruct] IF sender or receiver match username
+        var newBetStruct = [BetStruct]()
+        var betsExist: Bool = true
+        var testBetDictionary = [String:String]()
+        var totalBets = Int()
+        
+        // Get total number of bets
+        betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            totalBets = Int(snapshot.childrenCount)
+            print("total bets: \(totalBets)")
+            
+            print(snapshot)
+            let betSnapshot = snapshot.value as? NSDictionary
+            var betSnapshotArray = NSArray()
+            var isDictionary = true
+            
+            if betSnapshot == nil {
+                betSnapshotArray = (snapshot.value as? NSArray)!
+                isDictionary = false
+            }
+                
+            print("bet snapshot: \(betSnapshot)")
+            print("bet array: \(betSnapshotArray)")
+            
+            print("Is it a dictionary? \(isDictionary)")
+            
+            for betCount in 1...2 {
+                let countString = String(betCount)
+                
+                if isDictionary == true {
+                    let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
+                    print(thisBet)
+                    
+                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    
+                    newBetStruct.append(thisBetStruct)
+                } else {
+                    
+                    let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
+                    print(thisBet["betReceiver"])
+                    
+                    let betReceiver = thisBet["betReceiver"] as? String
+                    let betSender = thisBet["betSender"] as? String
+                    let betText = thisBet["betText"] as? String
+                    let stakesText = thisBet["stakesText"] as? String
+                    
+                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    
+                    
+                    newBetStruct.append(thisBetStruct)
+                    
+                }
+                
+                print("bet count: \(betCount)")
+            }
+            print("bet struct: \(newBetStruct)")
+            
+        })*/
+        
+        
+        
+        
+        var usersBets = [BetStruct]()
+        
+        // Go through all bets and get all ones where user is sender or receiver
+        for bet in allBets {
+            if bet.betSender == username || bet.betReceiver == username {
+                usersBets.append(bet)
+            }
+        }
+        
+        //return newBetStruct
+        return usersBets
+        
+    }
+    
+    func getFirebaseBets() {
+        
+        let waterslideImage = #imageLiteral(resourceName: "waterslide")
+        var newBetStruct = [BetStruct]()
+        var totalBets = Int()
+        
+        betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            totalBets = Int(snapshot.childrenCount)
+            print("total bets: \(totalBets)")
+            
+            print(snapshot)
+            let betSnapshot = snapshot.value as? NSDictionary
+            var betSnapshotArray = NSArray()
+            var isDictionary = true
+            
+            if betSnapshot == nil {
+                betSnapshotArray = (snapshot.value as? NSArray)!
+                isDictionary = false
+            }
+            
+            print("bet snapshot: \(betSnapshot)")
+            print("bet array: \(betSnapshotArray)")
+            
+            print("Is it a dictionary? \(isDictionary)")
+            
+            for betCount in 1...2 {
+                let countString = String(betCount)
+                
+                if isDictionary == true {
+                    let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
+                    print(thisBet)
+                    
+                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    
+                    newBetStruct.append(thisBetStruct)
+                } else {
+                    
+                    let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
+                    print(thisBet["betReceiver"])
+                    
+                    let betReceiver = thisBet["betReceiver"] as? String
+                    let betSender = thisBet["betSender"] as? String
+                    let betText = thisBet["betText"] as? String
+                    let stakesText = thisBet["stakesText"] as? String
+                    
+                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    
+                    
+                    newBetStruct.append(thisBetStruct)
+                    
+                }
+                
+                print("bet count: \(betCount)")
+            }
+            print("bet struct: \(newBetStruct)")
+            
+            //Use this newBetStruct to get users bets
+            let userBets = self.getUsersBets(username: self.currentUser.username)
+            self.buildBetArrays(betArray: userBets)
+            
+        })
+        
+    }
     
 }

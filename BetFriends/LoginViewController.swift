@@ -97,9 +97,9 @@ class LoginViewController: UIViewController {
         let myBetsViewController = navigationController.topViewController as! MyBetsViewController
         
         //TODO Only pass the username - get rid of the rest
-        myBetsViewController.betArray = usersBetArray
+        //myBetsViewController.betArray = usersBetArray
         myBetsViewController.thisUsername = usernameInput
-        myBetsViewController.userArray = usersArray
+        //myBetsViewController.userArray = usersArray
         myBetsViewController.currentUser = loginUserStruct
         
         // Send to MyBets with user information
