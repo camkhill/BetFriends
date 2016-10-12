@@ -42,8 +42,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var usersRef: FIRDatabaseReference!
     var betsRef: FIRDatabaseReference!
-
     
+    var totalBets = Int()
+
     
     
     override func viewDidLoad() {
@@ -497,6 +498,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         } else if segueIndicator == "newbet" {
             let newBetViewController = segue.destination as! NewBetViewController
+            newBetViewController.totalBets = totalBets
+            newBetViewController.currentUser = currentUser
             //just need to pass user info?
             
         }
@@ -610,23 +613,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let emptyImage: UIImage! = nil
         let waterslideImage = #imageLiteral(resourceName: "waterslide")
         
-        let bet0 = BetStruct(betID: 0, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet1 = BetStruct(betID: 1, betText: "it will rain today", betSender: "Cam", betReceiver: "Adey", winnerLoserToggle: false, stakesText: "do 1000 pushups this week", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet2 = BetStruct(betID: 2, betText: "EASE iOS version 5.14 will be released by Thanksgiving", betSender: "Dani", betReceiver: "Cam", winnerLoserToggle: false, stakesText: "bake a cake for the office", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet3 = BetStruct(betID: 3, betText: "Hurricane Matthew will cause some flights to be delayed", betSender: "Ravi", betReceiver: "Cam", winnerLoserToggle: true, stakesText: "to ride shotgun on the really long car ride across the country through the states of virginia maryland iowa ohio kentucky nebraska new mexico etc.", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet4 = BetStruct(betID: 4, betText: "Hillary wins the presidency", betSender: "Bex", betReceiver: "Cam", winnerLoserToggle: false, stakesText: "cut off 7 inches of hair (or shave it off if you have less than that much hair", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet5 = BetStruct(betID: 5, betText: "it will snow in DC before December 15th", betSender: "Cam", betReceiver: "Bex", winnerLoserToggle: false, stakesText: "go in the snow bearfoot for 1 FULL Minute whenever the first snow does actually end up coming - ouch!!", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet6 = BetStruct(betID: 6, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Zach", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet7 = BetStruct(betID: 7, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Zach", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 0, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet8 = BetStruct(betID: 8, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Zach", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 1, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet9 = BetStruct(betID: 9, betText: "the Broncos will win the Superbowl this year", betSender: "Cam", betReceiver: "Adey", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 1, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet10 = BetStruct(betID: 10, betText: "this bet will not show when cam logs in", betSender: "Adey", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 2, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet11 = BetStruct(betID: 11, betText: "this bet will not show when cam logs in", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 2, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet12 = BetStruct(betID: 12, betText: "this bet will not show when cam logs in", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 3, image: emptyImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
-        let bet13 = BetStruct(betID: 13, betText: "this bet will not show when cam logs in", betSender: "Cam", betReceiver: "Ravi", winnerLoserToggle: false, stakesText: "buy a big delicious pizza for the whole team", endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 0), betState: 2, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 0))
- 
-        //Get all the bets from firebase
-        let allBets : [BetStruct] = [bet0,bet1,bet2,bet3,bet4,bet5,bet6,bet7,bet8,bet9,bet10,bet11,bet12,bet13]
+
         
         
         
@@ -635,14 +622,14 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var usersBets = [BetStruct]()
         
         // Go through all bets and get all ones where user is sender or receiver
-        for bet in allBets {
+        for bet in firebaseBets {
             if bet.betSender == username || bet.betReceiver == username {
                 usersBets.append(bet)
             }
         }
         
-        return firebaseBets
-        //return usersBets
+        //return firebaseBets
+        return usersBets
         
     }
     
@@ -650,11 +637,10 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let waterslideImage = #imageLiteral(resourceName: "waterslide")
         var newBetStruct = [BetStruct]()
-        var totalBets = Int()
         
         betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            totalBets = Int(snapshot.childrenCount)
-            print("total bets: \(totalBets)")
+            self.totalBets = Int(snapshot.childrenCount)
+            print("total bets: \(self.totalBets)")
             
             print(snapshot)
             let betSnapshot = snapshot.value as? NSDictionary
@@ -666,19 +652,16 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 isDictionary = false
             }
             
-            print("bet snapshot: \(betSnapshot)")
-            print("bet array: \(betSnapshotArray)")
             
-            print("Is it a dictionary? \(isDictionary)")
             
-            for betCount in 1...2 {
+            for betCount in 1...self.totalBets {
                 let countString = String(betCount)
                 
                 if isDictionary == true {
                     let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
                     print(thisBet)
                     
-                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
                     
                     newBetStruct.append(thisBetStruct)
                 } else {
@@ -690,8 +673,10 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let betSender = thisBet["betSender"] as? String
                     let betText = thisBet["betText"] as? String
                     let stakesText = thisBet["stakesText"] as? String
+                    let betState = thisBet["betState"] as? String
+                    let betStateInt = Int(betState!)
                     
-                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: 0, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: betStateInt, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
                     
                     
                     newBetStruct.append(thisBetStruct)
