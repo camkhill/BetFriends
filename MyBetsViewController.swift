@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -38,16 +40,30 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var userArray = [UserStruct]()
     var currentUser: UserStruct!
     
+    var usersRef: FIRDatabaseReference!
+    var betsRef: FIRDatabaseReference!
     
+    var totalBets = Int()
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Get Firebase reference for users and bets
+        usersRef = FIRDatabase.database().reference().child("Users")
+        betsRef = FIRDatabase.database().reference().child("Bets")
+        
         /////////// prepare the bets ////////////
-        buildBetArrays()
+        // Get all bets for the particular user
         
         
+        //betArray = getUsersBets(username: currentUser.username)
+        //Separate them into pending, active, completed bets
+        //buildBetArrays(betArray: betArray)
+        getFirebaseBets()
+        // Get all users so their info can be used
+        userArray = getAllUserData()
         
         
         
@@ -108,9 +124,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         completedTableView.frame.origin = CGPoint(x: sideMargins+(2*screenWidth), y: 0)
         
         
-        self.pendingTableView.reloadData()
-        self.activeTableView.reloadData()
-        self.completedTableView.reloadData()
+        //self.pendingTableView.reloadData()
+        //self.activeTableView.reloadData()
+        //self.completedTableView.reloadData()
         
         print("My bets view reloaded")
         
@@ -417,8 +433,12 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         
         if segueIndicator == "cell" {
+            
+            
             let betDetailsViewController = segue.destination as! BetDetailsViewController
             betDetailsViewController.view.layoutIfNeeded()
+            
+            
             // Set status, prof pics, bet text, stakes, etc. in destination
             if segmentedControl.selectedSegmentIndex == 1 {
                 
@@ -426,78 +446,48 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 betDetailsViewController.statusLabel.text = "Active"
                 betDetailsViewController.closeBetButton.isHidden = false
                 betDetailsViewController.statusLabel.textColor = UIColor.blue
+  
                 //set bet text, size it, and set/size stakes text
-                betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
-                let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.greatestFiniteMagnitude)
-                let fitSizeBet = betDetailsViewController.betTextLabel.sizeThatFits(fixWidthSize)
-                betDetailsViewController.betTextLabel.frame.size = fitSizeBet
                 
-                betDetailsViewController.stakesLabel.frame.origin.y = betDetailsViewController.betTextLabel.frame.height+10
+                populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
+                layoutBetDetailsView(betDetailsViewController)
                 
-                betDetailsViewController.stakesTextLabel.frame.origin.y = betDetailsViewController.stakesLabel.frame.origin.y + betDetailsViewController.stakesLabel.frame.height + 10
-                
-                let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)//winnerLoser!)
-                betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
-                
-                let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
-                betDetailsViewController.stakesTextLabel.frame.size = fitSizeStakes
-                
-                let stakesBottom = CGFloat(betDetailsViewController.stakesTextLabel.frame.maxY)
-                betDetailsViewController.createdLabel.frame.origin.y = stakesBottom + 20
-                betDetailsViewController.endLabel.frame.origin.y = stakesBottom + 20
-                
-                let createdLabelBottom = CGFloat(betDetailsViewController.createdLabel.frame.maxY)
-                betDetailsViewController.createdDateLabel.frame.origin.y = createdLabelBottom
-                betDetailsViewController.endDateLabel.frame.origin.y = createdLabelBottom
-                
-                let betViewHeight = betDetailsViewController.endDateLabel.frame.maxY+20
-                betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
-                
-                betDetailsViewController.myProfPic.image = currentUser.profilePicture
-                betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
-                
-                if betViewHeight < betDetailsViewController.detailsScrollView.frame.size.height {
-                    betDetailsViewController.detailsScrollView.frame.size.height = betViewHeight
-                    //shrink the content, or also disable scrolling?
-                    betDetailsViewController.detailsScrollView.contentSize.height = betViewHeight
-                }
                 
                 betDetailsViewController.thisBetIndex = selectedCell
-                betDetailsViewController.activeArray = activeArray
-                betDetailsViewController.pendingArray = pendingArray
-                betDetailsViewController.completedArray = completedArray
-                
+                betDetailsViewController.currentBet = tappedBet
+
                 
             } else if segmentedControl.selectedSegmentIndex == 0 {
                 betDetailsViewController.statusLabel.text = "Pending"
                 betDetailsViewController.statusLabel.textColor = UIColor.orange
-                betDetailsViewController.acceptButton.isHidden = false
-                betDetailsViewController.rejectButton.isHidden = false
+                
+                
+                
+                
                 
                 let tappedBet = pendingArray[selectedCell]
-                betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
-                let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
-                betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
-                betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
-                betDetailsViewController.myProfPic.image = currentUser.profilePicture
-                
+                populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 layoutBetDetailsView(betDetailsViewController)
                 
+                if currentUser.username == tappedBet.betSender {
+                    betDetailsViewController.cancelBetButton.isHidden = false
+                } else {
+                    betDetailsViewController.acceptButton.isHidden = false
+                    betDetailsViewController.rejectButton.isHidden = false
+                }
+                
+                
+                betDetailsViewController.currentBet = tappedBet
                 betDetailsViewController.thisBetIndex = selectedCell
-                betDetailsViewController.activeArray = activeArray
-                betDetailsViewController.pendingArray = pendingArray
-                betDetailsViewController.completedArray = completedArray
+
                 
             } else if segmentedControl.selectedSegmentIndex == 2 {
                 betDetailsViewController.statusLabel.text = "Completed"
                 betDetailsViewController.statusLabel.textColor = UIColor.green
                 
+                
                 let tappedBet = completedArray[selectedCell]
-                betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that" + tappedBet.betText
-                let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
-                betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
-                betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
-                betDetailsViewController.myProfPic.image = currentUser.profilePicture
+                populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 
                 // TODO if there is an image, display it, otherwise display "add Photo" (or just always display add/change photo?)
                 betDetailsViewController.addPhotoButton.isHidden = false
@@ -505,19 +495,21 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 layoutBetDetailsView(betDetailsViewController)
                 
                 betDetailsViewController.thisBetIndex = selectedCell
-                betDetailsViewController.activeArray = activeArray
-                betDetailsViewController.pendingArray = pendingArray
-                betDetailsViewController.completedArray = completedArray
+                betDetailsViewController.currentBet = tappedBet
+
                 
             }
             
+            
             betDetailsViewController.thisUsername = thisUsername
-            betDetailsViewController.userArray = userArray
+            //betDetailsViewController.userArray = userArray
             betDetailsViewController.currentUser = currentUser
             
             
         } else if segueIndicator == "newbet" {
             let newBetViewController = segue.destination as! NewBetViewController
+            newBetViewController.totalBets = totalBets
+            newBetViewController.currentUser = currentUser
             //just need to pass user info?
             
         }
@@ -527,7 +519,17 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Pass the selected object to the new view controller.
     }
  
-
+    // Set the prof pics, bet text, winner/loser, stakes text
+    // TODO set the created date, ending date
+    func populateBetDetailsView(tappedBet : BetStruct, betDetailsViewController : BetDetailsViewController) -> Void {
+        
+        betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
+        let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
+        betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
+        betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
+        betDetailsViewController.myProfPic.image = currentUser.profilePicture
+    }
+    
     func layoutBetDetailsView(_ betDetailsViewController: BetDetailsViewController) -> Void {
         
         let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.greatestFiniteMagnitude)
@@ -556,7 +558,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    func buildBetArrays() -> Void {
+    
+    
+    func buildBetArrays(betArray : [BetStruct]) -> Void {
         
         for bet in betArray {
             
@@ -595,5 +599,110 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return friendProfPic
     }
     
+    //TODO get users from firebase. Eventually this would only get friends
+    func getAllUserData() -> [UserStruct] {
+        let user0 = UserStruct(username: "Cam", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "headshot"))
+        let user1 = UserStruct(username: "Adey", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "adey-headshot"))
+        let user2 = UserStruct(username: "Ravi", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "nopic-headshot"))
+        let user3 = UserStruct(username: "Dani", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "dani-headshot"))
+        let user4 = UserStruct(username: "Bex", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "bex-headshot"))
+        let user5 = UserStruct(username: "Zach", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "zach-headshot"))
+        let user6 = UserStruct(username: "Vic", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "vic-headshot"))
+        
+        let usersArray = [user0,user1,user2,user3,user4,user5,user6]
+        return usersArray
+        
+    }
+    
+    //TODO delete this eventually
+    func getUsersBets(username : String, firebaseBets: [BetStruct]) -> [BetStruct] {
+        
+        
+        //Get all bets
+        
+        
+        let emptyImage: UIImage! = nil
+        let waterslideImage = #imageLiteral(resourceName: "waterslide")
+        
+
+        
+        
+        
+        
+        
+        var usersBets = [BetStruct]()
+        
+        // Go through all bets and get all ones where user is sender or receiver
+        for bet in firebaseBets {
+            if bet.betSender == username || bet.betReceiver == username {
+                usersBets.append(bet)
+            }
+        }
+        
+        //return firebaseBets
+        return usersBets
+        
+    }
+    
+    func getFirebaseBets() {
+        
+        let waterslideImage = #imageLiteral(resourceName: "waterslide")
+        var newBetStruct = [BetStruct]()
+        
+        betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            self.totalBets = Int(snapshot.childrenCount)
+            print("total bets: \(self.totalBets)")
+            
+            let betSnapshot = snapshot.value as? NSDictionary
+            var betSnapshotArray = NSArray()
+            var isDictionary = true
+            
+            if betSnapshot == nil {
+                betSnapshotArray = (snapshot.value as? NSArray)!
+                isDictionary = false
+            }
+            
+            
+            
+            for betCount in 1...self.totalBets {
+                let countString = String(betCount)
+                
+                if isDictionary == true {
+                    let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
+                    
+                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    
+                    newBetStruct.append(thisBetStruct)
+                } else {
+                    
+                    let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
+                    
+                    let betReceiver = thisBet["betReceiver"] as? String
+                    let betSender = thisBet["betSender"] as? String
+                    let betText = thisBet["betText"] as? String
+                    let stakesText = thisBet["stakesText"] as? String
+                    let betState = thisBet["betState"] as? String
+                    let betStateInt = Int(betState!)
+                    
+                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: betStateInt, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    
+                    
+                    newBetStruct.append(thisBetStruct)
+                    
+                }
+                
+            }
+            
+            //Use this newBetStruct to get users bets
+            let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
+            self.buildBetArrays(betArray: userBets)
+            
+            self.pendingTableView.reloadData()
+            self.completedTableView.reloadData()
+            self.activeTableView.reloadData()
+            
+        })
+        
+    }
     
 }

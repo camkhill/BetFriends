@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15E51646773FB440DE83F41A /* Pods_BetFriendsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A7BDEF920B217C847F001C /* Pods_BetFriendsTests.framework */; };
+		98BCF5065DCD05D7C0BDDA0D /* Pods_BetFriendsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFBB5C9F4ABECB2F234A342 /* Pods_BetFriendsUITests.framework */; };
 		B52B8A5D1D9400F70015CDA7 /* PendingBetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */; };
 		B52B8A5F1D94906D0015CDA7 /* ActiveBetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A5E1D94906D0015CDA7 /* ActiveBetTableViewCell.swift */; };
 		B52B8A631D9490DB0015CDA7 /* CompletedBetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A621D9490DB0015CDA7 /* CompletedBetTableViewCell.swift */; };
@@ -15,6 +17,7 @@
 		B52B8A6A1D95BB8B0015CDA7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */; };
 		B54557CB1D98CC16007D8809 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */; };
 		B5470DD71DA448EA007BC723 /* UserStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5470DD61DA448EA007BC723 /* UserStruct.swift */; };
+		B5470DD91DA92CF6007BC723 /* CloseBetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5470DD81DA92CF6007BC723 /* CloseBetViewController.swift */; };
 		B55190051D9AA24500760EAC /* NewBetConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55190041D9AA24500760EAC /* NewBetConfirmationViewController.swift */; };
 		B557E62E1D9DB7A3003354F3 /* BetStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B557E62D1D9DB7A3003354F3 /* BetStruct.swift */; };
 		B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57331D90A84100BF8193 /* AppDelegate.swift */; };
@@ -25,6 +28,8 @@
 		B59B57491D90A84100BF8193 /* BetFriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57481D90A84100BF8193 /* BetFriendsTests.swift */; };
 		B59B57541D90A84100BF8193 /* BetFriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57531D90A84100BF8193 /* BetFriendsUITests.swift */; };
 		B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */; };
+		B5E7136A1DA932CE00637D9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5E713691DA932CE00637D9D /* GoogleService-Info.plist */; };
+		CAD485D2430B2DCD110117DD /* Pods_BetFriends.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB6FAE4559720FBAFEE5A0B /* Pods_BetFriends.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +50,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		13A7BDEF920B217C847F001C /* Pods_BetFriendsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BetFriendsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FE484973310F6AE7A3AB323 /* Pods-BetFriends.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriends.release.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriends/Pods-BetFriends.release.xcconfig"; sourceTree = "<group>"; };
+		7EBBB5A85189A1159BDEC5A8 /* Pods-BetFriendsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriendsUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriendsUITests/Pods-BetFriendsUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8AFBB5C9F4ABECB2F234A342 /* Pods_BetFriendsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BetFriendsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52B8A5C1D9400F70015CDA7 /* PendingBetsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PendingBetsTableViewCell.swift; path = ../PendingBetsTableViewCell.swift; sourceTree = "<group>"; };
 		B52B8A5E1D94906D0015CDA7 /* ActiveBetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveBetTableViewCell.swift; sourceTree = "<group>"; };
 		B52B8A621D9490DB0015CDA7 /* CompletedBetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedBetTableViewCell.swift; sourceTree = "<group>"; };
@@ -53,6 +62,7 @@
 		B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B54557CA1D98CC16007D8809 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		B5470DD61DA448EA007BC723 /* UserStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStruct.swift; sourceTree = "<group>"; };
+		B5470DD81DA92CF6007BC723 /* CloseBetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseBetViewController.swift; sourceTree = "<group>"; };
 		B55190041D9AA24500760EAC /* NewBetConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewBetConfirmationViewController.swift; sourceTree = "<group>"; };
 		B557E62D1D9DB7A3003354F3 /* BetStruct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetStruct.swift; sourceTree = "<group>"; };
 		B59B57301D90A84100BF8193 /* BetFriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetFriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +79,12 @@
 		B59B57531D90A84100BF8193 /* BetFriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetFriendsUITests.swift; sourceTree = "<group>"; };
 		B59B57551D90A84100BF8193 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyBetsViewController.swift; path = ../MyBetsViewController.swift; sourceTree = "<group>"; };
+		B5E713691DA932CE00637D9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BCB6FAE4559720FBAFEE5A0B /* Pods_BetFriends.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BetFriends.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C584713A4517A5680D2B7F96 /* Pods-BetFriendsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriendsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriendsTests/Pods-BetFriendsTests.release.xcconfig"; sourceTree = "<group>"; };
+		D289030E6D75E100FAFC50D7 /* Pods-BetFriendsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriendsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriendsTests/Pods-BetFriendsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D54CC89DE347D71C7093FB9E /* Pods-BetFriends.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriends.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriends/Pods-BetFriends.debug.xcconfig"; sourceTree = "<group>"; };
+		DF6CA9B5179215159334A68C /* Pods-BetFriendsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriendsUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriendsUITests/Pods-BetFriendsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAD485D2430B2DCD110117DD /* Pods_BetFriends.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15E51646773FB440DE83F41A /* Pods_BetFriendsTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,12 +108,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98BCF5065DCD05D7C0BDDA0D /* Pods_BetFriendsUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3644BE85C3076ECF675C6DFC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D54CC89DE347D71C7093FB9E /* Pods-BetFriends.debug.xcconfig */,
+				3FE484973310F6AE7A3AB323 /* Pods-BetFriends.release.xcconfig */,
+				D289030E6D75E100FAFC50D7 /* Pods-BetFriendsTests.debug.xcconfig */,
+				C584713A4517A5680D2B7F96 /* Pods-BetFriendsTests.release.xcconfig */,
+				DF6CA9B5179215159334A68C /* Pods-BetFriendsUITests.debug.xcconfig */,
+				7EBBB5A85189A1159BDEC5A8 /* Pods-BetFriendsUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8E80F358D38FD97AA64AC60E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCB6FAE4559720FBAFEE5A0B /* Pods_BetFriends.framework */,
+				13A7BDEF920B217C847F001C /* Pods_BetFriendsTests.framework */,
+				8AFBB5C9F4ABECB2F234A342 /* Pods_BetFriendsUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B52B8A661D95B35E0015CDA7 /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +163,8 @@
 				B59B57471D90A84100BF8193 /* BetFriendsTests */,
 				B59B57521D90A84100BF8193 /* BetFriendsUITests */,
 				B59B57311D90A84100BF8193 /* Products */,
+				3644BE85C3076ECF675C6DFC /* Pods */,
+				8E80F358D38FD97AA64AC60E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,12 +189,14 @@
 				B59B57331D90A84100BF8193 /* AppDelegate.swift */,
 				B59B57351D90A84100BF8193 /* ViewController.swift */,
 				B59B57371D90A84100BF8193 /* Main.storyboard */,
+				B5470DD81DA92CF6007BC723 /* CloseBetViewController.swift */,
 				B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */,
 				B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */,
 				B55190041D9AA24500760EAC /* NewBetConfirmationViewController.swift */,
 				B52B8A641D95B1400015CDA7 /* NewBetViewController.swift */,
 				B59B573A1D90A84100BF8193 /* Assets.xcassets */,
 				B59B573C1D90A84100BF8193 /* LaunchScreen.storyboard */,
+				B5E713691DA932CE00637D9D /* GoogleService-Info.plist */,
 				B59B573F1D90A84100BF8193 /* Info.plist */,
 			);
 			path = BetFriends;
@@ -181,9 +227,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B59B57581D90A84200BF8193 /* Build configuration list for PBXNativeTarget "BetFriends" */;
 			buildPhases = (
+				3133B1AB6E3DE245C888EC3B /* [CP] Check Pods Manifest.lock */,
 				B59B572C1D90A84100BF8193 /* Sources */,
 				B59B572D1D90A84100BF8193 /* Frameworks */,
 				B59B572E1D90A84100BF8193 /* Resources */,
+				772482F885AABDB8991ADA89 /* [CP] Embed Pods Frameworks */,
+				DF04A98E59077D45BAA311AF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -198,9 +247,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B59B575B1D90A84200BF8193 /* Build configuration list for PBXNativeTarget "BetFriendsTests" */;
 			buildPhases = (
+				4D26F4A65C001129C58B6AA3 /* [CP] Check Pods Manifest.lock */,
 				B59B57401D90A84100BF8193 /* Sources */,
 				B59B57411D90A84100BF8193 /* Frameworks */,
 				B59B57421D90A84100BF8193 /* Resources */,
+				EA766E3C4C2DD4940D2A3523 /* [CP] Embed Pods Frameworks */,
+				D336A29ECCEAB61EB3799147 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -216,9 +268,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B59B575E1D90A84200BF8193 /* Build configuration list for PBXNativeTarget "BetFriendsUITests" */;
 			buildPhases = (
+				F018E4059BF0FA6D8E6CA4CE /* [CP] Check Pods Manifest.lock */,
 				B59B574B1D90A84100BF8193 /* Sources */,
 				B59B574C1D90A84100BF8193 /* Frameworks */,
 				B59B574D1D90A84100BF8193 /* Resources */,
+				92EBD59ECCE7BC45E05E75FD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -285,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B59B573E1D90A84100BF8193 /* LaunchScreen.storyboard in Resources */,
+				B5E7136A1DA932CE00637D9D /* GoogleService-Info.plist in Resources */,
 				B59B573B1D90A84100BF8193 /* Assets.xcassets in Resources */,
 				B59B57391D90A84100BF8193 /* Main.storyboard in Resources */,
 			);
@@ -306,6 +361,129 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3133B1AB6E3DE245C888EC3B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4D26F4A65C001129C58B6AA3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		772482F885AABDB8991ADA89 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BetFriends/Pods-BetFriends-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		92EBD59ECCE7BC45E05E75FD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BetFriendsUITests/Pods-BetFriendsUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D336A29ECCEAB61EB3799147 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BetFriendsTests/Pods-BetFriendsTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DF04A98E59077D45BAA311AF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BetFriends/Pods-BetFriends-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA766E3C4C2DD4940D2A3523 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BetFriendsTests/Pods-BetFriendsTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F018E4059BF0FA6D8E6CA4CE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B59B572C1D90A84100BF8193 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -320,6 +498,7 @@
 				B52B8A631D9490DB0015CDA7 /* CompletedBetTableViewCell.swift in Sources */,
 				B557E62E1D9DB7A3003354F3 /* BetStruct.swift in Sources */,
 				B59B57361D90A84100BF8193 /* ViewController.swift in Sources */,
+				B5470DD91DA92CF6007BC723 /* CloseBetViewController.swift in Sources */,
 				B59B57341D90A84100BF8193 /* AppDelegate.swift in Sources */,
 				B52B8A5F1D94906D0015CDA7 /* ActiveBetTableViewCell.swift in Sources */,
 				B55190051D9AA24500760EAC /* NewBetConfirmationViewController.swift in Sources */,
@@ -463,8 +642,10 @@
 		};
 		B59B57591D90A84200BF8193 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D54CC89DE347D71C7093FB9E /* Pods-BetFriends.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = D7Q7SPS6QM;
 				INFOPLIST_FILE = BetFriends/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriends;
@@ -475,8 +656,10 @@
 		};
 		B59B575A1D90A84200BF8193 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FE484973310F6AE7A3AB323 /* Pods-BetFriends.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = D7Q7SPS6QM;
 				INFOPLIST_FILE = BetFriends/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camkhill.BetFriends;
@@ -487,6 +670,7 @@
 		};
 		B59B575C1D90A84200BF8193 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D289030E6D75E100FAFC50D7 /* Pods-BetFriendsTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = BetFriendsTests/Info.plist;
@@ -500,6 +684,7 @@
 		};
 		B59B575D1D90A84200BF8193 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C584713A4517A5680D2B7F96 /* Pods-BetFriendsTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = BetFriendsTests/Info.plist;
@@ -513,6 +698,7 @@
 		};
 		B59B575F1D90A84200BF8193 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF6CA9B5179215159334A68C /* Pods-BetFriendsUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = BetFriendsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -525,6 +711,7 @@
 		};
 		B59B57601D90A84200BF8193 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EBBB5A85189A1159BDEC5A8 /* Pods-BetFriendsUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = BetFriendsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

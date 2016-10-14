@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class NewBetViewController: UIViewController {
 
@@ -27,10 +29,20 @@ class NewBetViewController: UIViewController {
     
     let autofillArray = ["sara","vic","zach","mike","cristy","susan","sue"]
     let screenSize = UIScreen.main.bounds.size
+    var totalBets: Int!
+    var currentUser: UserStruct!
+    
+    var betsRef: FIRDatabaseReference!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //Get Firebase ref
+        betsRef = FIRDatabase.database().reference().child("Bets")
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
       ////set position of everything in view//////
 
         let screenCenterX = screenSize.width/2
@@ -103,12 +115,9 @@ class NewBetViewController: UIViewController {
         let stakesText = stakesTextView.text
         let endDate = "Today"
         
-        betDictionary = ["Friend":friendText! as AnyObject, "Bet":betText as AnyObject, "LoserWinner":loserwinnerString as AnyObject, "Stakes":stakesText as AnyObject, "EndDate":endDate as AnyObject]
-        print(betDictionary)
-        //print(betDictionary["Friend"])
+        writeBetToFirebase(betText: betText!, stakesText: stakesText!, friendUsername: friendText!, winnerLoserToggle: loserwinnerString)
         
-        
-        self.navigationController?.popViewController(animated: true)
+        performSegue(withIdentifier: "newbettomybets", sender: self)
         //performSegueWithIdentifier("ConfirmationSegue", sender: nil)
         
     }
@@ -118,11 +127,10 @@ class NewBetViewController: UIViewController {
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        /*let confirmationViewController = segue.destinationViewController as! NewBetConfirmationViewController
-        let margin = CGFloat(20)
-        let confirmationScreenSize = CGSize(width: screenSize.width-2*margin, height: screenSize.height-2*margin)
-        confirmationViewController.view.frame = CGRect(origin: CGPoint(x: margin,y: margin), size: confirmationScreenSize)*/
-        
+
+        let navigationController = segue.destination as! UINavigationController
+        let myBetsViewController = navigationController.topViewController as! MyBetsViewController
+        myBetsViewController.currentUser = currentUser
         
      // Pass the selected object to the new view controller.
      }
@@ -132,6 +140,26 @@ class NewBetViewController: UIViewController {
     
     
     //On stopping editing, dismiss the table
+    
+    func writeBetToFirebase(betText: String, stakesText: String, friendUsername: String, winnerLoserToggle: String) -> Void {
+        
+        let stringNewBetID = String(totalBets+1)
+        let stringUsername = currentUser.username!
+        betsRef.child(stringNewBetID).setValue([
+            "betText" : betText,
+            "stakesText" : stakesText,
+            "betReceiver" : friendUsername,
+            "betSender" : stringUsername,
+            "betState" : "0",
+            "winnerLoserToggle" : winnerLoserToggle
+        ])
+        
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
     
     
 }
