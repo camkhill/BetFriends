@@ -460,12 +460,22 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             } else if segmentedControl.selectedSegmentIndex == 0 {
                 betDetailsViewController.statusLabel.text = "Pending"
                 betDetailsViewController.statusLabel.textColor = UIColor.orange
-                betDetailsViewController.acceptButton.isHidden = false
-                betDetailsViewController.rejectButton.isHidden = false
+                
+                
+                
+                
                 
                 let tappedBet = pendingArray[selectedCell]
                 populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 layoutBetDetailsView(betDetailsViewController)
+                
+                if currentUser.username == tappedBet.betSender {
+                    betDetailsViewController.cancelBetButton.isHidden = false
+                } else {
+                    betDetailsViewController.acceptButton.isHidden = false
+                    betDetailsViewController.rejectButton.isHidden = false
+                }
+                
                 
                 betDetailsViewController.currentBet = tappedBet
                 betDetailsViewController.thisBetIndex = selectedCell
@@ -597,8 +607,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let user3 = UserStruct(username: "Dani", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "dani-headshot"))
         let user4 = UserStruct(username: "Bex", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "bex-headshot"))
         let user5 = UserStruct(username: "Zach", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "zach-headshot"))
+        let user6 = UserStruct(username: "Vic", password: "a", email: "camkhill@gmail.com", profilePicture: #imageLiteral(resourceName: "vic-headshot"))
         
-        let usersArray = [user0,user1,user2,user3,user4,user5]
+        let usersArray = [user0,user1,user2,user3,user4,user5,user6]
         return usersArray
         
     }
@@ -642,7 +653,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.totalBets = Int(snapshot.childrenCount)
             print("total bets: \(self.totalBets)")
             
-            print(snapshot)
             let betSnapshot = snapshot.value as? NSDictionary
             var betSnapshotArray = NSArray()
             var isDictionary = true
@@ -659,7 +669,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if isDictionary == true {
                     let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
-                    print(thisBet)
                     
                     let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
                     
@@ -667,7 +676,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 } else {
                     
                     let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
-                    print(thisBet["betReceiver"])
                     
                     let betReceiver = thisBet["betReceiver"] as? String
                     let betSender = thisBet["betSender"] as? String
@@ -683,9 +691,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     
                 }
                 
-                print("bet count: \(betCount)")
             }
-            print("bet struct: \(newBetStruct)")
             
             //Use this newBetStruct to get users bets
             let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)

@@ -41,6 +41,8 @@ class NewBetViewController: UIViewController {
         //Get Firebase ref
         betsRef = FIRDatabase.database().reference().child("Bets")
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
       ////set position of everything in view//////
 
         let screenCenterX = screenSize.width/2
@@ -154,7 +156,9 @@ class NewBetViewController: UIViewController {
         
     }
     
-    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     
     

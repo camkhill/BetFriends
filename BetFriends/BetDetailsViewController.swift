@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class BetDetailsViewController: UIViewController {
 
@@ -34,19 +36,20 @@ class BetDetailsViewController: UIViewController {
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var endLabel: UILabel!
     
-    //var pendingArray = [BetStruct]()
-    //var activeArray = [BetStruct]()
-    //var completedArray = [BetStruct]()
+
     var thisBetIndex: Int!
     
     var thisUsername: String!
-    var userArray = [UserStruct]()
     var currentUser: UserStruct!
     var currentBet: BetStruct!
     var segueType: String!
+    var betsRef: FIRDatabaseReference!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        betsRef = FIRDatabase.database().reference().child("Bets")
 
         // Do any additional setup after loading the view.
         // Initially hide all the buttons
@@ -124,6 +127,10 @@ class BetDetailsViewController: UIViewController {
         acceptButton.center.x = screenSize.width*(2/3)+1
         acceptButton.layer.cornerRadius = 10
         
+        cancelBetButton.frame.size = CGSize(width: 2*screenSize.width/3, height: screenSize.width/10)
+        cancelBetButton.center = CGPoint(x: screenSize.width/2, y: screenSize.height-detailsBottomMargin/2)
+        cancelBetButton.layer.cornerRadius = 10
+        
         let bottomButtonsCenter = CGPoint(x: screenCenterX, y: screenSize.height-detailsBottomMargin/3)
         addPhotoButton.center = bottomButtonsCenter
         closeBetButton.center = bottomButtonsCenter
@@ -148,6 +155,10 @@ class BetDetailsViewController: UIViewController {
         //pendingArray[thisBetIndex].betText = "BET CHANGED"
         
         //change the state of one bet based on index, change that bet in bet array
+        let betIDString = String(currentBet.betID)
+        
+        betsRef.child(betIDString).updateChildValues(["betState" : "1"])
+        
         
         segueType = "MyBets"
         performSegue(withIdentifier: "backToMyBets", sender: self)
@@ -179,10 +190,19 @@ class BetDetailsViewController: UIViewController {
             let myBetsViewController = navigationController.topViewController as! MyBetsViewController
             // Just continue to pass username
             myBetsViewController.thisUsername = thisUsername
-            //myBetsViewController.userArray = userArray
             myBetsViewController.currentUser = currentUser
         } else if segueType == "CloseBet" {
+            let closeBetViewController = segue.destination as! CloseBetViewController
+            closeBetViewController.loadViewIfNeeded()
             
+            closeBetViewController.currentUser = currentUser
+            closeBetViewController.currentBet = currentBet
+            closeBetViewController.betTextLabel.text = currentBet.betText
+            closeBetViewController.stakesTextLabel.text = currentBet.stakesText
+            closeBetViewController.winnerToggle.setTitle(currentBet.betSender, forSegmentAt: 0)
+            closeBetViewController.winnerToggle.setTitle(currentBet.betReceiver, forSegmentAt: 1)
+            closeBetViewController.myProfPic.image = myProfPic.image
+            closeBetViewController.friendProfPic.image = friendProfPic.image
             
             
         }
