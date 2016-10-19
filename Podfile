@@ -9,6 +9,7 @@ target 'BetFriends' do
   pod 'Firebase'
   pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Storage'
 
   target 'BetFriendsTests' do
     inherit! :search_paths

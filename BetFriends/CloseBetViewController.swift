@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import MobileCoreServices
+import FirebaseStorage
 
 
 class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -27,17 +28,20 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var resultImage: UIImageView!
     @IBOutlet weak var addPhotoButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    
     
     private var imagePicker: UIImagePickerController!
     
     var currentBet: BetStruct!
     var currentUser: UserStruct!
+    var betsRef: FIRDatabaseReference!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        betsRef = FIRDatabase.database().reference().child("Bets")
         
         // Set up the view (everything fractions of 1/20
         let screenSize = UIScreen.main.bounds.size
@@ -48,6 +52,9 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         let profPicSize = CGFloat(3*screenUnit)
         let profPicOffset = CGFloat(25)
     
+        cancelButton.center.x = screenCenterX
+        cancelButton.frame.origin.y = screenUnit
+        
         myProfPic.frame = CGRect(x: profPicOffset, y: screenUnit, width: profPicSize, height: profPicSize)
         myProfPic.layer.cornerRadius = profPicSize/2
         myProfPic.layer.masksToBounds = true
@@ -62,8 +69,7 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         betDetailsView.frame = CGRect(x: detailsSideMargin, y: 4*screenUnit+10, width: detailsViewWidth, height: 5*screenUnit)
         betDetailsView.layer.cornerRadius = 10
         
-        
-        
+        let margin = CGFloat(10)
         
         whoWonLabel.frame.origin = CGPoint(x: 0, y: 9*screenUnit+15)
         whoWonLabel.center.x = screenCenterX
@@ -132,6 +138,17 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         
         if mediaType == (kUTTypeImage as String) {
             self.resultImage.image = info[UIImagePickerControllerEditedImage] as? UIImage
+            
+            let storage = FIRStorage.storage()
+            let storageRef = storage.reference(forURL: "gs://betfriends-ea4bb.appspot.com")
+            let bfImagesRef = storageRef.child("bfimages")
+            let filepath = String(currentBet.betID)
+            
+            let data = UIImageJPEGRepresentation(self.resultImage.image!, 0.8)!
+            print("got to upload task")
+            bfImagesRef.child(filepath).put(data)
+            
+            
         } else {
             print("video was taken")
         }
@@ -142,8 +159,44 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
     
     
     @IBAction func onTapCancel(_ sender: AnyObject) {
+
+        
         dismiss(animated: true) {}
     }
+    
+    
+    // Upload image, change bet state to 2 or 3,
+    @IBAction func onTapSubmit(_ sender: AnyObject) {
+        
+        let winnerLoser = winnerToggle.selectedSegmentIndex
+        let betIDString = String(self.currentBet.betID)
+        
+        if winnerLoser == -1 {
+            // you have to chose a winner!
+            print("no winner chosen")
+            
+        } else if winnerLoser == 0 {
+            
+            self.betsRef.child(betIDString).updateChildValues(["betState" : "2"])
+        } else if winnerLoser == 1 {
+            self.betsRef.child(betIDString).updateChildValues(["betState" : "3"])
+        }
+        
+        if resultImage.image != #imageLiteral(resourceName: "image-placeholder"){
+            let storage = FIRStorage.storage()
+            let storageRef = storage.reference(forURL: "gs://betfriends-ea4bb.appspot.com")
+            let bfImagesRef = storageRef.child("bfimages")
+            let filepath = String(currentBet.betID)
+            
+            let data = UIImageJPEGRepresentation(self.resultImage.image!, 0.8)!
+            print("got to upload task")
+            bfImagesRef.child(filepath).put(data)
+        }
+        
+
+        
+    }
+    
     
     
 }

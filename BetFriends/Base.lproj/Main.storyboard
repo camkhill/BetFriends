@@ -39,7 +39,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="240" height="399"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xnF-Pi-jhB" id="E7l-OJ-tsF">
-                                                    <frame key="frameInset" width="240" height="398"/>
+                                                    <frame key="frameInset" width="240" height="398.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="4As-IH-fuP">
@@ -122,7 +122,7 @@ Stakes:</string>
                                                 <rect key="frame" x="0.0" y="28" width="240" height="284"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gQk-F7-yle" id="7CL-ji-KKz">
-                                                    <frame key="frameInset" width="240" height="283"/>
+                                                    <frame key="frameInset" width="240" height="283.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hhl-j5-o9t">
@@ -242,7 +242,13 @@ Stakes:</string>
                         </subviews>
                         <color key="backgroundColor" red="0.95057189464569092" green="0.95075440406799316" blue="0.95054137706756592" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="My Bets" id="nmQ-y4-0mX"/>
+                    <navigationItem key="navigationItem" title="My Bets" id="nmQ-y4-0mX">
+                        <barButtonItem key="rightBarButtonItem" title="Sign Out" id="Wqx-P4-13m">
+                            <connections>
+                                <action selector="onTapSignOut:" destination="BYZ-38-t0r" id="NRz-Rl-mam"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="960" height="568"/>
                     <connections>
@@ -252,12 +258,14 @@ Stakes:</string>
                         <outlet property="newBetButton" destination="vwq-fz-VFQ" id="CAv-MA-HSX"/>
                         <outlet property="pendingTableView" destination="Pte-Jv-9Uk" id="J4f-id-RqF"/>
                         <outlet property="segmentedControl" destination="wwM-Wm-srS" id="mZC-Wk-fso"/>
+                        <outlet property="signOutButton" destination="Wqx-P4-13m" id="asc-mz-Cqp"/>
                         <segue destination="JvD-7G-b6a" kind="push" identifier="toDetails" id="vzh-DY-Y3i"/>
+                        <segue destination="0md-J5-dc7" kind="modal" identifier="logout2" modalTransitionStyle="crossDissolve" id="YuX-0d-SBw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1520" y="495"/>
+            <point key="canvasLocation" x="1507" y="536"/>
         </scene>
         <!--Bet Details-->
         <scene sceneID="s4b-mF-5Su">
@@ -402,6 +410,9 @@ Stakes:</string>
                                 <state key="normal" title="Cancel Bet">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onTapCancelBet:" destination="JvD-7G-b6a" eventType="touchUpInside" id="cHv-uI-FUW"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.95057189464569092" green="0.95075440406799316" blue="0.95054137706756592" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -458,6 +469,9 @@ Stakes:</string>
                                 <frame key="frameInset" minX="151" minY="622" width="73" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Submit"/>
+                                <connections>
+                                    <action selector="onTapSubmit:" destination="i2v-qd-qnt" eventType="touchUpInside" id="3ge-8L-7ZI"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="image-placeholder" id="OAd-Wp-TF6">
                                 <frame key="frameInset" minX="48" minY="341" width="278" height="278"/>
@@ -534,6 +548,7 @@ Stakes:</string>
                         <outlet property="addPhotoButton" destination="Ygb-Up-34c" id="qGc-U7-opF"/>
                         <outlet property="betDetailsView" destination="Zqq-ks-IBK" id="vdI-ks-O0v"/>
                         <outlet property="betTextLabel" destination="Otd-Ff-eTD" id="b6a-20-4HI"/>
+                        <outlet property="cancelButton" destination="VJJ-LY-3j3" id="L5u-id-2PC"/>
                         <outlet property="closeBetLabel" destination="4ru-7Q-Y3W" id="4Z0-Nk-Vjh"/>
                         <outlet property="friendProfPic" destination="3lU-Uu-uAv" id="POD-H7-ETf"/>
                         <outlet property="myProfPic" destination="LOl-C1-MSX" id="awi-Q2-2xV"/>
@@ -547,7 +562,7 @@ Stakes:</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GVL-iP-RAd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2689" y="1777"/>
+            <point key="canvasLocation" x="2688.5" y="1776.5"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="uCA-YJ-ak7">
