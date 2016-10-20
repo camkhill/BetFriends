@@ -136,9 +136,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         completedTableView.frame.origin = CGPoint(x: sideMargins+(2*screenWidth), y: 0)
         
         
-        //self.pendingTableView.reloadData()
-        //self.activeTableView.reloadData()
-        //self.completedTableView.reloadData()
+        self.pendingTableView.reloadData()
+        self.activeTableView.reloadData()
+        self.completedTableView.reloadData()
         
         print("My bets view reloaded")
         
@@ -365,7 +365,22 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell.resultLabel.frame.origin.y = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
             
             // TODO if image exists, display the image. If not, display "Add a pic!" button
-            if (indexPath as NSIndexPath).row == 0 {
+            //if completedArray[indexPath.row].image == nil {
+            
+            
+            //if (indexPath as NSIndexPath).row == 0 {
+            //let image = UIImage(completedArray[indexPath.row].image!)
+            //let imgData: NSData = UIImageJPEGRepresentation(image, 1)
+            //let imgDataSize = imgData.length
+            //print(imgDataSize)
+            
+            //let waterslideData: NSData = UIImagePNGRepresentation(#imageLiteral(resourceName: "waterslide"))
+            //let currentBetImage: NSData = UIImagePNGRepresentation(completedArray[indexPath.row].image)
+            
+            
+            
+            if completedArray[indexPath.row].image != nil {
+                print("image exists")
                 cell.addPhotoButton.isHidden = true
                 cell.photoImage.isHidden = false
                 let photoSize = CGFloat(tableViewSize.width-2*margin)
@@ -373,7 +388,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.photoImage.frame = CGRect(x: photoPosition.x, y: photoPosition.y, width: photoSize, height: photoSize)
                 cell.photoImage.layer.cornerRadius = 10
                 cell.photoImage.layer.masksToBounds = true
-                cell.photoImage.image = UIImage(named: "waterslide")
+                cell.photoImage.image = completedArray[indexPath.row].image
                 
                 //Set size of cell
                 thisRowHeight = cell.photoImage.frame.origin.y+cell.photoImage.frame.height+margin
@@ -394,7 +409,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return cell
         } else {
             
-            print("hit the else")
             return blankcell
         }
         
@@ -468,8 +482,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        
-        print(segueIndicator)
         
         if segueIndicator == "cell" {
             
@@ -678,11 +690,11 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.totalBets = Int(snapshot.childrenCount)
-            print("total bets: \(self.totalBets)")
             
             let betSnapshot = snapshot.value as? NSDictionary
             var betSnapshotArray = NSArray()
             var isDictionary = true
+            var imageDictionary = [String: UIImage]()
             
             if betSnapshot == nil {
                 betSnapshotArray = (snapshot.value as? NSArray)!
@@ -693,68 +705,78 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             for betCount in 1...self.totalBets {
                 let countString = String(betCount)
-                var image = UIImage()
+                var image: UIImage? = nil
                 
-                if isDictionary == true {
-                    
-                    // If this starts being a dictionary, will need some changes here
-                    let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
-                    
-                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
-                    
-                    newBetStruct.append(thisBetStruct)
-                } else {
-                    
-                    let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
-                    var winnerLoserToggleBool = Bool()
-                    
-                    let betReceiver = thisBet["betReceiver"] as? String
-                    let betSender = thisBet["betSender"] as? String
-                    let betText = thisBet["betText"] as? String
-                    let stakesText = thisBet["stakesText"] as? String
-                    let betState = thisBet["betState"] as? String
-                    let betStateInt = Int(betState!)
-                    let winnerLoserString = thisBet["winnerLoserToggle"] as? String
-                    if winnerLoserString == "Loser" {
-                        winnerLoserToggleBool = false
+                
+                self.storageRef.child(countString).data(withMaxSize: 1024*1024, completion: { (data, error) in
+                    if error != nil {
+                        // Leave image as nil if there is no image there
                     } else {
-                        winnerLoserToggleBool = true
+                        print("downloaded something??")
+                        image = UIImage(data: data!)!
+                        imageDictionary.updateValue(image!, forKey: countString)
                     }
                     
-                    // Check if image exists. If it does, use it for the bet struct
-                    let filepath = String(betCount)
-                    self.storageRef.child(filepath).data(withMaxSize: 1024*1024, completion: { (data, error) in
-                        if error != nil {
+                    //After going through all of them, build the final bet array
+                    if betCount == self.totalBets {
+                        print("here is the image dictionary before creating the bets: \(imageDictionary)")
+
+                        // Go through the whole thing again, and add bet info with images
+                        for betCount in 1...self.totalBets {
+                            if isDictionary == true {
+                                
+                                // If this starts being a dictionary, will need some changes here
+                                let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
+                                
+                                let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                                
+                                newBetStruct.append(thisBetStruct)
+                            } else {
+                                
+                                let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
+                                var winnerLoserToggleBool = Bool()
+                                
+                                let betReceiver = thisBet["betReceiver"] as? String
+                                let betSender = thisBet["betSender"] as? String
+                                let betText = thisBet["betText"] as? String
+                                let stakesText = thisBet["stakesText"] as? String
+                                let betState = thisBet["betState"] as? String
+                                let betStateInt = Int(betState!)
+                                let winnerLoserString = thisBet["winnerLoserToggle"] as? String
+                                if winnerLoserString == "Loser" {
+                                    winnerLoserToggleBool = false
+                                } else {
+                                    winnerLoserToggleBool = true
+                                }
+                                
+                                let image = imageDictionary[String(betCount)]
+                                
+                                let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: winnerLoserToggleBool, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: betStateInt, image: image, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                                
+                                newBetStruct.append(thisBetStruct)
+                                
+                            }
                             
-                        } else {
-                            print("downloaded something??")
-                            image = UIImage(data: data!)!
+                            
+                            
+                            
+                            
                         }
-                    })
+                    }
+                    
+                    //Use this newBetStruct to get users bets
+                    
+                    let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
+                    self.buildBetArrays(betArray: userBets)
+                    
+                    self.pendingTableView.reloadData()
+                    self.completedTableView.reloadData()
+                    self.activeTableView.reloadData()
                     
                     
-                    
-                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: winnerLoserToggleBool, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: betStateInt, image: image, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
-                    
-                    
-                    newBetStruct.append(thisBetStruct)
-                    
-                }
+                })
                 
             }
-            
-            //Use this newBetStruct to get users bets
-            let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
-            self.buildBetArrays(betArray: userBets)
-            
-            self.pendingTableView.reloadData()
-            self.completedTableView.reloadData()
-            self.activeTableView.reloadData()
-            
-            let numberOfPendings = self.pendingTableView.numberOfRows(inSection: 0)
-            print("number of pending bets: \(numberOfPendings)")
-            
-            
         })
         
     }
