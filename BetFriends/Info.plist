@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Optimist_Bd.ttf</string>
+		<string>Optimist_Bdlt.ttf</string>
+		<string>Optimist_XLtlt.ttf</string>
+		<string>Optimist_SBd.ttf</string>
+		<string>Optimist_Ltlt.ttf</string>
+		<string>Optimist_Rg.ttf</string>
+		<string>Optimist_lt.ttf</string>
+		<string></string>
+		<string>Optimist_Lt.ttf</string>
+		<string>Optimist_XLt.ttf</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) camera use</string>
 	<key>NSPhotoLibraryUsageDescription</key>
