@@ -297,6 +297,13 @@ Stakes:</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" red="0.066666666669999999" green="0.55294117649999996" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Loading bets..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dqT-ci-4c5">
+                                <frame key="frameInset" minX="426" minY="82" width="108" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="14"/>
+                                <color key="textColor" red="0.066666666669999999" green="0.55294117649999996" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.95057189464569092" green="0.95075440406799316" blue="0.95054137706756592" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -314,6 +321,7 @@ Stakes:</string>
                         <outlet property="activityIndicator" destination="YAx-aq-rnu" id="NMK-WH-A7q"/>
                         <outlet property="completedTableView" destination="PWf-YA-WaS" id="UC5-2k-QHk"/>
                         <outlet property="horizontalScrollView" destination="Zmz-ma-cPp" id="9rh-X6-4z9"/>
+                        <outlet property="loadingLabel" destination="dqT-ci-4c5" id="Vhv-wf-NuT"/>
                         <outlet property="newBetButton" destination="vwq-fz-VFQ" id="CAv-MA-HSX"/>
                         <outlet property="pendingTableView" destination="Pte-Jv-9Uk" id="J4f-id-RqF"/>
                         <outlet property="segmentedControl" destination="wwM-Wm-srS" id="mZC-Wk-fso"/>
@@ -407,35 +415,7 @@ Stakes:</string>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bet text label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="p8O-Ul-uOq">
                                                 <frame key="frameInset" minX="2" minY="7" width="248" height="27"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZcJ-Iz-Sbb">
-                                                <frame key="frameInset" minX="11" minY="142" width="66" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ends:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qyA-El-kww">
-                                                <frame key="frameInset" minX="188" minY="142" width="43" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CreatedDate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aBa-W3-mt3">
-                                                <frame key="frameInset" minX="6" minY="162" width="87" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EndsDate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aSr-rp-Bay">
-                                                <frame key="frameInset" minX="177" minY="162" width="74" height="21"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <fontDescription key="fontDescription" name="Optimist-SemiBold" family="Optimist" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -446,11 +426,18 @@ Stakes:</string>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_____________________ Stakes:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VLA-HJ-lOr">
-                                                <frame key="frameInset" minX="49" minY="59" width="153" height="41"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="_____________________ Stakes:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VLA-HJ-lOr">
+                                                <frame key="frameInset" minX="49" minY="76" width="153" height="24"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="Optimist-SemiBold" family="Optimist" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8nW-v8-7eG">
+                                                <frame key="frameInset" minX="2" minY="36" width="42" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -485,15 +472,12 @@ Stakes:</string>
                     <connections>
                         <outlet property="acceptButton" destination="wBh-yY-Gd9" id="DAa-QG-Rka"/>
                         <outlet property="addPhotoButton" destination="sUO-kU-VqF" id="EWR-pO-eVC"/>
+                        <outlet property="betDetailsLabel" destination="8nW-v8-7eG" id="hzR-om-Lbo"/>
                         <outlet property="betDetailsView" destination="hWU-D0-Z7H" id="chV-uz-rGw"/>
                         <outlet property="betTextLabel" destination="p8O-Ul-uOq" id="PAV-4D-b0r"/>
                         <outlet property="cancelBetButton" destination="P9h-J0-y7p" id="wPY-AF-4ft"/>
                         <outlet property="closeBetButton" destination="SBb-US-dyw" id="TfF-v7-ECU"/>
-                        <outlet property="createdDateLabel" destination="aBa-W3-mt3" id="peo-ql-1oX"/>
-                        <outlet property="createdLabel" destination="ZcJ-Iz-Sbb" id="Dxn-ne-jYk"/>
                         <outlet property="detailsScrollView" destination="yQu-jz-uQl" id="yw7-h5-QwY"/>
-                        <outlet property="endDateLabel" destination="aSr-rp-Bay" id="J0Z-7Z-MYc"/>
-                        <outlet property="endLabel" destination="qyA-El-kww" id="s7A-zF-QqT"/>
                         <outlet property="friendProfPic" destination="aWo-16-l35" id="7Yw-qL-0Kh"/>
                         <outlet property="myProfPic" destination="1uB-Gl-YxZ" id="r93-g9-etc"/>
                         <outlet property="rejectButton" destination="Fjo-sp-5Cp" id="yJY-iD-6j0"/>
@@ -954,6 +938,6 @@ Stakes:</string>
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="nFz-5H-JKt"/>
+        <segue reference="Zhg-Km-4Gg"/>
     </inferredMetricsTieBreakers>
 </document>

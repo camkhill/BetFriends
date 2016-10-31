@@ -27,14 +27,11 @@ class BetDetailsViewController: UIViewController {
     @IBOutlet weak var closeBetButton: UIButton!
     @IBOutlet weak var staticStatusLabel: UILabel!
     @IBOutlet weak var betDetailsView: UIView!
+    @IBOutlet weak var betDetailsLabel: UILabel!
     
     @IBOutlet weak var detailsScrollView: UIScrollView!
-    @IBOutlet weak var createdLabel: UILabel!
     
-    @IBOutlet weak var createdDateLabel: UILabel!
     
-    @IBOutlet weak var endDateLabel: UILabel!
-    @IBOutlet weak var endLabel: UILabel!
     
 
     var thisBetIndex: Int!
@@ -64,23 +61,30 @@ class BetDetailsViewController: UIViewController {
         
         
         ///Position elements
+        let greyColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1)
         let screenSize = UIScreen.main.bounds.size
         let screenCenterX = CGFloat(screenSize.width/2)
         
         let profPicSize = CGFloat(screenSize.width/4)
         let profPicOffset = CGFloat(25)
         let topMargin = CGFloat(85)
-        let viewPadding = 10
+        let viewPadding = CGFloat(10)
         
         myProfPic.frame = CGRect(x: profPicOffset, y: topMargin, width: profPicSize, height: profPicSize)
         myProfPic.layer.cornerRadius = profPicSize/2
         myProfPic.layer.masksToBounds = true
+        myProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+        myProfPic.layer.borderWidth = 2
         
         friendProfPic.frame = CGRect(x: screenSize.width-profPicOffset-profPicSize, y: topMargin, width: profPicSize, height: profPicSize)
         friendProfPic.layer.cornerRadius = profPicSize/2
         friendProfPic.layer.masksToBounds = true
+        friendProfPic.layer.borderWidth = 2
+        friendProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
         
+        staticStatusLabel.frame = CGRect(x: 0, y: topMargin, width: staticStatusLabel.frame.width, height: 17)
         staticStatusLabel.center.x = screenCenterX
+        statusLabel.frame = CGRect(x: 0, y: staticStatusLabel.frame.maxY + viewPadding, width: statusLabel.frame.width, height: 17)
         statusLabel.center.x = screenCenterX
         
         
@@ -93,6 +97,8 @@ class BetDetailsViewController: UIViewController {
         detailsScrollView.frame.origin = CGPoint(x: detailsSideMargin, y: topMargin+profPicSize+detailsSideMargin)
         detailsScrollView.contentSize = CGSize(width: scrollViewWidth, height: 1000)
         betDetailsView.layer.cornerRadius = 10
+        betDetailsView.layer.borderColor = greyColor.cgColor
+        betDetailsView.layer.borderWidth = 2
         let detailsViewWidth = scrollViewWidth
         betDetailsView.frame.size.width = detailsViewWidth
         
@@ -102,18 +108,12 @@ class BetDetailsViewController: UIViewController {
         
         
         betTextLabel.frame.origin = CGPoint(x: viewPadding, y: viewPadding)
+        betDetailsLabel.frame.origin = CGPoint(x: viewPadding, y: betTextLabel.frame.maxY)
     
         stakesLabel.center.x = detailsViewWidth/2
         
         stakesTextLabel.frame.origin.x = CGFloat(viewPadding)
         
-        createdLabel.center.x = scrollViewWidth/4
-        
-        endLabel.center.x = scrollViewWidth*3/4
-        
-        createdDateLabel.center.x = scrollViewWidth/4
-        
-        endDateLabel.center.x = scrollViewWidth*3/4
         
         //////////////////////////
         

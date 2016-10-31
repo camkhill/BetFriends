@@ -23,6 +23,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var newBetButton: UIButton!
     @IBOutlet weak var signOutButton: UIBarButtonItem!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loadingLabel: UILabel!
     
     
     //temp cell
@@ -109,6 +110,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         //Set Activity indicator location
         activityIndicator.center = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height/2)
+        loadingLabel.isHidden = false
+        loadingLabel.center = CGPoint(x: activityIndicator.center.x, y: activityIndicator.center.y+30)
         
         //Set Margins
         let screenTopMargin = CGFloat(115)
@@ -640,30 +643,34 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // TODO set the created date, ending date
     func populateBetDetailsView(tappedBet : BetStruct, betDetailsViewController : BetDetailsViewController) -> Void {
         
-        betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
+        betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets " + tappedBet.betReceiver + " that..."
+        betDetailsViewController.betDetailsLabel.text = tappedBet.betText
+        
         let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
-        betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
+        betDetailsViewController.stakesLabel.text = stakesBeginningText
+        betDetailsViewController.stakesTextLabel.text = tappedBet.stakesText
         betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
         betDetailsViewController.myProfPic.image = currentUser.profilePicture
     }
     
     func layoutBetDetailsView(_ betDetailsViewController: BetDetailsViewController) -> Void {
         
-        let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.greatestFiniteMagnitude)
-        let fitSizeBet = betDetailsViewController.betTextLabel.sizeThatFits(fixWidthSize)
-        betDetailsViewController.betTextLabel.frame.size = fitSizeBet
-        betDetailsViewController.stakesLabel.frame.origin.y = betDetailsViewController.betTextLabel.frame.height+10
-        betDetailsViewController.stakesTextLabel.frame.origin.y = betDetailsViewController.stakesLabel.frame.origin.y + betDetailsViewController.stakesLabel.frame.height + 10
-        let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
-        betDetailsViewController.stakesTextLabel.frame.size = fitSizeStakes
-        let stakesBottom = CGFloat(betDetailsViewController.stakesTextLabel.frame.maxY)
-        betDetailsViewController.createdLabel.frame.origin.y = stakesBottom + 20
-        betDetailsViewController.endLabel.frame.origin.y = stakesBottom + 20
-        let createdLabelBottom = CGFloat(betDetailsViewController.createdLabel.frame.maxY)
-        betDetailsViewController.createdDateLabel.frame.origin.y = createdLabelBottom
-        betDetailsViewController.endDateLabel.frame.origin.y = createdLabelBottom
+        let margin = CGFloat(10)
+        let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-2*margin,
+                                  height: CGFloat.greatestFiniteMagnitude)
+        let fitSizeBet = betDetailsViewController.betDetailsLabel.sizeThatFits(fixWidthSize)
+        betDetailsViewController.betDetailsLabel.frame.size = fitSizeBet
+        betDetailsViewController.stakesLabel.frame = CGRect(x: margin,
+                                                            y: betDetailsViewController.betDetailsLabel.frame.maxY+margin,
+                                                            width: betDetailsViewController.betDetailsView.frame.width-2*margin,
+                                                            height: 23)
         
-        let betViewHeight = betDetailsViewController.endDateLabel.frame.maxY+20
+        let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
+        betDetailsViewController.stakesTextLabel.frame = CGRect(
+            origin: CGPoint(x: margin, y: betDetailsViewController.stakesLabel.frame.maxY),
+            size: fitSizeStakes)
+        
+        let betViewHeight = betDetailsViewController.stakesTextLabel.frame.maxY+20
         betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
         
         // IF the full bet details view is smaller than the initial scrollview, shrink it
@@ -697,9 +704,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func getWinnerLoserText(isWinnerLoser: Bool) -> String {
         let stakesBeginningText: String!
         if isWinnerLoser == true {
-            stakesBeginningText = "Winner gets to "
+            stakesBeginningText = "Winner gets to..."
         } else {
-            stakesBeginningText = "Loser has to "
+            stakesBeginningText = "Loser has to..."
         }
         return stakesBeginningText
     }
@@ -848,6 +855,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                     self.activeTableView.reloadData()
                                     print("reloaded all table views")
                                     self.activityIndicator.stopAnimating()
+                                    self.loadingLabel.isHidden = true
                                 }
                                 
                             }
