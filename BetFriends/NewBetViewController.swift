@@ -44,23 +44,27 @@ class NewBetViewController: UIViewController {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
       ////set position of everything in view//////
-
+        
+        let topMargin = CGFloat(100)
+        let sideMargin = CGFloat(25)
         let screenCenterX = screenSize.width/2
+        let effectiveScreenWidth = screenSize.width-2*sideMargin
+        let largeFontSize = CGFloat(20)
+        let smallFontSize = CGFloat(15)
+        let greyColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1)
+        let borderWidth = CGFloat(1)
+        let bottomButtonHeight = CGFloat(75)
+        
+        
+        opponentLabel.frame = CGRect(x: sideMargin, y: topMargin, width: effectiveScreenWidth, height: largeFontSize)
         
         //Define friend text entry
         friendTextView.layer.cornerRadius = 10
-        friendTextView.layer.borderColor = UIColor.gray.cgColor
-        friendTextView.layer.borderWidth = 0.5
-        friendTextView.frame = CGRect(origin: friendTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: friendTextView.frame.height))
+        friendTextView.layer.borderColor = greyColor.cgColor
+        friendTextView.layer.borderWidth = borderWidth
+        friendTextView.frame = CGRect(x: sideMargin, y: opponentLabel.frame.maxY, width: effectiveScreenWidth, height: friendTextView.frame.height)
         friendTextView.autocorrectionType = UITextAutocorrectionType(rawValue: 1)!
         
-        
-        //Define the bet view
-        /*betView.frame = CGRect(origin: betView.frame.origin, size: CGSize(width: screenSize.width-40, height: betView.frame.height))
-        betView.center.x = screenCenterX
-        betView.layer.cornerRadius = 10
-        betView.layer.borderColor = UIColor.grayColor().CGColor
-        betView.layer.borderWidth = 0.5*/
         
         betTextView.frame = CGRect(origin: betTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: betTextView.frame.height))
         betTextView.center.x = screenCenterX
@@ -81,7 +85,7 @@ class NewBetViewController: UIViewController {
         stakesTextView.layer.borderWidth = 0.5
         stakesTextView.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!
         
-        submitButton.center = CGPoint(x: screenCenterX,y: screenSize.height-50)
+        submitButton.frame = CGRect(x: 0, y: screenSize.height-bottomButtonHeight, width: screenSize.width, height: bottomButtonHeight)
     
         endDateLabel.isHidden = true
         

@@ -60,6 +60,9 @@ class BetDetailsViewController: UIViewController {
         closeBetButton.isHidden = true
         resultImage.isHidden = true
         
+        
+        
+        
         ///Position elements
         let screenSize = UIScreen.main.bounds.size
         let screenCenterX = CGFloat(screenSize.width/2)
@@ -117,23 +120,22 @@ class BetDetailsViewController: UIViewController {
         
         cancelBetButton.center.x = screenCenterX
         
-        rejectButton.frame.size = CGSize(width: screenSize.width/3, height: screenSize.width/10)
-        rejectButton.center.y = screenSize.height-detailsBottomMargin/2
-        rejectButton.center.x = screenSize.width*(1/3)-1
-        rejectButton.layer.cornerRadius = 10
+
+        rejectButton.frame = CGRect(x: 0, y: 9*screenSize.height/10, width: screenSize.width/2, height: screenSize.height/10)
+        rejectButton.layer.borderWidth = 1
+        rejectButton.layer.borderColor = UIColor.gray.cgColor
         
-        acceptButton.frame.size = CGSize(width: screenSize.width/3, height: screenSize.width/10)
-        acceptButton.center.y = screenSize.height-detailsBottomMargin/2
-        acceptButton.center.x = screenSize.width*(2/3)+1
-        acceptButton.layer.cornerRadius = 10
+        acceptButton.frame = CGRect(x: screenSize.width/2, y: 9*screenSize.height/10, width: screenSize.width/2, height: screenSize.height/10)
         
-        cancelBetButton.frame.size = CGSize(width: 2*screenSize.width/3, height: screenSize.width/10)
-        cancelBetButton.center = CGPoint(x: screenSize.width/2, y: screenSize.height-detailsBottomMargin/2)
-        cancelBetButton.layer.cornerRadius = 10
+        cancelBetButton.frame = CGRect(x: 0, y: screenSize.height-75, width: screenSize.width, height: 75)
+        
         
         let bottomButtonsCenter = CGPoint(x: screenCenterX, y: screenSize.height-detailsBottomMargin/3)
         addPhotoButton.center = bottomButtonsCenter
+        
         closeBetButton.center = bottomButtonsCenter
+        closeBetButton.backgroundColor = UIColor(colorLiteralRed: 17/255, green: 141/255, blue: 204/255, alpha: 1)
+        closeBetButton.frame = CGRect(x: 0, y: screenSize.height-75, width: screenSize.width, height: 75)
         
         
         resultImage.center.x = screenCenterX

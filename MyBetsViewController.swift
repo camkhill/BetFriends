@@ -22,6 +22,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var horizontalScrollView: UIScrollView!
     @IBOutlet weak var newBetButton: UIButton!
     @IBOutlet weak var signOutButton: UIBarButtonItem!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     
     //temp cell
@@ -66,7 +67,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         /////////// prepare the bets ////////////
         // Get all bets for the particular user
         
-        
+        activityIndicator.startAnimating()
         //betArray = getUsersBets(username: currentUser.username)
         //Separate them into pending, active, completed bets
         //buildBetArrays(betArray: betArray)
@@ -106,7 +107,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         newBetButton.layer.shadowOpacity = Float(0.5)
         newBetButton.layer.shadowRadius = CGFloat(3)
         
-        
+        //Set Activity indicator location
+        activityIndicator.center = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height/2)
         
         //Set Margins
         let screenTopMargin = CGFloat(115)
@@ -179,11 +181,20 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if tableView == self.pendingTableView {
             let cell = pendingTableView.dequeueReusableCell(withIdentifier: "pendingCell") as! PendingBetsTableViewCell
             let thisBet = pendingArray[indexPath.row]
-            
+            profPicSize = CGFloat(tableViewSize.width/5)
             let margin = CGFloat(15)
             cell.frame.size.width = tableView.frame.width
             
             let fixWidthSize = CGSize(width: cell.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            
+            // Set up user's prof pic
+            let usersProfPic = currentUser.profilePicture
+            cell.userProfPicImage.image = usersProfPic
+            cell.userProfPicImage.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.userProfPicImage.layer.cornerRadius = profPicSize/2
+            cell.userProfPicImage.layer.masksToBounds = true
+            cell.userProfPicImage.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.userProfPicImage.layer.borderWidth = 2
             
             // Set up friend prof pic
             var friendProfPic: UIImage!
@@ -194,10 +205,9 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     }
                 }
             }
-            
-            profPicSize = CGFloat(tableViewSize.width/4)
+
             cell.profPicImageView.image = friendProfPic
-            cell.profPicImageView.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.profPicImageView.frame = CGRect(x: margin+3*profPicSize/4, y: margin+5, width: profPicSize, height: profPicSize)
             cell.profPicImageView.layer.cornerRadius = profPicSize/2
             cell.profPicImageView.layer.masksToBounds = true
             cell.profPicImageView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
@@ -205,7 +215,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
             
             cell.betSentLabel.text = String(thisBet.betSender + " sent " + thisBet.betReceiver + " a bet").uppercased()
-            cell.betSentLabel.frame = CGRect(x: margin+profPicSize+margin, y: 0, width: cell.frame.width-3*margin-profPicSize, height: 18)
+            cell.betSentLabel.frame = CGRect(x: margin+7*profPicSize/4+margin, y: 0, width: cell.frame.width-3*margin-profPicSize, height: 18)
             cell.betSentLabel.center.y = margin+5+profPicSize/2
             cell.betSentLabel.textColor = UIColor(colorLiteralRed: 140/255, green: 140/255, blue: 140/255, alpha: 1)
 
@@ -250,21 +260,24 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         } else if tableView == self.activeTableView {
             let cell = activeTableView.dequeueReusableCell(withIdentifier: "activeCell") as! ActiveBetTableViewCell
-            cell.layer.cornerRadius = 10
-            let margin = CGFloat(10)
-            profPicSize = CGFloat(tableViewSize.width/4)
+            cell.frame.size.width = tableView.frame.width
+            //cell.layer.cornerRadius = 10
+            let thisBet = activeArray[indexPath.row]
+            let margin = CGFloat(15)
+            let fixWidthSize = CGSize(width: cell.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+
+            profPicSize = CGFloat(tableViewSize.width/5)
             
             // TODO Update the time remaining based on the endDate field, or if this is nil say "Open Bet"
-            cell.timeRemainingLabel.text = "1 Day Left"
-            cell.timeRemainingLabel.frame.size = CGSize(width: tableViewSize.width-2*profPicSize-3*margin, height: 25)
-            cell.timeRemainingLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.timeRemainingLabel.center.y = CGFloat(margin+profPicSize/2)
-            
+            cell.timeRemainingLabel.text = String("1 Day Left")?.uppercased()
+            cell.timeRemainingLabel.frame = CGRect(x: cell.frame.size.width/2+margin, y: margin+5 , width: cell.frame.size.width/2-2*margin, height: 25)
             
             cell.myProfPic.image = currentUser.profilePicture
-            cell.myProfPic.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
+            cell.myProfPic.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
             cell.myProfPic.layer.cornerRadius = profPicSize/2
             cell.myProfPic.layer.masksToBounds = true
+            cell.myProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.myProfPic.layer.borderWidth = 2
             
             var friendProfPicImage: UIImage!
             for users in userArray {
@@ -275,31 +288,36 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             cell.friendProfPic.image = friendProfPicImage
-            cell.friendProfPic.frame = CGRect(x: tableViewSize.width-margin-profPicSize, y: margin, width: profPicSize, height: profPicSize)
+            cell.friendProfPic.frame = CGRect(x: margin+3*profPicSize/4, y: margin+5, width: profPicSize, height: profPicSize)
             cell.friendProfPic.layer.cornerRadius = profPicSize/2
             cell.friendProfPic.layer.masksToBounds = true
+            cell.friendProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.friendProfPic.layer.borderWidth = 2
             
-            // TODO populate bet with correct text
-            cell.betTextLabel.text = activeArray[indexPath.row].betSender + " bets that " + activeArray[indexPath.row].betText
-            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            cell.whoBetsWhoLabel.text = thisBet.betSender + " bets " + thisBet.betReceiver + " that..."
+            cell.whoBetsWhoLabel.frame = CGRect(x: margin, y: cell.myProfPic.frame.maxY+margin, width: cell.frame.width-2*margin, height: 15)
+
+            
+            cell.betTextLabel.text = thisBet.betText
             let fitSizeBet = cell.betTextLabel.sizeThatFits(fixWidthSize)
-            cell.betTextLabel.frame = CGRect(x: margin, y: profPicSize+2*margin, width: fitSizeBet.width, height: fitSizeBet.height)
+            cell.betTextLabel.frame = CGRect(x: margin, y: cell.whoBetsWhoLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeBet.height)
             
-            cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.stakesLabel.frame.origin.y = cell.betTextLabel.frame.origin.y+cell.betTextLabel.frame.height-5
+
             
-            // TODO populate text with "Loser has to..." or "Winner has to..."
             let stakesBegnningText: String!
-            if activeArray[indexPath.row].winnerLoserToggle == true {
-                stakesBegnningText = "Winner gets to "
+            if thisBet.winnerLoserToggle == true {
+                stakesBegnningText = "Winner gets to..."
             } else {
-                stakesBegnningText = "Loser has to "
+                stakesBegnningText = "Loser has to..."
             }
             
-            cell.stakesTextLabel.text = stakesBegnningText + activeArray[indexPath.row].stakesText
+            cell.stakesLabel.text = stakesBegnningText
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.betTextLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 15)
+            
+            cell.stakesTextLabel.text = thisBet.stakesText
             
             let fitSizeStakes = cell.stakesTextLabel.sizeThatFits(fixWidthSize)
-            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.origin.y+cell.stakesLabel.frame.height+margin, width: fitSizeStakes.width, height: fitSizeStakes.height)
+            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeStakes.height)
             
             thisRowHeight = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
             self.activeTableView.rowHeight = thisRowHeight
@@ -307,81 +325,98 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             
             cell.backgroundColor = UIColor.clear
-            let whiteCellView: UIView = UIView(frame: CGRect(x: 0, y: 5, width: cell.frame.width , height: cell.frame.height-10))
-            whiteCellView.backgroundColor = UIColor.white
-            whiteCellView.layer.cornerRadius = 10
-            whiteCellView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 222/255).cgColor
-            whiteCellView.layer.borderWidth = 2
-            cell.addSubview(whiteCellView)
-            cell.sendSubview(toBack: whiteCellView)
+            cell.whiteBackgroundView.frame = CGRect(x: 0, y: 5, width: cell.frame.width, height: cell.frame.height-10)
+            cell.whiteBackgroundView.backgroundColor = UIColor.white
+            cell.whiteBackgroundView.layer.cornerRadius = 10
+            cell.whiteBackgroundView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.whiteBackgroundView.layer.borderWidth = 2
             
             return cell
         } else if tableView == self.completedTableView {
             let cell = completedTableView.dequeueReusableCell(withIdentifier: "completedCell", for: indexPath) as! CompletedBetTableViewCell
-            cell.layer.cornerRadius = 10
+            let thisBet = completedArray[indexPath.row]
+            cell.frame.size.width = tableView.frame.width
+
+            profPicSize = CGFloat(tableViewSize.width/5)
+            let margin = CGFloat(15)
+            let fixWidthSize = CGSize(width: cell.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+
             
-            profPicSize = CGFloat(tableViewSize.width/4)
-            let margin = CGFloat(10)
+            cell.myProfPic.image = currentUser.profilePicture
+            cell.myProfPic.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.myProfPic.layer.cornerRadius = profPicSize/2
+            cell.myProfPic.layer.masksToBounds = true
+            cell.myProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.myProfPic.layer.borderWidth = 2
+            
+            let friendProfPic = getFriendProfPic(bet: thisBet)
+            cell.friendProfPic.image = friendProfPic
+            cell.friendProfPic.frame = CGRect(x: margin+3*profPicSize/4, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.friendProfPic.layer.cornerRadius = profPicSize/2
+            cell.friendProfPic.layer.masksToBounds = true
+            cell.friendProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.friendProfPic.layer.borderWidth = 2
             
             //TODO Update win/loss field based on who won the bet
+            var winnerUser: String!
+            var loserUser: String!
+            
             var winlossText =  String()
-            if completedArray[indexPath.row].betState == 2 {
-                if completedArray[indexPath.row].betSender == currentUser.username {
-                    winlossText = "You won!"
+            if thisBet.betState == 2 {
+                if thisBet.betSender == currentUser.username {
+                    winnerUser = thisBet.betSender
+                    loserUser = thisBet.betReceiver
                 } else {
-                    winlossText = "You lost!"
+                    winnerUser = thisBet.betReceiver
+                    loserUser = thisBet.betSender
                 }
-            } else if completedArray[indexPath.row].betState == 3 {
-                if completedArray[indexPath.row].betSender == currentUser.username {
-                    winlossText = "You lost :("
+            } else if thisBet.betState == 3 {
+                if thisBet.betSender == currentUser.username {
+                    winnerUser = thisBet.betReceiver
+                    loserUser = thisBet.betSender
                 } else {
-                    winlossText = "You won :)"
+                    winnerUser = thisBet.betSender
+                    loserUser = thisBet.betReceiver
                 }
                 
             }
             
-            cell.winLossLabel.text = winlossText
+            winlossText = winnerUser + " won the bet!"
+            
+            cell.winLossLabel.text = String(winlossText)?.uppercased()
+            cell.winLossLabel.textColor = UIColor(colorLiteralRed: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+
             
             
-            cell.winLossLabel.frame.size = CGSize(width: tableViewSize.width-2*profPicSize-3*margin, height: 25)
-            cell.winLossLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.winLossLabel.center.y = CGFloat(margin+profPicSize/2)
+            cell.winLossLabel.frame = CGRect(x: margin+7*profPicSize/4+margin, y: 0, width: cell.frame.width-3*margin-profPicSize, height: 18)
+            cell.winLossLabel.center.y = cell.myProfPic.center.y
             
-            cell.myProfPic.image = currentUser.profilePicture
-            cell.myProfPic.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
-            cell.myProfPic.layer.cornerRadius = profPicSize/2
-            cell.myProfPic.layer.masksToBounds = true
+            cell.whoBetWhoLabel.text = thisBet.betSender + " bet " + thisBet.betReceiver + " that..."
+            cell.whoBetWhoLabel.frame = CGRect(x: margin, y: cell.myProfPic.frame.maxY+margin, width: cell.frame.width-2*margin, height: 15)
+
             
-            let friendProfPic = getFriendProfPic(bet: completedArray[indexPath.row])
-            cell.friendProfPic.image = friendProfPic
-            cell.friendProfPic.frame = CGRect(x: tableViewSize.width-margin-profPicSize, y: margin, width: profPicSize, height: profPicSize)
-            cell.friendProfPic.layer.cornerRadius = profPicSize/2
-            cell.friendProfPic.layer.masksToBounds = true
-            
-            // TODO populate bet with correct text
-            cell.betTextLabel.text = completedArray[indexPath.row].betSender + " bets that " + completedArray[indexPath.row].betText
-            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            cell.betTextLabel.text = thisBet.betText
             let fitSizeBet = cell.betTextLabel.sizeThatFits(fixWidthSize)
-            cell.betTextLabel.frame = CGRect(x: margin, y: profPicSize+2*margin, width: fitSizeBet.width, height: fitSizeBet.height)
+            cell.betTextLabel.frame = CGRect(x: margin, y: cell.whoBetWhoLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeBet.height)
             
             cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
             cell.stakesLabel.frame.origin.y = cell.betTextLabel.frame.origin.y+cell.betTextLabel.frame.height-5
             
-            // TODO populate text with "Loser has to..." or "Winner has to..."
             let stakesBegnningText: String!
-            if completedArray[indexPath.row].winnerLoserToggle == true {
-                stakesBegnningText = "Winner gets to "
+            if thisBet.winnerLoserToggle == true {
+                stakesBegnningText = winnerUser + " gets to..."
             } else {
-                stakesBegnningText = "Loser has to "
+                stakesBegnningText = loserUser + " had to..."
             }
             
+            cell.stakesLabel.text = stakesBegnningText
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.betTextLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 15)
             
-            cell.stakesTextLabel.text = stakesBegnningText + completedArray[indexPath.row].stakesText
+            cell.stakesTextLabel.text = thisBet.stakesText
+            
             let fitSizeStakes = cell.stakesTextLabel.sizeThatFits(fixWidthSize)
-            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.origin.y+cell.stakesLabel.frame.height+margin, width: fitSizeStakes.width, height: fitSizeStakes.height)
+            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeStakes.height)
             
-            cell.resultLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.resultLabel.frame.origin.y = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
             
             // TODO if image exists, display the image. If not, display "Add a pic!" button
             //if completedArray[indexPath.row].image == nil {
@@ -398,12 +433,12 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             
             
-            if completedArray[indexPath.row].image != nil {
+            if thisBet.image != nil {
                 print("image exists")
                 cell.addPhotoButton.isHidden = true
                 cell.photoImage.isHidden = false
                 let photoSize = CGFloat(tableViewSize.width-2*margin)
-                let photoPosition = CGPoint(x: margin, y: cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin)
+                let photoPosition = CGPoint(x: margin, y: cell.stakesTextLabel.frame.maxY+margin)
                 cell.photoImage.frame = CGRect(x: photoPosition.x, y: photoPosition.y, width: photoSize, height: photoSize)
                 cell.photoImage.layer.cornerRadius = 10
                 cell.photoImage.layer.masksToBounds = true
@@ -418,7 +453,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.photoImage.isHidden = true
                 cell.addPhotoButton.isHidden = false
                 cell.addPhotoButton.center.x = CGFloat(tableViewSize.width/2)
-                cell.addPhotoButton.frame.origin.y = cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin
+                cell.addPhotoButton.frame.origin.y = cell.stakesTextLabel.frame.maxY+margin
                 
                 thisRowHeight = cell.addPhotoButton.frame.origin.y+cell.addPhotoButton.frame.height+margin
                 self.completedTableView.rowHeight = thisRowHeight
@@ -428,13 +463,11 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             
             cell.backgroundColor = UIColor.clear
-            let whiteCellView: UIView = UIView(frame: CGRect(x: 0, y: 5, width: cell.frame.width , height: cell.frame.height-10))
-            whiteCellView.backgroundColor = UIColor.white
-            whiteCellView.layer.cornerRadius = 10
-            whiteCellView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 222/255).cgColor
-            whiteCellView.layer.borderWidth = 2
-            cell.addSubview(whiteCellView)
-            cell.sendSubview(toBack: whiteCellView)
+            cell.whiteBackgroundView.frame = CGRect(x: 0, y: 5, width: cell.frame.width, height: cell.frame.height-10)
+            cell.whiteBackgroundView.backgroundColor = UIColor.white
+            cell.whiteBackgroundView.layer.cornerRadius = 10
+            cell.whiteBackgroundView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.whiteBackgroundView.layer.borderWidth = 2
             
             
             return cell
@@ -759,7 +792,6 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         print("downloaded image for this bet: \(betCount)")
                         image = UIImage(data: data!)!
                         imageDictionary.updateValue(image!, forKey: countString)
-
                     }
                     
                     //After going through all of them, build the final bet array
@@ -815,6 +847,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                     self.completedTableView.reloadData()
                                     self.activeTableView.reloadData()
                                     print("reloaded all table views")
+                                    self.activityIndicator.stopAnimating()
                                 }
                                 
                             }
