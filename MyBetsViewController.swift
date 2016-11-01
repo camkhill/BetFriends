@@ -125,6 +125,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         horizontalScrollView.frame.size = CGSize(width: horizontalScrollViewWidth, height: horizontalScrollViewHeight)
         horizontalScrollView.contentSize = CGSize(width: screenWidth3, height: horizontalScrollViewHeight)
         horizontalScrollView.contentOffset = CGPoint(x: horizontalScrollViewWidth, y: 0)
+        horizontalScrollView.showsHorizontalScrollIndicator = false
         
         // Do any additional setup after loading the view.
         
@@ -608,7 +609,13 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 
                 // TODO if there is an image, display it, otherwise display "add Photo" (or just always display add/change photo?)
-                betDetailsViewController.addPhotoButton.isHidden = false
+                if tappedBet.image != nil {
+                    betDetailsViewController.resultImage.image = tappedBet.image
+                    betDetailsViewController.resultImage.isHidden = false
+                    betDetailsViewController.detailsScrollView.frame.size.height = betDetailsViewController.detailsScrollView.frame.height+betDetailsViewController.detailsBottomMargin-20
+                } else {
+                    betDetailsViewController.addPhotoButton.isHidden = false
+                }
                 
                 layoutBetDetailsView(betDetailsViewController)
                 
@@ -651,6 +658,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         betDetailsViewController.stakesTextLabel.text = tappedBet.stakesText
         betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
         betDetailsViewController.myProfPic.image = currentUser.profilePicture
+        
     }
     
     func layoutBetDetailsView(_ betDetailsViewController: BetDetailsViewController) -> Void {
@@ -670,8 +678,22 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             origin: CGPoint(x: margin, y: betDetailsViewController.stakesLabel.frame.maxY),
             size: fitSizeStakes)
         
-        let betViewHeight = betDetailsViewController.stakesTextLabel.frame.maxY+20
-        betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
+        var betViewHeight: CGFloat!
+        
+        
+        if betDetailsViewController.resultImage.image != nil {
+            print("there is an image for this bet, lets build it")
+            betDetailsViewController.resultImage.frame = CGRect(x: margin,
+                                                                y: betDetailsViewController.stakesTextLabel.frame.maxY+margin,
+                                                                width: betDetailsViewController.betDetailsView.frame.width-2*margin,
+                                                                height: betDetailsViewController.betDetailsView.frame.width-2*margin)
+            betViewHeight = betDetailsViewController.resultImage.frame.maxY+2*margin
+            
+        } else {
+            betViewHeight = betDetailsViewController.stakesTextLabel.frame.maxY+20
+            betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
+        }
+        
         
         // IF the full bet details view is smaller than the initial scrollview, shrink it
         if betViewHeight < betDetailsViewController.detailsScrollView.frame.size.height {
@@ -844,18 +866,23 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                 print("bet appended with id: \(betCount)")
                                 
                                 if betCount == self.totalBets {
-                                    //Use this newBetStruct to get users bets
+                                    // Use this newBetStruct to get users bets
+                                    // Added a wait function to allow images to load into memory i think...
+                                    //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+                                    //DispatchQueue.main.asyncAfter(deadline: when) {
+                                        
+                                        let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
+                                        self.buildBetArrays(betArray: userBets)
                                     
-                                    let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
-                                    self.buildBetArrays(betArray: userBets)
                                     
-                                    
-                                    self.pendingTableView.reloadData()
-                                    self.completedTableView.reloadData()
-                                    self.activeTableView.reloadData()
-                                    print("reloaded all table views")
-                                    self.activityIndicator.stopAnimating()
-                                    self.loadingLabel.isHidden = true
+                                        self.pendingTableView.reloadData()
+                                        self.completedTableView.reloadData()
+                                        self.activeTableView.reloadData()
+                                        print("reloaded all table views")
+                                        self.activityIndicator.stopAnimating()
+                                        self.loadingLabel.isHidden = true
+                                   //}
+                                
                                 }
                                 
                             }

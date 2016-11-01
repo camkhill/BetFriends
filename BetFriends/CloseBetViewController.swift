@@ -18,18 +18,22 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
     
     @IBOutlet weak var myProfPic: UIImageView!
     @IBOutlet weak var friendProfPic: UIImageView!
-    @IBOutlet weak var closeBetLabel: UILabel!
     @IBOutlet weak var betDetailsView: UIView!
     @IBOutlet weak var betTextLabel: UILabel!
-    @IBOutlet weak var stakesTextLabel: UILabel!
     @IBOutlet weak var stakesLabel: UILabel!
-    @IBOutlet weak var whoWonLabel: UILabel!
     @IBOutlet weak var winnerToggle: UISegmentedControl!
     @IBOutlet weak var resultImage: UIImageView!
     @IBOutlet weak var addPhotoButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
     
+    @IBOutlet weak var userPicView: UIView!
+    @IBOutlet weak var userWonLabel: UILabel!
+    @IBOutlet weak var friendPicView: UIView!
+    @IBOutlet weak var friendWonLabel: UILabel!
+    
+    @IBOutlet weak var xButton: UIButton!
+    @IBOutlet weak var navView: UIView!
+    @IBOutlet weak var closeBetNavLabel: UILabel!
     
     private var imagePicker: UIImagePickerController!
     
@@ -50,29 +54,57 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         
         let screenCenterX = CGFloat(screenSize.width/2)
         let profPicSize = CGFloat(3*screenUnit)
-        let profPicOffset = CGFloat(25)
-    
-        cancelButton.center.x = screenCenterX
-        cancelButton.frame.origin.y = screenUnit
+        let profPicOffset = CGFloat(35)
+        let mediumMargin = CGFloat(20)
+        let smallMargin = CGFloat(10)
+        let cornerRadius = CGFloat(10)
         
-        myProfPic.frame = CGRect(x: profPicOffset, y: screenUnit, width: profPicSize, height: profPicSize)
+        navView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: 75)
+        navView.backgroundColor = UIColor.white
+        navView.layer.borderWidth = 0.5
+        navView.layer.borderColor = UIColor.gray.cgColor
+        closeBetNavLabel.frame.origin.y = CGFloat(35)
+        closeBetNavLabel.center.x = screenSize.width/2
+        xButton.frame.origin.y = CGFloat(35)
+        xButton.frame.origin.x = screenSize.width-40
+        
+        let picViewSize = CGSize(width: profPicSize+2*smallMargin, height: profPicSize+userWonLabel.frame.height+2*smallMargin)
+        let picFrame = CGRect(x: smallMargin,
+                              y: smallMargin,
+                              width: profPicSize,
+                              height: profPicSize)
+        let whoWonFrame = CGRect(x: smallMargin, y: profPicSize+2*smallMargin, width: profPicSize, height: 20)
+        
+        userPicView.frame = CGRect(x: profPicOffset,
+                                   y: navView.frame.maxY+mediumMargin,
+                                   width: picViewSize.width,
+                                   height: picViewSize.height)
+        userPicView.layer.cornerRadius = cornerRadius
+        myProfPic.frame = picFrame
+        userWonLabel.frame = whoWonFrame
+        
+        friendPicView.frame = CGRect(x: screenSize.width-profPicOffset-picViewSize.width,
+                                     y: navView.frame.maxY+mediumMargin,
+                                     width: picViewSize.width,
+                                     height: picViewSize.height)
+        friendPicView.layer.cornerRadius = cornerRadius
+        
         myProfPic.layer.cornerRadius = profPicSize/2
         myProfPic.layer.masksToBounds = true
-        friendProfPic.frame = CGRect(x: screenSize.width-profPicOffset-profPicSize, y: screenUnit, width: profPicSize, height: profPicSize)
+        
+        friendProfPic.frame = picFrame
         friendProfPic.layer.cornerRadius = profPicSize/2
         friendProfPic.layer.masksToBounds = true
-        closeBetLabel.center = CGPoint(x: screenCenterX, y: myProfPic.center.y)
+        
+        friendWonLabel.frame = whoWonFrame
+        
         
         let detailsSideMargin = CGFloat(15)
         let detailsViewWidth = CGFloat(screenSize.width-2*detailsSideMargin)
         //TODO height dynamically
-        betDetailsView.frame = CGRect(x: detailsSideMargin, y: 4*screenUnit+10, width: detailsViewWidth, height: 5*screenUnit)
+        betDetailsView.frame = CGRect(x: detailsSideMargin, y: userPicView.frame.maxY+mediumMargin, width: detailsViewWidth, height: 75)
         betDetailsView.layer.cornerRadius = 10
         
-        let margin = CGFloat(10)
-        
-        whoWonLabel.frame.origin = CGPoint(x: 0, y: 9*screenUnit+15)
-        whoWonLabel.center.x = screenCenterX
         
         winnerToggle.frame = CGRect(x: screenSize.width/4, y: 10*screenUnit+10, width: screenSize.width/2, height: screenUnit)
         winnerToggle.selectedSegmentIndex = -1
@@ -83,9 +115,8 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         resultImage.layer.masksToBounds = true
         addPhotoButton.center = resultImage.center
         
+        submitButton.frame = CGRect(x: 0, y: screenSize.height-75, width: screenSize.width, height: 75)
         submitButton.center = CGPoint(x: screenCenterX, y: screenHeight-2*screenUnit/3)
-        
-        
         
         
     }
@@ -158,11 +189,12 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     
-    @IBAction func onTapCancel(_ sender: AnyObject) {
-
+    @IBAction func onTapX(_ sender: AnyObject) {
         
         dismiss(animated: true) {}
+
     }
+    
     
     
     // Upload image, change bet state to 2 or 3,

@@ -25,6 +25,7 @@ class NewBetViewController: UIViewController {
     @IBOutlet weak var stakesTextView: UITextView!
     @IBOutlet weak var endDateLabel: UILabel!
     @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var endDatePicker: UIDatePicker!
     
     
     let autofillArray = ["sara","vic","zach","mike","cristy","susan","sue"]
@@ -45,15 +46,19 @@ class NewBetViewController: UIViewController {
         view.addGestureRecognizer(tap)
       ////set position of everything in view//////
         
-        let topMargin = CGFloat(100)
+        let topMargin = CGFloat(75)
         let sideMargin = CGFloat(25)
         let screenCenterX = screenSize.width/2
         let effectiveScreenWidth = screenSize.width-2*sideMargin
         let largeFontSize = CGFloat(20)
+        let veryLargeFontSize = CGFloat(30)
         let smallFontSize = CGFloat(15)
         let greyColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1)
         let borderWidth = CGFloat(1)
         let bottomButtonHeight = CGFloat(75)
+        let smallMargin = CGFloat(5)
+        let largeMargin = CGFloat(10)
+        let cornerRadius = CGFloat(10)
         
         
         opponentLabel.frame = CGRect(x: sideMargin, y: topMargin, width: effectiveScreenWidth, height: largeFontSize)
@@ -62,32 +67,39 @@ class NewBetViewController: UIViewController {
         friendTextView.layer.cornerRadius = 10
         friendTextView.layer.borderColor = greyColor.cgColor
         friendTextView.layer.borderWidth = borderWidth
-        friendTextView.frame = CGRect(x: sideMargin, y: opponentLabel.frame.maxY, width: effectiveScreenWidth, height: friendTextView.frame.height)
+        friendTextView.frame = CGRect(x: sideMargin,
+                                      y: opponentLabel.frame.maxY+smallMargin,
+                                      width: effectiveScreenWidth,
+                                      height: veryLargeFontSize)
         friendTextView.autocorrectionType = UITextAutocorrectionType(rawValue: 1)!
         
+        whatsTheBetLabel.frame = CGRect(x: sideMargin, y: friendTextView.frame.maxY+largeMargin, width: effectiveScreenWidth, height: largeFontSize)
+        ibetthatLabel.frame = CGRect(x: sideMargin, y: whatsTheBetLabel.frame.maxY+smallMargin, width: effectiveScreenWidth, height: smallFontSize)
         
-        betTextView.frame = CGRect(origin: betTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: betTextView.frame.height))
-        betTextView.center.x = screenCenterX
+        betTextView.frame = CGRect(x: sideMargin, y: ibetthatLabel.frame.maxY+smallMargin, width: effectiveScreenWidth, height: 5*largeFontSize)
         betTextView.layer.cornerRadius = 10
-        betTextView.layer.borderColor = UIColor.gray.cgColor
-        betTextView.layer.borderWidth = 0.5
+        betTextView.layer.borderColor = greyColor.cgColor
+        betTextView.layer.borderWidth = borderWidth
         betTextView.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!
         
+        whatStakesLabel.frame = CGRect(x: sideMargin, y: betTextView.frame.maxY+largeMargin, width: effectiveScreenWidth, height: largeFontSize)
         //Define segmented controller properties
-        loserwinnerControl.frame.size = CGSize(width: screenSize.width-60, height: loserwinnerControl.frame.height)
+        loserwinnerControl.frame = CGRect(origin: CGPoint(x: sideMargin, y: whatStakesLabel.frame.maxY+smallMargin),
+                                          size: CGSize(width: screenSize.width-60, height: loserwinnerControl.frame.height+10))
         loserwinnerControl.center.x = screenCenterX
         
         //Define the stakes view
-        stakesTextView.frame = CGRect(origin: stakesTextView.frame.origin, size: CGSize(width: screenSize.width-40, height: stakesTextView.frame.height))
+        stakesTextView.frame = CGRect(x: sideMargin, y: loserwinnerControl.frame.maxY+smallMargin, width: effectiveScreenWidth, height: 5*largeFontSize)
         stakesTextView.center.x = screenCenterX
-        stakesTextView.layer.cornerRadius = 10
-        stakesTextView.layer.borderColor = UIColor.gray.cgColor
-        stakesTextView.layer.borderWidth = 0.5
+        stakesTextView.layer.cornerRadius = cornerRadius
+        stakesTextView.layer.borderColor = greyColor.cgColor
+        stakesTextView.layer.borderWidth = borderWidth
         stakesTextView.autocapitalizationType = UITextAutocapitalizationType(rawValue: 0)!
         
         submitButton.frame = CGRect(x: 0, y: screenSize.height-bottomButtonHeight, width: screenSize.width, height: bottomButtonHeight)
     
         endDateLabel.isHidden = true
+        endDatePicker.isHidden = true
         
       /////////////////////////////////////////////
 
@@ -105,24 +117,31 @@ class NewBetViewController: UIViewController {
     @IBAction func onTapSubmit(_ sender: AnyObject) {
         
         //Send the bet to Firebase
-        var betDictionary = [String:AnyObject]()
-        
-        let friendText = friendTextView.text
-        let betText = betTextView.text
-        let loserwinnerString: String!
-        let loserwinnerChoice = loserwinnerControl.selectedSegmentIndex
-        if loserwinnerChoice == 0 {
-            loserwinnerString = "Loser"
+        if friendTextView.text! == "" || betTextView.text == "" || stakesTextView.text == "" {
+            let missingInfoAlert = UIAlertController.init(title: "Missing Information", message: "Make sure you have entered a friend, a bet, and the stakes and try again!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel) { (action) in }
+            missingInfoAlert.addAction(okAction)
+            present(missingInfoAlert, animated: true, completion: {})
         } else {
-            loserwinnerString = "Winner"
+            var betDictionary = [String:AnyObject]()
+            
+            let friendText = friendTextView.text
+            let betText = betTextView.text
+            let loserwinnerString: String!
+            let loserwinnerChoice = loserwinnerControl.selectedSegmentIndex
+            if loserwinnerChoice == 0 {
+                loserwinnerString = "Loser"
+            } else {
+                loserwinnerString = "Winner"
+            }
+            let stakesText = stakesTextView.text
+            let endDate = "Today"
+            
+            writeBetToFirebase(betText: betText!, stakesText: stakesText!, friendUsername: friendText!, winnerLoserToggle: loserwinnerString)
+            
+            performSegue(withIdentifier: "newbettomybets", sender: self)
+            //performSegueWithIdentifier("ConfirmationSegue", sender: nil)
         }
-        let stakesText = stakesTextView.text
-        let endDate = "Today"
-        
-        writeBetToFirebase(betText: betText!, stakesText: stakesText!, friendUsername: friendText!, winnerLoserToggle: loserwinnerString)
-        
-        performSegue(withIdentifier: "newbettomybets", sender: self)
-        //performSegueWithIdentifier("ConfirmationSegue", sender: nil)
         
     }
 

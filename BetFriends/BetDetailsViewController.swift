@@ -41,6 +41,8 @@ class BetDetailsViewController: UIViewController {
     var currentBet: BetStruct!
     var segueType: String!
     var betsRef: FIRDatabaseReference!
+    let detailsBottomMargin = CGFloat(100)
+
     
     
     override func viewDidLoad() {
@@ -55,7 +57,7 @@ class BetDetailsViewController: UIViewController {
         addPhotoButton.isHidden = true
         cancelBetButton.isHidden = true
         closeBetButton.isHidden = true
-        resultImage.isHidden = true
+        //resultImage.isHidden = true
         
         
         
@@ -82,15 +84,14 @@ class BetDetailsViewController: UIViewController {
         friendProfPic.layer.borderWidth = 2
         friendProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
         
-        staticStatusLabel.frame = CGRect(x: 0, y: topMargin, width: staticStatusLabel.frame.width, height: 17)
+        staticStatusLabel.frame = CGRect(x: 0, y: topMargin, width: staticStatusLabel.frame.width, height: 20)
         staticStatusLabel.center.x = screenCenterX
-        statusLabel.frame = CGRect(x: 0, y: staticStatusLabel.frame.maxY + viewPadding, width: statusLabel.frame.width, height: 17)
+        statusLabel.frame = CGRect(x: 0, y: staticStatusLabel.frame.maxY + viewPadding, width: statusLabel.frame.width, height: 20)
         statusLabel.center.x = screenCenterX
         
         
         ////// Details view //////
         let detailsSideMargin = CGFloat(15)
-        let detailsBottomMargin = CGFloat(100)
         let scrollViewWidth = CGFloat(screenSize.width-2*detailsSideMargin)
         detailsScrollView.frame.size = CGSize(width: scrollViewWidth, height: screenSize.height-topMargin-profPicSize-detailsBottomMargin)
         detailsScrollView.layer.cornerRadius = 10
@@ -114,11 +115,11 @@ class BetDetailsViewController: UIViewController {
         
         stakesTextLabel.frame.origin.x = CGFloat(viewPadding)
         
+        resultImage.layer.cornerRadius = 10
+        resultImage.layer.masksToBounds = true
+        
         
         //////////////////////////
-        
-        
-        cancelBetButton.center.x = screenCenterX
         
 
         rejectButton.frame = CGRect(x: 0, y: 9*screenSize.height/10, width: screenSize.width/2, height: screenSize.height/10)
@@ -128,7 +129,8 @@ class BetDetailsViewController: UIViewController {
         acceptButton.frame = CGRect(x: screenSize.width/2, y: 9*screenSize.height/10, width: screenSize.width/2, height: screenSize.height/10)
         
         cancelBetButton.frame = CGRect(x: 0, y: screenSize.height-75, width: screenSize.width, height: 75)
-        
+        cancelBetButton.layer.borderColor = UIColor.gray.cgColor
+        cancelBetButton.layer.borderWidth = 1
         
         let bottomButtonsCenter = CGPoint(x: screenCenterX, y: screenSize.height-detailsBottomMargin/3)
         addPhotoButton.center = bottomButtonsCenter
@@ -136,11 +138,6 @@ class BetDetailsViewController: UIViewController {
         closeBetButton.center = bottomButtonsCenter
         closeBetButton.backgroundColor = UIColor(colorLiteralRed: 17/255, green: 141/255, blue: 204/255, alpha: 1)
         closeBetButton.frame = CGRect(x: 0, y: screenSize.height-75, width: screenSize.width, height: 75)
-        
-        
-        resultImage.center.x = screenCenterX
-        
-        
         
         
     }
@@ -201,7 +198,7 @@ class BetDetailsViewController: UIViewController {
             closeBetViewController.currentUser = currentUser
             closeBetViewController.currentBet = currentBet
             closeBetViewController.betTextLabel.text = currentBet.betSender + " bet " + currentBet.betReceiver + " that " + currentBet.betText
-            closeBetViewController.stakesTextLabel.text = getWinnerLoserText(isWinnerLoser: currentBet.winnerLoserToggle) + " " + currentBet.stakesText
+            //closeBetViewController.stakesTextLabel.text = getWinnerLoserText(isWinnerLoser: currentBet.winnerLoserToggle) + " " + currentBet.stakesText
             closeBetViewController.winnerToggle.setTitle(currentBet.betSender, forSegmentAt: 0)
             closeBetViewController.winnerToggle.setTitle(currentBet.betReceiver, forSegmentAt: 1)
             closeBetViewController.myProfPic.image = myProfPic.image
@@ -215,12 +212,12 @@ class BetDetailsViewController: UIViewController {
             closeBetViewController.betTextLabel.frame = CGRect(x: margin, y: margin, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: betFitSize.height)
             closeBetViewController.betTextLabel.numberOfLines = 3
             
-            let stakesLabelFitSize = closeBetViewController.stakesLabel.sizeThatFits(fixWidthSize)
-            closeBetViewController.stakesLabel.frame = CGRect(x: margin, y: closeBetViewController.betTextLabel.frame.maxY, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: stakesLabelFitSize.height)
-            closeBetViewController.stakesLabel.center.x = closeBetViewController.betDetailsView.frame.width/2
+            //let stakesLabelFitSize = closeBetViewController.stakesLabel.sizeThatFits(fixWidthSize)
+            //closeBetViewController.stakesLabel.frame = CGRect(x: margin, y: closeBetViewController.betTextLabel.frame.maxY, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: stakesLabelFitSize.height)
+            //closeBetViewController.stakesLabel.center.x = closeBetViewController.betDetailsView.frame.width/2
             
-            let stakesFitSize = closeBetViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
-            closeBetViewController.stakesTextLabel.frame = CGRect(x: margin, y: closeBetViewController.stakesLabel.frame.maxY+margin, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: stakesFitSize.height)
+            //let stakesFitSize = closeBetViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
+            //closeBetViewController.stakesTextLabel.frame = CGRect(x: margin, y: closeBetViewController.stakesLabel.frame.maxY+margin, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: stakesFitSize.height)
             
             
         }
@@ -233,7 +230,7 @@ class BetDetailsViewController: UIViewController {
     @IBAction func onTapCancelBet(_ sender: AnyObject) {
         let noAction = UIAlertAction(title: "No", style: .cancel) { (action) in
         }
-        let okAction = UIAlertAction(title: "Yes", style: .default) { (action) in
+        let okAction = UIAlertAction(title: "Yes", style: .destructive) { (action) in
             //Change the bet's status, dismiss view controller
            self.navigationController?.popViewController(animated: true)
         
@@ -242,7 +239,8 @@ class BetDetailsViewController: UIViewController {
            self.segueType = "MyBets"
         }
         
-        var confirmCancelAlert = UIAlertController(title: "Cancel Bet", message: "Are you sure you want to cancel this bet? It will be permanently deleted", preferredStyle: .actionSheet)
+
+        var confirmCancelAlert = UIAlertController(title: "CANCEL BET", message: "Are you sure you want to cancel this bet? It will be permanently deleted", preferredStyle: .actionSheet)
         confirmCancelAlert.addAction(noAction)
         confirmCancelAlert.addAction(okAction)
         
