@@ -16,9 +16,10 @@ class CompletedBetTableViewCell: UITableViewCell {
     @IBOutlet weak var betTextLabel: UILabel!
     @IBOutlet weak var stakesLabel: UILabel!
     @IBOutlet weak var stakesTextLabel: UILabel!
-    @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var photoImage: UIImageView!
     @IBOutlet weak var addPhotoButton: UIButton!
+    @IBOutlet weak var whiteBackgroundView: UIView!
+    @IBOutlet weak var whoBetWhoLabel: UILabel!
     
     
     override func awakeFromNib() {

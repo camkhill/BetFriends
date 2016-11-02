@@ -28,6 +28,17 @@
 		B59B57491D90A84100BF8193 /* BetFriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57481D90A84100BF8193 /* BetFriendsTests.swift */; };
 		B59B57541D90A84100BF8193 /* BetFriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57531D90A84100BF8193 /* BetFriendsUITests.swift */; };
 		B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */; };
+		B5B8880B1DC96813004422BA /* AddPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B8880A1DC96813004422BA /* AddPhotoViewController.swift */; };
+		B5DCBC671DBEA27C00B62CA7 /* Optimist_XLt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC5D1DBEA27C00B62CA7 /* Optimist_XLt.ttf */; };
+		B5DCBC681DBEA27C00B62CA7 /* Optimist_XLtIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC5E1DBEA27C00B62CA7 /* Optimist_XLtIt.ttf */; };
+		B5DCBC691DBEA27C00B62CA7 /* Optimist_SBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC5F1DBEA27C00B62CA7 /* Optimist_SBd.ttf */; };
+		B5DCBC6A1DBEA27C00B62CA7 /* Optimist_SBdIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC601DBEA27C00B62CA7 /* Optimist_SBdIt.ttf */; };
+		B5DCBC6B1DBEA27C00B62CA7 /* Optimist_LtIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC611DBEA27C00B62CA7 /* Optimist_LtIt.ttf */; };
+		B5DCBC6C1DBEA27C00B62CA7 /* Optimist_Rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC621DBEA27C00B62CA7 /* Optimist_Rg.ttf */; };
+		B5DCBC6D1DBEA27C00B62CA7 /* Optimist_It.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC631DBEA27C00B62CA7 /* Optimist_It.ttf */; };
+		B5DCBC6E1DBEA27C00B62CA7 /* Optimist_Lt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC641DBEA27C00B62CA7 /* Optimist_Lt.ttf */; };
+		B5DCBC6F1DBEA27C00B62CA7 /* Optimist_Bd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC651DBEA27C00B62CA7 /* Optimist_Bd.ttf */; };
+		B5DCBC701DBEA27C00B62CA7 /* Optimist_BdIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC661DBEA27C00B62CA7 /* Optimist_BdIt.ttf */; };
 		B5E7136A1DA932CE00637D9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5E713691DA932CE00637D9D /* GoogleService-Info.plist */; };
 		CAD485D2430B2DCD110117DD /* Pods_BetFriends.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB6FAE4559720FBAFEE5A0B /* Pods_BetFriends.framework */; };
 /* End PBXBuildFile section */
@@ -78,7 +89,18 @@
 		B59B574F1D90A84100BF8193 /* BetFriendsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BetFriendsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59B57531D90A84100BF8193 /* BetFriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetFriendsUITests.swift; sourceTree = "<group>"; };
 		B59B57551D90A84100BF8193 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyBetsViewController.swift; path = ../MyBetsViewController.swift; sourceTree = "<group>"; };
+		B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyBetsViewController.swift; path = ../MyBetsViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		B5B8880A1DC96813004422BA /* AddPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoViewController.swift; sourceTree = "<group>"; };
+		B5DCBC5D1DBEA27C00B62CA7 /* Optimist_XLt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_XLt.ttf; sourceTree = "<group>"; };
+		B5DCBC5E1DBEA27C00B62CA7 /* Optimist_XLtIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_XLtIt.ttf; sourceTree = "<group>"; };
+		B5DCBC5F1DBEA27C00B62CA7 /* Optimist_SBd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_SBd.ttf; sourceTree = "<group>"; };
+		B5DCBC601DBEA27C00B62CA7 /* Optimist_SBdIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_SBdIt.ttf; sourceTree = "<group>"; };
+		B5DCBC611DBEA27C00B62CA7 /* Optimist_LtIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_LtIt.ttf; sourceTree = "<group>"; };
+		B5DCBC621DBEA27C00B62CA7 /* Optimist_Rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_Rg.ttf; sourceTree = "<group>"; };
+		B5DCBC631DBEA27C00B62CA7 /* Optimist_It.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_It.ttf; sourceTree = "<group>"; };
+		B5DCBC641DBEA27C00B62CA7 /* Optimist_Lt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_Lt.ttf; sourceTree = "<group>"; };
+		B5DCBC651DBEA27C00B62CA7 /* Optimist_Bd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_Bd.ttf; sourceTree = "<group>"; };
+		B5DCBC661DBEA27C00B62CA7 /* Optimist_BdIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_BdIt.ttf; sourceTree = "<group>"; };
 		B5E713691DA932CE00637D9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BCB6FAE4559720FBAFEE5A0B /* Pods_BetFriends.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BetFriends.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C584713A4517A5680D2B7F96 /* Pods-BetFriendsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BetFriendsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BetFriendsTests/Pods-BetFriendsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -181,6 +203,7 @@
 		B59B57321D90A84100BF8193 /* BetFriends */ = {
 			isa = PBXGroup;
 			children = (
+				B5DCBC5C1DBEA26600B62CA7 /* Resources */,
 				B54557C91D98926F007D8809 /* External Code */,
 				B52B8A661D95B35E0015CDA7 /* Table View Cells */,
 				B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */,
@@ -189,6 +212,7 @@
 				B59B57331D90A84100BF8193 /* AppDelegate.swift */,
 				B59B57351D90A84100BF8193 /* ViewController.swift */,
 				B59B57371D90A84100BF8193 /* Main.storyboard */,
+				B5B8880A1DC96813004422BA /* AddPhotoViewController.swift */,
 				B5470DD81DA92CF6007BC723 /* CloseBetViewController.swift */,
 				B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */,
 				B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */,
@@ -218,6 +242,23 @@
 				B59B57551D90A84100BF8193 /* Info.plist */,
 			);
 			path = BetFriendsUITests;
+			sourceTree = "<group>";
+		};
+		B5DCBC5C1DBEA26600B62CA7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B5DCBC5D1DBEA27C00B62CA7 /* Optimist_XLt.ttf */,
+				B5DCBC5E1DBEA27C00B62CA7 /* Optimist_XLtIt.ttf */,
+				B5DCBC5F1DBEA27C00B62CA7 /* Optimist_SBd.ttf */,
+				B5DCBC601DBEA27C00B62CA7 /* Optimist_SBdIt.ttf */,
+				B5DCBC611DBEA27C00B62CA7 /* Optimist_LtIt.ttf */,
+				B5DCBC621DBEA27C00B62CA7 /* Optimist_Rg.ttf */,
+				B5DCBC631DBEA27C00B62CA7 /* Optimist_It.ttf */,
+				B5DCBC641DBEA27C00B62CA7 /* Optimist_Lt.ttf */,
+				B5DCBC651DBEA27C00B62CA7 /* Optimist_Bd.ttf */,
+				B5DCBC661DBEA27C00B62CA7 /* Optimist_BdIt.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,8 +381,18 @@
 			files = (
 				B59B573E1D90A84100BF8193 /* LaunchScreen.storyboard in Resources */,
 				B5E7136A1DA932CE00637D9D /* GoogleService-Info.plist in Resources */,
+				B5DCBC6D1DBEA27C00B62CA7 /* Optimist_It.ttf in Resources */,
+				B5DCBC6E1DBEA27C00B62CA7 /* Optimist_Lt.ttf in Resources */,
 				B59B573B1D90A84100BF8193 /* Assets.xcassets in Resources */,
+				B5DCBC6B1DBEA27C00B62CA7 /* Optimist_LtIt.ttf in Resources */,
+				B5DCBC6C1DBEA27C00B62CA7 /* Optimist_Rg.ttf in Resources */,
+				B5DCBC691DBEA27C00B62CA7 /* Optimist_SBd.ttf in Resources */,
+				B5DCBC6A1DBEA27C00B62CA7 /* Optimist_SBdIt.ttf in Resources */,
+				B5DCBC6F1DBEA27C00B62CA7 /* Optimist_Bd.ttf in Resources */,
+				B5DCBC701DBEA27C00B62CA7 /* Optimist_BdIt.ttf in Resources */,
+				B5DCBC671DBEA27C00B62CA7 /* Optimist_XLt.ttf in Resources */,
 				B59B57391D90A84100BF8193 /* Main.storyboard in Resources */,
+				B5DCBC681DBEA27C00B62CA7 /* Optimist_XLtIt.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +547,7 @@
 				B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */,
 				B52B8A651D95B1400015CDA7 /* NewBetViewController.swift in Sources */,
 				B52B8A631D9490DB0015CDA7 /* CompletedBetTableViewCell.swift in Sources */,
+				B5B8880B1DC96813004422BA /* AddPhotoViewController.swift in Sources */,
 				B557E62E1D9DB7A3003354F3 /* BetStruct.swift in Sources */,
 				B59B57361D90A84100BF8193 /* ViewController.swift in Sources */,
 				B5470DD91DA92CF6007BC723 /* CloseBetViewController.swift in Sources */,

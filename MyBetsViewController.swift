@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import FirebaseStorage
 
 class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -20,6 +21,10 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var horizontalScrollView: UIScrollView!
     @IBOutlet weak var newBetButton: UIButton!
+    @IBOutlet weak var signOutButton: UIBarButtonItem!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loadingLabel: UILabel!
+    
     
     //temp cell
     let cell: UITableViewCell! = nil
@@ -42,6 +47,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var usersRef: FIRDatabaseReference!
     var betsRef: FIRDatabaseReference!
+    var storage: FIRStorage!
+    var storageRef: FIRStorageReference!
     
     var totalBets = Int()
 
@@ -50,14 +57,18 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        segueIndicator = "sign-out"
+        
         // Get Firebase reference for users and bets
         usersRef = FIRDatabase.database().reference().child("Users")
         betsRef = FIRDatabase.database().reference().child("Bets")
+        storage = FIRStorage.storage()
+        storageRef = storage.reference(forURL: "gs://betfriends-ea4bb.appspot.com").child("bfimages")
         
         /////////// prepare the bets ////////////
         // Get all bets for the particular user
         
-        
+        activityIndicator.startAnimating()
         //betArray = getUsersBets(username: currentUser.username)
         //Separate them into pending, active, completed bets
         //buildBetArrays(betArray: betArray)
@@ -81,19 +92,26 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let screenHeight = CGFloat(UIScreen.main.bounds.size.height)
         
         //Set My Bets label position
-
+        signOutButton.tintColor = UIColor(colorLiteralRed: 17/255, green: 141/255, blue: 204/255, alpha: 100)
         
         //Set segmentedControl state, location
         segmentedControl.selectedSegmentIndex = 1
         segmentedControl.center = CGPoint(x: view.center.x, y: 90)
+        segmentedControl.tintColor = UIColor(colorLiteralRed: 17/255, green: 141/255, blue: 204/255, alpha: 100)
         
         //Set Up New Bet button
         newBetButton.frame.origin = CGPoint(x: screenWidth-(screenWidth/4), y: screenHeight-(screenWidth/4))
         let newBetButtonSize = CGFloat(screenWidth/6)
         
         newBetButton.frame.size = CGSize(width: newBetButtonSize, height: newBetButtonSize)
+        newBetButton.layer.shadowOffset = CGSize(width: 2, height: 2)
+        newBetButton.layer.shadowOpacity = Float(0.5)
+        newBetButton.layer.shadowRadius = CGFloat(3)
         
-        
+        //Set Activity indicator location
+        activityIndicator.center = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height/2)
+        loadingLabel.isHidden = false
+        loadingLabel.center = CGPoint(x: activityIndicator.center.x, y: activityIndicator.center.y+30)
         
         //Set Margins
         let screenTopMargin = CGFloat(115)
@@ -107,13 +125,14 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         horizontalScrollView.frame.size = CGSize(width: horizontalScrollViewWidth, height: horizontalScrollViewHeight)
         horizontalScrollView.contentSize = CGSize(width: screenWidth3, height: horizontalScrollViewHeight)
         horizontalScrollView.contentOffset = CGPoint(x: horizontalScrollViewWidth, y: 0)
+        horizontalScrollView.showsHorizontalScrollIndicator = false
         
         // Do any additional setup after loading the view.
         
         //Set size/positions of 3 table views
         let sideMargins = CGFloat(10)
         tableViewSize = CGSize(width: horizontalScrollViewWidth-(2*sideMargins), height: horizontalScrollViewHeight)
-        profPicSize = CGFloat(tableViewSize.width/5)
+        profPicSize = CGFloat(tableViewSize.width/4)
         
         pendingTableView.frame.size = tableViewSize
         activeTableView.frame.size = tableViewSize
@@ -165,68 +184,104 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Set up cells for Pending table
         if tableView == self.pendingTableView {
             let cell = pendingTableView.dequeueReusableCell(withIdentifier: "pendingCell") as! PendingBetsTableViewCell
-            let margin = CGFloat(10)
-            cell.pendingLabel.text = pendingArray[indexPath.row].betSender + " bets that " + pendingArray[indexPath.row].betText
-            cell.layer.cornerRadius = 10
-            
-            
-            
-            //// Position elements within pending cell
+            let thisBet = pendingArray[indexPath.row]
             profPicSize = CGFloat(tableViewSize.width/5)
+            let margin = CGFloat(15)
+            cell.frame.size.width = tableView.frame.width
             
-            // get prof pic - if the username = sender name & username is not this username
+            let fixWidthSize = CGSize(width: cell.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            
+            // Set up user's prof pic
+            let usersProfPic = currentUser.profilePicture
+            cell.userProfPicImage.image = usersProfPic
+            cell.userProfPicImage.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.userProfPicImage.layer.cornerRadius = profPicSize/2
+            cell.userProfPicImage.layer.masksToBounds = true
+            cell.userProfPicImage.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.userProfPicImage.layer.borderWidth = 2
+            
+            // Set up friend prof pic
             var friendProfPic: UIImage!
             for users in userArray {
                 if users.username != thisUsername {
-                    if users.username == pendingArray[indexPath.row].betSender || users.username == pendingArray[indexPath.row].betReceiver {
+                    if users.username == thisBet.betSender || users.username == thisBet.betReceiver {
                         friendProfPic = users.profilePicture
                     }
                 }
             }
-            
+
             cell.profPicImageView.image = friendProfPic
-            cell.profPicImageView.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
+            cell.profPicImageView.frame = CGRect(x: margin+3*profPicSize/4, y: margin+5, width: profPicSize, height: profPicSize)
             cell.profPicImageView.layer.cornerRadius = profPicSize/2
             cell.profPicImageView.layer.masksToBounds = true
-            cell.pendingLabel.frame = CGRect(x: profPicSize+2*margin, y: margin, width: tableViewSize.width-profPicSize-3*margin, height: profPicSize)
-            cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.stakesLabel.frame.origin.y = profPicSize
+            cell.profPicImageView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.profPicImageView.layer.borderWidth = 2
+
+            
+            cell.betSentLabel.text = String(thisBet.betSender + " sent " + thisBet.betReceiver + " a bet").uppercased()
+            cell.betSentLabel.frame = CGRect(x: margin+7*profPicSize/4+margin, y: 0, width: cell.frame.width-3*margin-profPicSize, height: 18)
+            cell.betSentLabel.center.y = margin+5+profPicSize/2
+            cell.betSentLabel.textColor = UIColor(colorLiteralRed: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+
+            cell.whoBetsWhoLabel.text = thisBet.betSender + " bets " + thisBet.betReceiver + " that..."
+            cell.whoBetsWhoLabel.frame = CGRect(x: margin, y: cell.profPicImageView.frame.maxY+margin, width: cell.frame.width-2*margin, height: 15)
+            
+            //pending label is the bet text
+            cell.pendingLabel.text = thisBet.betText
+            let pendingLabelFitSize = cell.pendingLabel.sizeThatFits(fixWidthSize)
+            cell.pendingLabel.frame = CGRect(x: margin, y: cell.whoBetsWhoLabel.frame.maxY, width: cell.frame.width-2*margin, height: pendingLabelFitSize.height)
             
             let stakesBegnningText: String!
             if pendingArray[indexPath.row].winnerLoserToggle == true {
-                 stakesBegnningText = "Winner gets "
+                 stakesBegnningText = "Winner gets to..."
             } else {
-                stakesBegnningText = "Loser has to "
+                stakesBegnningText = "Loser has to..."
             }
             
-            cell.stakesInputLabel.text = stakesBegnningText + pendingArray[indexPath.row].stakesText
+            cell.stakesLabel.text = stakesBegnningText
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.pendingLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 17)
             
+            cell.stakesInputLabel.text = thisBet.stakesText
+            let stakesFitSize = cell.stakesInputLabel.sizeThatFits(fixWidthSize)
+            cell.stakesInputLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.maxY, width: cell.frame.width-2*margin, height: stakesFitSize.height)
             
-            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
-            let fitSize = cell.stakesInputLabel.sizeThatFits(fixWidthSize)
-            cell.stakesInputLabel.frame = CGRect(x: margin, y: profPicSize+cell.stakesLabel.frame.height, width: tableViewSize.width-2*margin, height: fitSize.height)
-            
-            thisRowHeight = cell.stakesInputLabel.frame.origin.y+cell.stakesInputLabel.frame.height+margin
+            thisRowHeight = cell.stakesInputLabel.frame.maxY+margin
             self.pendingTableView.rowHeight = thisRowHeight
+            cell.frame.size = CGSize(width: tableView.frame.width, height: thisRowHeight)
+            
+            
+
+            cell.backgroundColor = UIColor.clear
+
+            cell.whiteBackgroundView.frame = CGRect(x: 0, y: 5, width: cell.frame.width, height: cell.frame.height-10)
+            cell.whiteBackgroundView.backgroundColor = UIColor.white
+            cell.whiteBackgroundView.layer.cornerRadius = 10
+            cell.whiteBackgroundView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.whiteBackgroundView.layer.borderWidth = 2
+            
             
             return cell
+            
         } else if tableView == self.activeTableView {
             let cell = activeTableView.dequeueReusableCell(withIdentifier: "activeCell") as! ActiveBetTableViewCell
-            cell.layer.cornerRadius = 10
-            let margin = CGFloat(10)
-            profPicSize = CGFloat(tableViewSize.width/4)
+            cell.frame.size.width = tableView.frame.width
+            //cell.layer.cornerRadius = 10
+            let thisBet = activeArray[indexPath.row]
+            let margin = CGFloat(15)
+            let fixWidthSize = CGSize(width: cell.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+
+            profPicSize = CGFloat(tableViewSize.width/5)
             
             // TODO Update the time remaining based on the endDate field, or if this is nil say "Open Bet"
-            cell.timeRemainingLabel.text = "1 Day Left"
-            cell.timeRemainingLabel.frame.size = CGSize(width: tableViewSize.width-2*profPicSize-3*margin, height: 25)
-            cell.timeRemainingLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.timeRemainingLabel.center.y = CGFloat(margin+profPicSize/2)
-            
+            cell.timeRemainingLabel.text = String("1 Day Left")?.uppercased()
+            cell.timeRemainingLabel.frame = CGRect(x: cell.frame.size.width/2+margin, y: margin+5 , width: cell.frame.size.width/2-2*margin, height: 25)
             
             cell.myProfPic.image = currentUser.profilePicture
-            cell.myProfPic.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
+            cell.myProfPic.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
             cell.myProfPic.layer.cornerRadius = profPicSize/2
             cell.myProfPic.layer.masksToBounds = true
+            cell.myProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.myProfPic.layer.borderWidth = 2
             
             var friendProfPicImage: UIImage!
             for users in userArray {
@@ -237,114 +292,161 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             cell.friendProfPic.image = friendProfPicImage
-            cell.friendProfPic.frame = CGRect(x: tableViewSize.width-margin-profPicSize, y: margin, width: profPicSize, height: profPicSize)
+            cell.friendProfPic.frame = CGRect(x: margin+3*profPicSize/4, y: margin+5, width: profPicSize, height: profPicSize)
             cell.friendProfPic.layer.cornerRadius = profPicSize/2
             cell.friendProfPic.layer.masksToBounds = true
+            cell.friendProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.friendProfPic.layer.borderWidth = 2
             
-            // TODO populate bet with correct text
-            cell.betTextLabel.text = activeArray[indexPath.row].betSender + " bets that " + activeArray[indexPath.row].betText
-            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            cell.whoBetsWhoLabel.text = thisBet.betSender + " bets " + thisBet.betReceiver + " that..."
+            cell.whoBetsWhoLabel.frame = CGRect(x: margin, y: cell.myProfPic.frame.maxY+margin, width: cell.frame.width-2*margin, height: 15)
+
+            
+            cell.betTextLabel.text = thisBet.betText
             let fitSizeBet = cell.betTextLabel.sizeThatFits(fixWidthSize)
-            cell.betTextLabel.frame = CGRect(x: margin, y: profPicSize+2*margin, width: fitSizeBet.width, height: fitSizeBet.height)
+            cell.betTextLabel.frame = CGRect(x: margin, y: cell.whoBetsWhoLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeBet.height)
             
-            cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.stakesLabel.frame.origin.y = cell.betTextLabel.frame.origin.y+cell.betTextLabel.frame.height-5
+
             
-            // TODO populate text with "Loser has to..." or "Winner has to..."
             let stakesBegnningText: String!
-            if activeArray[indexPath.row].winnerLoserToggle == true {
-                stakesBegnningText = "Winner gets "
+            if thisBet.winnerLoserToggle == true {
+                stakesBegnningText = "Winner gets to..."
             } else {
-                stakesBegnningText = "Loser has to "
+                stakesBegnningText = "Loser has to..."
             }
             
-            cell.stakesTextLabel.text = stakesBegnningText + activeArray[indexPath.row].stakesText
+            cell.stakesLabel.text = stakesBegnningText
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.betTextLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 17)
+            
+            cell.stakesTextLabel.text = thisBet.stakesText
             
             let fitSizeStakes = cell.stakesTextLabel.sizeThatFits(fixWidthSize)
-            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.origin.y+cell.stakesLabel.frame.height+margin, width: fitSizeStakes.width, height: fitSizeStakes.height)
+            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeStakes.height)
             
             thisRowHeight = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
             self.activeTableView.rowHeight = thisRowHeight
+            cell.frame.size = CGSize(width: tableView.frame.width, height: thisRowHeight)
+            
+            
+            cell.backgroundColor = UIColor.clear
+            cell.whiteBackgroundView.frame = CGRect(x: 0, y: 5, width: cell.frame.width, height: cell.frame.height-10)
+            cell.whiteBackgroundView.backgroundColor = UIColor.white
+            cell.whiteBackgroundView.layer.cornerRadius = 10
+            cell.whiteBackgroundView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.whiteBackgroundView.layer.borderWidth = 2
             
             return cell
         } else if tableView == self.completedTableView {
             let cell = completedTableView.dequeueReusableCell(withIdentifier: "completedCell", for: indexPath) as! CompletedBetTableViewCell
-            cell.layer.cornerRadius = 10
+            let thisBet = completedArray[indexPath.row]
+            cell.frame.size.width = tableView.frame.width
+
+            profPicSize = CGFloat(tableViewSize.width/5)
+            let margin = CGFloat(15)
+            let fixWidthSize = CGSize(width: cell.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+
             
-            profPicSize = CGFloat(tableViewSize.width/4)
-            let margin = CGFloat(10)
+            cell.myProfPic.image = currentUser.profilePicture
+            cell.myProfPic.frame = CGRect(x: margin, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.myProfPic.layer.cornerRadius = profPicSize/2
+            cell.myProfPic.layer.masksToBounds = true
+            cell.myProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.myProfPic.layer.borderWidth = 2
+            
+            let friendProfPic = getFriendProfPic(bet: thisBet)
+            cell.friendProfPic.image = friendProfPic
+            cell.friendProfPic.frame = CGRect(x: margin+3*profPicSize/4, y: margin+5, width: profPicSize, height: profPicSize)
+            cell.friendProfPic.layer.cornerRadius = profPicSize/2
+            cell.friendProfPic.layer.masksToBounds = true
+            cell.friendProfPic.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.friendProfPic.layer.borderWidth = 2
             
             //TODO Update win/loss field based on who won the bet
-            let winlossText: String!
-            if completedArray[indexPath.row].betState == 2 {
-                if completedArray[indexPath.row].betSender == thisUsername {
-                    winlossText = "You won!"
+            var winnerUser: String!
+            var loserUser: String!
+            
+            var winlossText =  String()
+            if thisBet.betState == 2 {
+                if thisBet.betSender == currentUser.username {
+                    winnerUser = thisBet.betSender
+                    loserUser = thisBet.betReceiver
                 } else {
-                    winlossText = "You lost!"
+                    winnerUser = thisBet.betReceiver
+                    loserUser = thisBet.betSender
                 }
-            } else {
-                if completedArray[indexPath.row].betSender == thisUsername {
-                    winlossText = "You lost :("
+            } else if thisBet.betState == 3 {
+                if thisBet.betSender == currentUser.username {
+                    winnerUser = thisBet.betReceiver
+                    loserUser = thisBet.betSender
                 } else {
-                    winlossText = "You won :)"
+                    winnerUser = thisBet.betSender
+                    loserUser = thisBet.betReceiver
                 }
                 
             }
             
-            cell.winLossLabel.text = winlossText
+            winlossText = winnerUser + " won the bet!"
+            
+            cell.winLossLabel.text = String(winlossText)?.uppercased()
+            cell.winLossLabel.textColor = UIColor(colorLiteralRed: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+
             
             
-            cell.winLossLabel.frame.size = CGSize(width: tableViewSize.width-2*profPicSize-3*margin, height: 25)
-            cell.winLossLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.winLossLabel.center.y = CGFloat(margin+profPicSize/2)
+            cell.winLossLabel.frame = CGRect(x: margin+7*profPicSize/4+margin, y: 0, width: cell.frame.width-3*margin-profPicSize, height: 18)
+            cell.winLossLabel.center.y = cell.myProfPic.center.y
             
-            // TODO update my profilepic to have correct image
-            cell.myProfPic.image = UIImage(named: "headshot")
-            cell.myProfPic.frame = CGRect(x: margin, y: margin, width: profPicSize, height: profPicSize)
-            cell.myProfPic.layer.cornerRadius = profPicSize/2
-            cell.myProfPic.layer.masksToBounds = true
+            cell.whoBetWhoLabel.text = thisBet.betSender + " bet " + thisBet.betReceiver + " that..."
+            cell.whoBetWhoLabel.frame = CGRect(x: margin, y: cell.myProfPic.frame.maxY+margin, width: cell.frame.width-2*margin, height: 15)
+
             
-            // TODO update friend prof pic with image
-            cell.friendProfPic.image = UIImage(named: "profpic")
-            cell.friendProfPic.frame = CGRect(x: tableViewSize.width-margin-profPicSize, y: margin, width: profPicSize, height: profPicSize)
-            cell.friendProfPic.layer.cornerRadius = profPicSize/2
-            cell.friendProfPic.layer.masksToBounds = true
-            
-            // TODO populate bet with correct text
-            cell.betTextLabel.text = completedArray[indexPath.row].betSender + " bets that " + completedArray[indexPath.row].betText
-            let fixWidthSize = CGSize(width: tableViewSize.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            cell.betTextLabel.text = thisBet.betText
             let fitSizeBet = cell.betTextLabel.sizeThatFits(fixWidthSize)
-            cell.betTextLabel.frame = CGRect(x: margin, y: profPicSize+2*margin, width: fitSizeBet.width, height: fitSizeBet.height)
+            cell.betTextLabel.frame = CGRect(x: margin, y: cell.whoBetWhoLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeBet.height)
             
             cell.stakesLabel.center.x = CGFloat(tableViewSize.width/2)
             cell.stakesLabel.frame.origin.y = cell.betTextLabel.frame.origin.y+cell.betTextLabel.frame.height-5
             
-            // TODO populate text with "Loser has to..." or "Winner has to..."
             let stakesBegnningText: String!
-            if completedArray[indexPath.row].winnerLoserToggle == true {
-                stakesBegnningText = "Winner gets "
+            if thisBet.winnerLoserToggle == true {
+                stakesBegnningText = winnerUser + " gets to..."
             } else {
-                stakesBegnningText = "Loser has to "
+                stakesBegnningText = loserUser + " had to..."
             }
             
+            cell.stakesLabel.text = stakesBegnningText
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.betTextLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 15)
             
-            cell.stakesTextLabel.text = stakesBegnningText + completedArray[indexPath.row].stakesText
+            cell.stakesTextLabel.text = thisBet.stakesText
+            
             let fitSizeStakes = cell.stakesTextLabel.sizeThatFits(fixWidthSize)
-            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.origin.y+cell.stakesLabel.frame.height+margin, width: fitSizeStakes.width, height: fitSizeStakes.height)
+            cell.stakesTextLabel.frame = CGRect(x: margin, y: cell.stakesLabel.frame.maxY, width: cell.frame.width-2*margin, height: fitSizeStakes.height)
             
-            cell.resultLabel.center.x = CGFloat(tableViewSize.width/2)
-            cell.resultLabel.frame.origin.y = cell.stakesTextLabel.frame.origin.y+cell.stakesTextLabel.frame.height+margin
             
             // TODO if image exists, display the image. If not, display "Add a pic!" button
-            if (indexPath as NSIndexPath).row == 0 {
+            //if completedArray[indexPath.row].image == nil {
+            
+            
+            //if (indexPath as NSIndexPath).row == 0 {
+            //let image = UIImage(completedArray[indexPath.row].image!)
+            //let imgData: NSData = UIImageJPEGRepresentation(image, 1)
+            //let imgDataSize = imgData.length
+            //print(imgDataSize)
+            
+            //let waterslideData: NSData = UIImagePNGRepresentation(#imageLiteral(resourceName: "waterslide"))
+            //let currentBetImage: NSData = UIImagePNGRepresentation(completedArray[indexPath.row].image)
+            
+            
+            
+            if thisBet.image != nil {
+                print("image exists")
                 cell.addPhotoButton.isHidden = true
                 cell.photoImage.isHidden = false
                 let photoSize = CGFloat(tableViewSize.width-2*margin)
-                let photoPosition = CGPoint(x: margin, y: cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin)
+                let photoPosition = CGPoint(x: margin, y: cell.stakesTextLabel.frame.maxY+margin)
                 cell.photoImage.frame = CGRect(x: photoPosition.x, y: photoPosition.y, width: photoSize, height: photoSize)
                 cell.photoImage.layer.cornerRadius = 10
                 cell.photoImage.layer.masksToBounds = true
-                cell.photoImage.image = UIImage(named: "waterslide")
+                cell.photoImage.image = completedArray[indexPath.row].image
                 
                 //Set size of cell
                 thisRowHeight = cell.photoImage.frame.origin.y+cell.photoImage.frame.height+margin
@@ -355,17 +457,26 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell.photoImage.isHidden = true
                 cell.addPhotoButton.isHidden = false
                 cell.addPhotoButton.center.x = CGFloat(tableViewSize.width/2)
-                cell.addPhotoButton.frame.origin.y = cell.resultLabel.frame.origin.y+cell.resultLabel.frame.height+margin
+                cell.addPhotoButton.frame.origin.y = cell.stakesTextLabel.frame.maxY+margin
                 
                 thisRowHeight = cell.addPhotoButton.frame.origin.y+cell.addPhotoButton.frame.height+margin
                 self.completedTableView.rowHeight = thisRowHeight
             }
             
+            cell.frame.size = CGSize(width: tableView.frame.width, height: thisRowHeight)
+            
+            
+            cell.backgroundColor = UIColor.clear
+            cell.whiteBackgroundView.frame = CGRect(x: 0, y: 5, width: cell.frame.width, height: cell.frame.height-10)
+            cell.whiteBackgroundView.backgroundColor = UIColor.white
+            cell.whiteBackgroundView.layer.cornerRadius = 10
+            cell.whiteBackgroundView.layer.borderColor = UIColor(colorLiteralRed: 222/255, green: 222/255, blue: 222/255, alpha: 1).cgColor
+            cell.whiteBackgroundView.layer.borderWidth = 2
+            
             
             return cell
         } else {
             
-            print("hit the else")
             return blankcell
         }
         
@@ -424,6 +535,14 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         segueIndicator = "newbet"
     }
     
+    @IBAction func onTapSignOut(_ sender: AnyObject) {
+        print("tapped sign out")
+        segueIndicator = "sign-out"
+        performSegue(withIdentifier: "logout2", sender: self)
+    }
+    
+    
+    
     
     
     // MARK: - Navigation
@@ -445,7 +564,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let tappedBet = activeArray[selectedCell]
                 betDetailsViewController.statusLabel.text = "Active"
                 betDetailsViewController.closeBetButton.isHidden = false
-                betDetailsViewController.statusLabel.textColor = UIColor.blue
+                betDetailsViewController.statusLabel.textColor = UIColor(colorLiteralRed: 17/255, green: 141/255, blue: 204/255, alpha: 1)
   
                 //set bet text, size it, and set/size stakes text
                 
@@ -490,7 +609,13 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 populateBetDetailsView(tappedBet: tappedBet, betDetailsViewController: betDetailsViewController)
                 
                 // TODO if there is an image, display it, otherwise display "add Photo" (or just always display add/change photo?)
-                betDetailsViewController.addPhotoButton.isHidden = false
+                if tappedBet.image != nil {
+                    betDetailsViewController.resultImage.image = tappedBet.image
+                    betDetailsViewController.resultImage.isHidden = false
+                    betDetailsViewController.detailsScrollView.frame.size.height = betDetailsViewController.detailsScrollView.frame.height+betDetailsViewController.detailsBottomMargin-20
+                } else {
+                    betDetailsViewController.addPhotoButton.isHidden = false
+                }
                 
                 layoutBetDetailsView(betDetailsViewController)
                 
@@ -512,6 +637,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             newBetViewController.currentUser = currentUser
             //just need to pass user info?
             
+        } else {
+            
         }
         
         
@@ -523,31 +650,50 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // TODO set the created date, ending date
     func populateBetDetailsView(tappedBet : BetStruct, betDetailsViewController : BetDetailsViewController) -> Void {
         
-        betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets that " + tappedBet.betText
+        betDetailsViewController.betTextLabel.text = tappedBet.betSender + " bets " + tappedBet.betReceiver + " that..."
+        betDetailsViewController.betDetailsLabel.text = tappedBet.betText
+        
         let stakesBeginningText = getWinnerLoserText(isWinnerLoser: tappedBet.winnerLoserToggle)
-        betDetailsViewController.stakesTextLabel.text = stakesBeginningText + tappedBet.stakesText
+        betDetailsViewController.stakesLabel.text = stakesBeginningText
+        betDetailsViewController.stakesTextLabel.text = tappedBet.stakesText
         betDetailsViewController.friendProfPic.image = getFriendProfPic(bet: tappedBet)
         betDetailsViewController.myProfPic.image = currentUser.profilePicture
+        
     }
     
     func layoutBetDetailsView(_ betDetailsViewController: BetDetailsViewController) -> Void {
         
-        let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-20, height: CGFloat.greatestFiniteMagnitude)
-        let fitSizeBet = betDetailsViewController.betTextLabel.sizeThatFits(fixWidthSize)
-        betDetailsViewController.betTextLabel.frame.size = fitSizeBet
-        betDetailsViewController.stakesLabel.frame.origin.y = betDetailsViewController.betTextLabel.frame.height+10
-        betDetailsViewController.stakesTextLabel.frame.origin.y = betDetailsViewController.stakesLabel.frame.origin.y + betDetailsViewController.stakesLabel.frame.height + 10
-        let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
-        betDetailsViewController.stakesTextLabel.frame.size = fitSizeStakes
-        let stakesBottom = CGFloat(betDetailsViewController.stakesTextLabel.frame.maxY)
-        betDetailsViewController.createdLabel.frame.origin.y = stakesBottom + 20
-        betDetailsViewController.endLabel.frame.origin.y = stakesBottom + 20
-        let createdLabelBottom = CGFloat(betDetailsViewController.createdLabel.frame.maxY)
-        betDetailsViewController.createdDateLabel.frame.origin.y = createdLabelBottom
-        betDetailsViewController.endDateLabel.frame.origin.y = createdLabelBottom
+        let margin = CGFloat(10)
+        let fixWidthSize = CGSize(width: betDetailsViewController.detailsScrollView.frame.width-2*margin,
+                                  height: CGFloat.greatestFiniteMagnitude)
+        let fitSizeBet = betDetailsViewController.betDetailsLabel.sizeThatFits(fixWidthSize)
+        betDetailsViewController.betDetailsLabel.frame.size = fitSizeBet
+        betDetailsViewController.stakesLabel.frame = CGRect(x: margin,
+                                                            y: betDetailsViewController.betDetailsLabel.frame.maxY+margin,
+                                                            width: betDetailsViewController.betDetailsView.frame.width-2*margin,
+                                                            height: 23)
         
-        let betViewHeight = betDetailsViewController.endDateLabel.frame.maxY+20
-        betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
+        let fitSizeStakes = betDetailsViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
+        betDetailsViewController.stakesTextLabel.frame = CGRect(
+            origin: CGPoint(x: margin, y: betDetailsViewController.stakesLabel.frame.maxY),
+            size: fitSizeStakes)
+        
+        var betViewHeight: CGFloat!
+        
+        
+        if betDetailsViewController.resultImage.image != nil {
+            print("there is an image for this bet, lets build it")
+            betDetailsViewController.resultImage.frame = CGRect(x: margin,
+                                                                y: betDetailsViewController.stakesTextLabel.frame.maxY+margin,
+                                                                width: betDetailsViewController.betDetailsView.frame.width-2*margin,
+                                                                height: betDetailsViewController.betDetailsView.frame.width-2*margin)
+            betViewHeight = betDetailsViewController.resultImage.frame.maxY+2*margin
+            
+        } else {
+            betViewHeight = betDetailsViewController.stakesTextLabel.frame.maxY+20
+            betDetailsViewController.betDetailsView.frame.size.height = betViewHeight
+        }
+        
         
         // IF the full bet details view is smaller than the initial scrollview, shrink it
         if betViewHeight < betDetailsViewController.detailsScrollView.frame.size.height {
@@ -568,20 +714,21 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 pendingArray.append(bet)
             } else if bet.betState == 1 {
                 activeArray.append(bet)
-            } else {
+            } else if bet.betState == 2 || bet.betState == 3 {
                 completedArray.append(bet)
-                
             }
         }
+        print("built bet arrays: pendings - \(pendingArray.count), actives - \(activeArray.count), completed - \(completedArray.count)")
+        
     }
     
     
     func getWinnerLoserText(isWinnerLoser: Bool) -> String {
         let stakesBeginningText: String!
         if isWinnerLoser == true {
-            stakesBeginningText = "Winner gets "
+            stakesBeginningText = "Winner gets to..."
         } else {
-            stakesBeginningText = "Loser has to "
+            stakesBeginningText = "Loser has to..."
         }
         return stakesBeginningText
     }
@@ -614,21 +761,8 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    //TODO delete this eventually
+    //Take all firebase bets and only get bets for the current user
     func getUsersBets(username : String, firebaseBets: [BetStruct]) -> [BetStruct] {
-        
-        
-        //Get all bets
-        
-        
-        let emptyImage: UIImage! = nil
-        let waterslideImage = #imageLiteral(resourceName: "waterslide")
-        
-
-        
-        
-        
-        
         
         var usersBets = [BetStruct]()
         
@@ -639,6 +773,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
+        print("Got all bets for this user, total bets: \(usersBets.count)")
         //return firebaseBets
         return usersBets
         
@@ -646,61 +781,122 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func getFirebaseBets() {
         
+        print("getting firebase bets")
         let waterslideImage = #imageLiteral(resourceName: "waterslide")
         var newBetStruct = [BetStruct]()
+        var testCounter: Int = 0
         
         betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            print("firebase snapshot acquired")
             self.totalBets = Int(snapshot.childrenCount)
             print("total bets: \(self.totalBets)")
             
             let betSnapshot = snapshot.value as? NSDictionary
             var betSnapshotArray = NSArray()
             var isDictionary = true
+            var imageDictionary = [String: UIImage]()
             
             if betSnapshot == nil {
                 betSnapshotArray = (snapshot.value as? NSArray)!
                 isDictionary = false
+                print("not a dictionary")
             }
             
+            // Need to get user bets first here so not downloading all images
             
             
             for betCount in 1...self.totalBets {
-                let countString = String(betCount)
                 
-                if isDictionary == true {
-                    let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
+                print("iterating through bets, currently on: \(betCount)")
+                let countString = String(betCount)
+                var image: UIImage? = nil
+                
+                
+                self.storageRef.child(countString).data(withMaxSize: 1024*1024, completion: { (data, error) in
+                    if error != nil {
+                        // Leave image as nil if there is no image there
+                        print("No image for this bet: \(betCount)")
+                        testCounter += 1
+                        print("test counter \(testCounter)")
+                    } else {
+                        print("downloaded image for this bet: \(betCount)")
+                        image = UIImage(data: data!)!
+                        imageDictionary.updateValue(image!, forKey: countString)
+                        testCounter += 1
+                        print("test counter \(testCounter)")
+                    }
                     
-                    let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                    //After downloading the last image, build the bet arrays
+                    if /*betCount == self.totalBets*/ testCounter == self.totalBets {
+
+                        print("bet count is the same as total bets (should be once)")
+                        print("full image dictionary count: \(imageDictionary.count)")
+                        // Go through the whole thing again, and add bet info with images
+                        for betCount in 1...self.totalBets {
+                            if isDictionary == true {
+                                
+                                // If this starts being a dictionary, will need some changes here
+                                let thisBet = betSnapshot?[countString] as? NSDictionary as! [String : String]
+                                
+                                let thisBetStruct = BetStruct(betID: betCount, betText: thisBet["betText"] , betSender: thisBet["betSender"], betReceiver: thisBet["betReceiver"], winnerLoserToggle: true, stakesText: thisBet["stakesText"], endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: Int(thisBet["betState"]!), image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                                
+                                newBetStruct.append(thisBetStruct)
+                            } else {
+                                
+                                let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
+                                var winnerLoserToggleBool = Bool()
+                                
+                                let betReceiver = thisBet["betReceiver"] as? String
+                                let betSender = thisBet["betSender"] as? String
+                                let betText = thisBet["betText"] as? String
+                                let stakesText = thisBet["stakesText"] as? String
+                                let betState = thisBet["betState"] as? String
+                                let betStateInt = Int(betState!)
+                                let winnerLoserString = thisBet["winnerLoserToggle"] as? String
+                                if winnerLoserString == "Loser" {
+                                    winnerLoserToggleBool = false
+                                } else {
+                                    winnerLoserToggleBool = true
+                                }
+                                
+                                let image = imageDictionary[String(betCount)]
+                                
+                                let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: winnerLoserToggleBool, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: betStateInt, image: image, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
+                                
+                                
+                                newBetStruct.append(thisBetStruct)
+                                print("bet appended with id: \(betCount)")
+                                
+                                if betCount == self.totalBets {
+                                    // Use this newBetStruct to get users bets
+                                    // Added a wait function to allow images to load into memory i think...
+                                    //let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+                                    //DispatchQueue.main.asyncAfter(deadline: when) {
+                                        
+                                        let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
+                                        self.buildBetArrays(betArray: userBets)
+                                    
+                                    
+                                        self.pendingTableView.reloadData()
+                                        self.completedTableView.reloadData()
+                                        self.activeTableView.reloadData()
+                                        print("reloaded all table views")
+                                        self.activityIndicator.stopAnimating()
+                                        self.loadingLabel.isHidden = true
+                                   //}
+                                
+                                }
+                                
+                            }
+                            
+                        }
+                    }
                     
-                    newBetStruct.append(thisBetStruct)
-                } else {
                     
-                    let thisBet = betSnapshotArray[betCount] as! NSDictionary //as? NSDictionary as! [String: String]
-                    
-                    let betReceiver = thisBet["betReceiver"] as? String
-                    let betSender = thisBet["betSender"] as? String
-                    let betText = thisBet["betText"] as? String
-                    let stakesText = thisBet["stakesText"] as? String
-                    let betState = thisBet["betState"] as? String
-                    let betStateInt = Int(betState!)
-                    
-                    let thisBetStruct = BetStruct(betID: betCount, betText: betText, betSender: betSender, betReceiver: betReceiver, winnerLoserToggle: true, stakesText: stakesText, endDate: Date(timeIntervalSinceReferenceDate: 10000), creationDate: Date(timeIntervalSinceReferenceDate: 10000), betState: betStateInt, image: waterslideImage, lastModified: Date(timeIntervalSinceReferenceDate: 10000))
-                    
-                    
-                    newBetStruct.append(thisBetStruct)
-                    
-                }
+                })
                 
             }
-            
-            //Use this newBetStruct to get users bets
-            let userBets = self.getUsersBets(username: self.currentUser.username, firebaseBets: newBetStruct)
-            self.buildBetArrays(betArray: userBets)
-            
-            self.pendingTableView.reloadData()
-            self.completedTableView.reloadData()
-            self.activeTableView.reloadData()
-            
         })
         
     }

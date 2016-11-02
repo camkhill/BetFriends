@@ -16,6 +16,10 @@ class PendingBetsTableViewCell: UITableViewCell {
     @IBOutlet weak var stakesLabel: UILabel!
     @IBOutlet weak var stakesInputLabel: UILabel!
     @IBOutlet weak var cellView: UIView!
+    @IBOutlet weak var betSentLabel: UILabel!
+    @IBOutlet weak var whoBetsWhoLabel: UILabel!
+    @IBOutlet weak var whiteBackgroundView: UIView!
+    @IBOutlet weak var userProfPicImage: UIImageView!
 
     
     override func awakeFromNib() {

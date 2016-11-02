@@ -17,6 +17,8 @@ class ActiveBetTableViewCell: UITableViewCell {
     @IBOutlet weak var timeRemainingLabel: UILabel!
     @IBOutlet weak var stakesLabel: UILabel!
     @IBOutlet weak var stakesTextLabel: UILabel!
+    @IBOutlet weak var whiteBackgroundView: UIView!
+    @IBOutlet weak var whoBetsWhoLabel: UILabel!
     
     
     override func awakeFromNib() {

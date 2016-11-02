@@ -149,9 +149,11 @@ class LoginViewController: UIViewController {
         newUserLabel.center = CGPoint(x: screenCenterX, y: screenSize.height-70)
         signUpButton.center = CGPoint(x: screenCenterX, y: screenSize.height-40)
         
-        usernameTextField.frame.size = CGSize(width: 2*screenSize.width/3, height: usernameTextField.frame.height)
+        usernameTextField.frame.size = CGSize(width: screenSize.width-100, height: usernameTextField.frame.height)
+        usernameTextField.center.x = screenSize.width/2
         usernameTextField.autocorrectionType = UITextAutocorrectionType(rawValue: 1)!
-        passwordTextField.frame.size = CGSize(width: 2*screenSize.width/3, height: usernameTextField.frame.height)
+        passwordTextField.frame.size = CGSize(width: screenSize.width-100, height: usernameTextField.frame.height)
+        passwordTextField.center.x = screenSize.width/2
         
         loginButton.isEnabled = false
         
