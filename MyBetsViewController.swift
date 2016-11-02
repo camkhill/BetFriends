@@ -239,7 +239,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             
             cell.stakesLabel.text = stakesBegnningText
-            cell.stakesLabel.frame = CGRect(x: margin, y: cell.pendingLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 15)
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.pendingLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 17)
             
             cell.stakesInputLabel.text = thisBet.stakesText
             let stakesFitSize = cell.stakesInputLabel.sizeThatFits(fixWidthSize)
@@ -316,7 +316,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             
             cell.stakesLabel.text = stakesBegnningText
-            cell.stakesLabel.frame = CGRect(x: margin, y: cell.betTextLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 15)
+            cell.stakesLabel.frame = CGRect(x: margin, y: cell.betTextLabel.frame.maxY+10, width: cell.frame.width-2*margin, height: 17)
             
             cell.stakesTextLabel.text = thisBet.stakesText
             
@@ -784,6 +784,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         print("getting firebase bets")
         let waterslideImage = #imageLiteral(resourceName: "waterslide")
         var newBetStruct = [BetStruct]()
+        var testCounter: Int = 0
         
         betsRef.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -816,16 +817,18 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     if error != nil {
                         // Leave image as nil if there is no image there
                         print("No image for this bet: \(betCount)")
-
+                        testCounter += 1
+                        print("test counter \(testCounter)")
                     } else {
                         print("downloaded image for this bet: \(betCount)")
                         image = UIImage(data: data!)!
                         imageDictionary.updateValue(image!, forKey: countString)
+                        testCounter += 1
+                        print("test counter \(testCounter)")
                     }
                     
-                    //After going through all of them, build the final bet array
-                    
-                    if betCount == self.totalBets {
+                    //After downloading the last image, build the bet arrays
+                    if /*betCount == self.totalBets*/ testCounter == self.totalBets {
 
                         print("bet count is the same as total bets (should be once)")
                         print("full image dictionary count: \(imageDictionary.count)")

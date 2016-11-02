@@ -672,47 +672,59 @@ Stakes:</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="q3h-A5-tid">
-                                <frame key="frameInset" minX="56" minY="515" width="262" height="57"/>
+                                <frame key="frameInset" minX="174" minY="616" width="201" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="20"/>
-                                <state key="normal" title="Upload">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="18"/>
+                                <state key="normal" title="Upload!">
                                     <color key="titleColor" red="0.066666666669999999" green="0.55294117649999996" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="onTapUpload:" destination="Bdc-z9-TxX" eventType="touchUpInside" id="dUL-VV-a3L"/>
+                                </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="(You/User B) (gets to/has to) do the stakes" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XOa-IV-AJS">
-                                <frame key="frameInset" minX="24" minY="80" width="326" height="74"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="(You/User B) (gets to/has to) do the stake" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XOa-IV-AJS">
+                                <frame key="frameInset" minX="24" minY="80" width="1597" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WUX-YS-W72">
-                                <frame key="frameInset" minX="100" minY="306" width="175" height="30"/>
+                                <frame key="frameInset" minX="60" minY="286" width="271" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Add a photo of the result!">
-                                    <color key="titleColor" red="0.066666666669999999" green="0.55294117649999996" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Optimist-SemiBold" family="Optimist" pointSize="17"/>
+                                <state key="normal" title="Tap to add a photo!">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="onTapAddPhoto:" destination="Bdc-z9-TxX" eventType="touchUpInside" id="2dS-MZ-xaK"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="MRC-0R-QWh">
-                                <frame key="frameInset" minX="138" minY="617" width="99" height="30"/>
+                                <frame key="frameInset" minY="616" width="175" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.67901361476608191" green="0.67901361476608191" blue="0.67901361476608191" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="17"/>
                                 <state key="normal" title="Add a pic later">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.066666666669999999" green="0.55294117649999996" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="onTapAddPicLater:" destination="Bdc-z9-TxX" eventType="touchUpInside" id="X4F-S6-UN2"/>
-                                    <segue destination="U9t-Yr-LVk" kind="modal" modalTransitionStyle="crossDissolve" id="H6E-hH-lgi"/>
+                                    <segue destination="U9t-Yr-LVk" kind="modal" identifier="addphoto2mybets" modalTransitionStyle="crossDissolve" id="H6E-hH-lgi"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.066666666669999999" green="0.55294117649999996" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
+                        <outlet property="addPhotoButton" destination="WUX-YS-W72" id="Urt-vE-10V"/>
+                        <outlet property="addPicLaterButton" destination="MRC-0R-QWh" id="d9q-3p-dZo"/>
                         <outlet property="congratsLabel" destination="HeW-zF-cLU" id="fMJ-Rp-YE0"/>
                         <outlet property="resultImage" destination="JKB-xq-UBV" id="WLL-N4-pxQ"/>
                         <outlet property="stakesTextLabel" destination="XOa-IV-AJS" id="GdO-j8-lfa"/>
+                        <outlet property="uploadButton" destination="q3h-A5-tid" id="IHZ-6s-wBQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MMR-VI-LQi" userLabel="First Responder" sceneMemberID="firstResponder"/>

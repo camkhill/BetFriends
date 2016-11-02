@@ -124,7 +124,7 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         betDetailsView.frame = CGRect(x: detailsSideMargin, y: userPicView.frame.maxY+mediumMargin, width: detailsViewWidth, height: 10*smallMargin)
         betDetailsView.layer.borderColor = greyColor.cgColor
         betDetailsView.layer.borderWidth = 2
-        whoBetWhoLabel.frame = CGRect(x: smallMargin, y: smallMargin, width: detailsViewWidth-2*smallMargin, height: 15)
+        whoBetWhoLabel.frame = CGRect(x: smallMargin, y: smallMargin, width: detailsViewWidth-2*smallMargin, height: 17)
         betTextLabel.frame = CGRect(x: smallMargin, y: whoBetWhoLabel.frame.maxY, width: detailsViewWidth-2*smallMargin, height: 5*smallMargin)
         
         
@@ -138,9 +138,9 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         addPhotoButton.center = resultImage.center
         
         submitButton.frame = CGRect(x: 0, y: screenSize.height-75, width: screenSize.width, height: 75)
-        submitButton.center = CGPoint(x: screenCenterX, y: screenHeight-2*screenUnit/3)
         
-        
+        resultImage.isHidden = true
+        addPhotoButton.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -280,36 +280,18 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
             print("no winner chosen")
             
         } else if whoWon == "Sender" {
+            
+            // Disabled for testing
             //self.betsRef.child(betIDString).updateChildValues(["betState" : "2"])
-            /*
-            if resultImage.image != #imageLiteral(resourceName: "image-placeholder"){
-                let storage = FIRStorage.storage()
-                let storageRef = storage.reference(forURL: "gs://betfriends-ea4bb.appspot.com")
-                let bfImagesRef = storageRef.child("bfimages")
-                let filepath = String(currentBet.betID)
-                
-                let data = UIImageJPEGRepresentation(self.resultImage.image!, 0.8)!
-                print("got to upload task")
-                bfImagesRef.child(filepath).put(data)
-            }
-            */
+
             segueType = "submit"
             performSegue(withIdentifier: "toAddPhoto", sender: self)
 
         } else if whoWon == "Receiver" {
+            
+            // Disabled for testing
             //self.betsRef.child(betIDString).updateChildValues(["betState" : "3"])
-            /*
-            if resultImage.image != #imageLiteral(resourceName: "image-placeholder"){
-                let storage = FIRStorage.storage()
-                let storageRef = storage.reference(forURL: "gs://betfriends-ea4bb.appspot.com")
-                let bfImagesRef = storageRef.child("bfimages")
-                let filepath = String(currentBet.betID)
-                
-                let data = UIImageJPEGRepresentation(self.resultImage.image!, 0.8)!
-                print("got to upload task")
-                bfImagesRef.child(filepath).put(data)
-            }
-            */
+
             segueType = "submit"
             performSegue(withIdentifier: "toAddPhoto", sender: self)
         }

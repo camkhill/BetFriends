@@ -97,6 +97,8 @@ class BetDetailsViewController: UIViewController {
         detailsScrollView.layer.cornerRadius = 10
         detailsScrollView.frame.origin = CGPoint(x: detailsSideMargin, y: topMargin+profPicSize+detailsSideMargin)
         detailsScrollView.contentSize = CGSize(width: scrollViewWidth, height: 1000)
+        detailsScrollView.layer.borderColor = greyColor.cgColor
+        detailsScrollView.layer.borderWidth = 2
         betDetailsView.layer.cornerRadius = 10
         betDetailsView.layer.borderColor = greyColor.cgColor
         betDetailsView.layer.borderWidth = 2
