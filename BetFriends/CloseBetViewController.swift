@@ -124,7 +124,7 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
         betDetailsView.frame = CGRect(x: detailsSideMargin, y: userPicView.frame.maxY+mediumMargin, width: detailsViewWidth, height: 10*smallMargin)
         betDetailsView.layer.borderColor = greyColor.cgColor
         betDetailsView.layer.borderWidth = 2
-        whoBetWhoLabel.frame = CGRect(x: smallMargin, y: smallMargin, width: detailsViewWidth-2*smallMargin, height: 17)
+        whoBetWhoLabel.frame = CGRect(x: smallMargin, y: smallMargin, width: detailsViewWidth-2*smallMargin, height: 22)
         betTextLabel.frame = CGRect(x: smallMargin, y: whoBetWhoLabel.frame.maxY, width: detailsViewWidth-2*smallMargin, height: 5*smallMargin)
         
         
@@ -281,16 +281,16 @@ class CloseBetViewController: UIViewController, UIImagePickerControllerDelegate,
             
         } else if whoWon == "Sender" {
             
-            // Disabled for testing
-            //self.betsRef.child(betIDString).updateChildValues(["betState" : "2"])
+            // Disable for testing
+            self.betsRef.child(betIDString).updateChildValues(["betState" : "2"])
 
             segueType = "submit"
             performSegue(withIdentifier: "toAddPhoto", sender: self)
 
         } else if whoWon == "Receiver" {
             
-            // Disabled for testing
-            //self.betsRef.child(betIDString).updateChildValues(["betState" : "3"])
+            // Disable for testing
+            self.betsRef.child(betIDString).updateChildValues(["betState" : "3"])
 
             segueType = "submit"
             performSegue(withIdentifier: "toAddPhoto", sender: self)

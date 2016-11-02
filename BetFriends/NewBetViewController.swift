@@ -154,6 +154,7 @@ class NewBetViewController: UIViewController {
         let navigationController = segue.destination as! UINavigationController
         let myBetsViewController = navigationController.topViewController as! MyBetsViewController
         myBetsViewController.currentUser = currentUser
+        myBetsViewController.thisUsername = currentUser.username
         
      // Pass the selected object to the new view controller.
      }
