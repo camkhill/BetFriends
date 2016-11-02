@@ -28,6 +28,7 @@
 		B59B57491D90A84100BF8193 /* BetFriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57481D90A84100BF8193 /* BetFriendsTests.swift */; };
 		B59B57541D90A84100BF8193 /* BetFriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57531D90A84100BF8193 /* BetFriendsUITests.swift */; };
 		B59B57641D90A9CE00BF8193 /* MyBetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */; };
+		B5B8880B1DC96813004422BA /* AddPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B8880A1DC96813004422BA /* AddPhotoViewController.swift */; };
 		B5DCBC671DBEA27C00B62CA7 /* Optimist_XLt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC5D1DBEA27C00B62CA7 /* Optimist_XLt.ttf */; };
 		B5DCBC681DBEA27C00B62CA7 /* Optimist_XLtIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC5E1DBEA27C00B62CA7 /* Optimist_XLtIt.ttf */; };
 		B5DCBC691DBEA27C00B62CA7 /* Optimist_SBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5DCBC5F1DBEA27C00B62CA7 /* Optimist_SBd.ttf */; };
@@ -89,6 +90,7 @@
 		B59B57531D90A84100BF8193 /* BetFriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetFriendsUITests.swift; sourceTree = "<group>"; };
 		B59B57551D90A84100BF8193 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B59B57631D90A9CE00BF8193 /* MyBetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyBetsViewController.swift; path = ../MyBetsViewController.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		B5B8880A1DC96813004422BA /* AddPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPhotoViewController.swift; sourceTree = "<group>"; };
 		B5DCBC5D1DBEA27C00B62CA7 /* Optimist_XLt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_XLt.ttf; sourceTree = "<group>"; };
 		B5DCBC5E1DBEA27C00B62CA7 /* Optimist_XLtIt.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_XLtIt.ttf; sourceTree = "<group>"; };
 		B5DCBC5F1DBEA27C00B62CA7 /* Optimist_SBd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Optimist_SBd.ttf; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				B59B57331D90A84100BF8193 /* AppDelegate.swift */,
 				B59B57351D90A84100BF8193 /* ViewController.swift */,
 				B59B57371D90A84100BF8193 /* Main.storyboard */,
+				B5B8880A1DC96813004422BA /* AddPhotoViewController.swift */,
 				B5470DD81DA92CF6007BC723 /* CloseBetViewController.swift */,
 				B52B8A691D95BB8B0015CDA7 /* LoginViewController.swift */,
 				B52B8A671D95B5FE0015CDA7 /* BetDetailsViewController.swift */,
@@ -544,6 +547,7 @@
 				B52B8A681D95B5FE0015CDA7 /* BetDetailsViewController.swift in Sources */,
 				B52B8A651D95B1400015CDA7 /* NewBetViewController.swift in Sources */,
 				B52B8A631D9490DB0015CDA7 /* CompletedBetTableViewCell.swift in Sources */,
+				B5B8880B1DC96813004422BA /* AddPhotoViewController.swift in Sources */,
 				B557E62E1D9DB7A3003354F3 /* BetStruct.swift in Sources */,
 				B59B57361D90A84100BF8193 /* ViewController.swift in Sources */,
 				B5470DD91DA92CF6007BC723 /* CloseBetViewController.swift in Sources */,

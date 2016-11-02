@@ -564,7 +564,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let tappedBet = activeArray[selectedCell]
                 betDetailsViewController.statusLabel.text = "Active"
                 betDetailsViewController.closeBetButton.isHidden = false
-                betDetailsViewController.statusLabel.textColor = UIColor.blue
+                betDetailsViewController.statusLabel.textColor = UIColor(colorLiteralRed: 17/255, green: 141/255, blue: 204/255, alpha: 1)
   
                 //set bet text, size it, and set/size stakes text
                 

@@ -197,27 +197,20 @@ class BetDetailsViewController: UIViewController {
             
             closeBetViewController.currentUser = currentUser
             closeBetViewController.currentBet = currentBet
-            closeBetViewController.betTextLabel.text = currentBet.betSender + " bet " + currentBet.betReceiver + " that " + currentBet.betText
+            closeBetViewController.whoBetWhoLabel.text = currentBet.betSender + " bet " + currentBet.betReceiver + " that..."
+            closeBetViewController.betTextLabel.text = currentBet.betText
             //closeBetViewController.stakesTextLabel.text = getWinnerLoserText(isWinnerLoser: currentBet.winnerLoserToggle) + " " + currentBet.stakesText
-            closeBetViewController.winnerToggle.setTitle(currentBet.betSender, forSegmentAt: 0)
-            closeBetViewController.winnerToggle.setTitle(currentBet.betReceiver, forSegmentAt: 1)
             closeBetViewController.myProfPic.image = myProfPic.image
             closeBetViewController.friendProfPic.image = friendProfPic.image
             
-            //
-            let margin = CGFloat(10)
-
-            let fixWidthSize = CGSize(width: closeBetViewController.betDetailsView.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
-            let betFitSize = closeBetViewController.betTextLabel.sizeThatFits(fixWidthSize)
-            closeBetViewController.betTextLabel.frame = CGRect(x: margin, y: margin, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: betFitSize.height)
-            closeBetViewController.betTextLabel.numberOfLines = 3
-            
-            //let stakesLabelFitSize = closeBetViewController.stakesLabel.sizeThatFits(fixWidthSize)
-            //closeBetViewController.stakesLabel.frame = CGRect(x: margin, y: closeBetViewController.betTextLabel.frame.maxY, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: stakesLabelFitSize.height)
-            //closeBetViewController.stakesLabel.center.x = closeBetViewController.betDetailsView.frame.width/2
-            
-            //let stakesFitSize = closeBetViewController.stakesTextLabel.sizeThatFits(fixWidthSize)
-            //closeBetViewController.stakesTextLabel.frame = CGRect(x: margin, y: closeBetViewController.stakesLabel.frame.maxY+margin, width: closeBetViewController.betDetailsView.frame.width-2*margin, height: stakesFitSize.height)
+            closeBetViewController.userWonLabel.text = currentUser.username + " won"
+            var friendUsername: String!
+            if currentUser.username == currentBet.betSender {
+                friendUsername = currentBet.betReceiver
+            } else {
+                friendUsername = currentBet.betSender
+            }
+            closeBetViewController.friendWonLabel.text = friendUsername + " won"
             
             
         }
