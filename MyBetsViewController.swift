@@ -272,8 +272,10 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
             profPicSize = CGFloat(tableViewSize.width/5)
             
-            // TODO Update the time remaining based on the endDate field, or if this is nil say "Open Bet"
-            cell.timeRemainingLabel.text = String("1 Day Left")?.uppercased()
+            // TODO Update the time remaining based on the endDate field, or if this is nil say "Open Bet" for now A vs. B
+            cell.timeRemainingLabel.text = String(thisBet.betSender + " VS. " + thisBet.betReceiver)?.uppercased()
+            cell.timeRemainingLabel.textColor = UIColor(colorLiteralRed: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+
             cell.timeRemainingLabel.frame = CGRect(x: cell.frame.size.width/2+margin, y: margin+5 , width: cell.frame.size.width/2-2*margin, height: 25)
             
             cell.myProfPic.image = currentUser.profilePicture
@@ -602,7 +604,7 @@ class MyBetsViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
             } else if segmentedControl.selectedSegmentIndex == 2 {
                 betDetailsViewController.statusLabel.text = "Completed"
-                betDetailsViewController.statusLabel.textColor = UIColor.green
+                betDetailsViewController.statusLabel.textColor = UIColor(colorLiteralRed: 0, green: 150/255, blue: 36/255, alpha: 1)
                 
                 
                 let tappedBet = completedArray[selectedCell]

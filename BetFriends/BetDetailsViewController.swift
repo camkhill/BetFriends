@@ -214,6 +214,12 @@ class BetDetailsViewController: UIViewController {
             }
             closeBetViewController.friendWonLabel.text = friendUsername + " won"
             
+            let margin = CGFloat(10)
+            let fixWidthSize = CGSize(width: closeBetViewController.betDetailsView.frame.width-2*margin, height: CGFloat.greatestFiniteMagnitude)
+            let fitSizeBet = closeBetViewController.betTextLabel.sizeThatFits(fixWidthSize)
+            closeBetViewController.betTextLabel.frame.size = fitSizeBet
+            closeBetViewController.betDetailsView.frame.size.height = closeBetViewController.betTextLabel.frame.maxY+margin
+            
             
         }
 

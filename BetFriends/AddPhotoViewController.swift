@@ -140,8 +140,8 @@ class AddPhotoViewController: UIViewController, UIImagePickerControllerDelegate,
             let data = UIImageJPEGRepresentation(self.resultImage.image!, 0.8)!
             print("uploading image!!!!")
             
-            // Disabling uploading for testing
-            //bfImagesRef.child(filepath).put(data)
+            // Disable uploading for testing
+            bfImagesRef.child(filepath).put(data)
             performSegue(withIdentifier: "addphoto2mybets", sender: self)
 
         } else {
