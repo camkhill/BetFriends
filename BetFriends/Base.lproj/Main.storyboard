@@ -684,8 +684,8 @@ Stakes:</string>
                                     <action selector="onTapUpload:" destination="Bdc-z9-TxX" eventType="touchUpInside" id="dUL-VV-a3L"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="(You/User B) (gets to/has to) do the stake" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XOa-IV-AJS">
-                                <frame key="frameInset" minX="24" minY="80" width="1597" height="74"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="(You/User B) (gets to/has to) do the stake" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XOa-IV-AJS">
+                                <frame key="frameInset" minX="24" minY="80" width="332" height="76"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Optimist-Regular" family="Optimist" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
